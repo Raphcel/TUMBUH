@@ -758,8 +758,8 @@ function verifyAuditChain() {
   let expectedPreviousHash = 'GENESIS';
   let total = 0;
   let legacySkipped = 0;
-  let firstFailure = null;
-  let tamperedEntry = null;
+  const failures = [];
+  const tamperedEntries = [];
   let latestHash = expectedPreviousHash;
 
   for (const file of files) {
@@ -770,7 +770,7 @@ function verifyAuditChain() {
       try {
         entry = JSON.parse(line);
       } catch {
-        firstFailure = firstFailure || { file: path.basename(file), line: index + 1, reason: 'Invalid JSON log line' };
+        failures.push({ file: path.basename(file), line: index + 1, reason: 'Invalid JSON log line' });
         continue;
       }
 
@@ -779,43 +779,44 @@ function verifyAuditChain() {
           legacySkipped += 1;
           continue;
         }
-        firstFailure = firstFailure || { file: path.basename(file), line: index + 1, reason: 'Missing hash-chain fields after hash chain started' };
+        failures.push({ file: path.basename(file), line: index + 1, reason: 'Missing hash-chain fields after hash chain started' });
         continue;
       }
 
+      let isCurrentLineFailed = false;
+
       if (entry.previousHash !== expectedPreviousHash) {
-        if (!firstFailure) {
-          firstFailure = {
-            file: path.basename(file),
-            line: index + 1,
-            reason: 'previousHash does not match the previous eventHash',
-            expectedPreviousHash,
-            actualPreviousHash: entry.previousHash,
-          };
-          tamperedEntry = {
-            eventHash: entry.eventHash,
-            action: entry.action || null,
-            timestamp: entry.timestamp || null,
-            userEmail: entry.userEmail || null,
-            userRole: entry.userRole || null,
-            userId: entry.userId || null,
-            resource: entry.resource || null,
-            resourceId: entry.resourceId || null,
-          };
-        }
+        failures.push({
+          file: path.basename(file),
+          line: index + 1,
+          reason: 'previousHash does not match the previous eventHash',
+          expectedPreviousHash,
+          actualPreviousHash: entry.previousHash,
+        });
+        tamperedEntries.push({
+          eventHash: entry.eventHash,
+          action: entry.action || null,
+          timestamp: entry.timestamp || null,
+          userEmail: entry.userEmail || null,
+          userRole: entry.userRole || null,
+          userId: entry.userId || null,
+          resource: entry.resource || null,
+          resourceId: entry.resourceId || null,
+        });
+        isCurrentLineFailed = true;
       }
 
       const recomputedHash = computeEventHash(entry);
       if (recomputedHash !== entry.eventHash) {
-        if (!firstFailure) {
-          firstFailure = {
+        if (!isCurrentLineFailed) {
+          failures.push({
             file: path.basename(file),
             line: index + 1,
             reason: 'eventHash does not match log contents',
             expectedEventHash: recomputedHash,
             actualEventHash: entry.eventHash,
-          };
-          tamperedEntry = {
+          });
+          tamperedEntries.push({
             eventHash: entry.eventHash,
             action: entry.action || null,
             timestamp: entry.timestamp || null,
@@ -824,7 +825,7 @@ function verifyAuditChain() {
             userId: entry.userId || null,
             resource: entry.resource || null,
             resourceId: entry.resourceId || null,
-          };
+          });
         }
       }
 
@@ -834,46 +835,158 @@ function verifyAuditChain() {
   }
 
   return {
-    valid: !firstFailure,
+    valid: failures.length === 0,
     total,
     legacySkipped,
     files: files.map((file) => path.basename(file)),
     latestHash,
-    firstFailure,
-    tamperedEntry,
+    failures,
+    tamperedEntries,
+    firstFailure: failures[0] || null,
+    tamperedEntry: tamperedEntries[0] || null,
     checkedAt: new Date().toISOString(),
   };
 }
+
+app.post('/audit/edit-entry', requireDashboardAuth, express.json(), (req, res) => {
+  // DEV TOOLS: edit a log entry by eventHash without recomputing the hash (breaks the chain).
+  const { eventHash, changes } = req.body || {};
+  if (!eventHash || !changes || typeof changes !== 'object') {
+    return res.status(400).json({ error: 'Provide eventHash and changes object.' });
+  }
+
+  const files = getAuditLogFiles();
+  for (const file of files) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const lines = content.trim().split('\n').filter(Boolean);
+    let found = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      let entry;
+      try { entry = JSON.parse(lines[i]); } catch { continue; }
+      if (entry.eventHash === eventHash) {
+        // Auto-backup on first edit
+        const backupFile = file + '.bak';
+        if (!fs.existsSync(backupFile)) {
+          fs.copyFileSync(file, backupFile);
+        }
+        const original = { ...entry };
+        // Apply changes but never touch hash fields
+        for (const [key, value] of Object.entries(changes)) {
+          if (key !== 'eventHash' && key !== 'previousHash' && key !== 'integrityAlgorithm') {
+            entry[key] = value;
+          }
+        }
+        lines[i] = JSON.stringify(entry);
+        fs.writeFileSync(file, lines.join('\n') + '\n', 'utf-8');
+        found = true;
+        return res.json({
+          success: true,
+          file: path.basename(file),
+          line: i + 1,
+          eventHash,
+          original: { action: original.action, userEmail: original.userEmail, success: original.success },
+          updated: { action: entry.action, userEmail: entry.userEmail, success: entry.success },
+        });
+      }
+    }
+    if (found) break;
+  }
+  res.status(404).json({ error: 'Entry with that eventHash not found.' });
+});
+
+app.post('/audit/reset-logs', requireDashboardAuth, (_req, res) => {
+  // DEV TOOLS: restore all log files from .bak backups.
+  const files = getAuditLogFiles();
+  let restored = 0;
+  for (const file of files) {
+    const backupFile = file + '.bak';
+    if (fs.existsSync(backupFile)) {
+      fs.copyFileSync(backupFile, file);
+      fs.unlinkSync(backupFile);
+      restored++;
+    }
+  }
+  res.json({ success: true, restoredFiles: restored });
+});
+
+app.post('/audit/clear-all-logs', requireDashboardAuth, (_req, res) => {
+  // DEV TOOLS: delete/clear all log files.
+  if (fs.existsSync(chainStateFile)) {
+    try {
+      fs.unlinkSync(chainStateFile);
+    } catch (_err) {
+      try {
+        fs.writeFileSync(chainStateFile, JSON.stringify({ lastHash: 'GENESIS' }), 'utf-8');
+      } catch (e) {}
+    }
+  }
+
+  let cleared = 0;
+  try {
+    const files = fs.readdirSync(logsDir);
+    for (const file of files) {
+      if (file === '.gitkeep') continue;
+      const filePath = path.join(logsDir, file);
+      
+      if (file.endsWith('.log')) {
+        // Truncate Winston logs so the open handles remain valid
+        try {
+          fs.writeFileSync(filePath, '', 'utf-8');
+          cleared++;
+        } catch (e) {
+          console.error(`Failed to truncate log file ${file}:`, e);
+        }
+      } else {
+        // Delete backups, dotfiles, and temporary files
+        try {
+          fs.unlinkSync(filePath);
+          cleared++;
+        } catch (err) {
+          // Fallback to truncate if somehow locked
+          try {
+            fs.writeFileSync(filePath, '', 'utf-8');
+            cleared++;
+          } catch (e) {}
+        }
+      }
+    }
+  } catch (err) {
+    return res.status(500).json({ error: 'Failed to read/clear logs directory: ' + err.message });
+  }
+
+  res.json({ success: true, clearedFiles: cleared });
+});
 
 app.get('/audit/verify-chain', requireDashboardAuth, (_req, res) => {
   res.json(verifyAuditChain());
 });
 
 app.get('/logs/recent', requireDashboardAuth, (req, res) => {
-  const today = new Date().toISOString().slice(0, 10);
-  const logFile = path.join(logsDir, `audit-${today}.log`);
   const requestedLimit = Number.parseInt(req.query.limit, 10);
   const limit = Number.isFinite(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 500) : 50;
 
-  if (!fs.existsSync(logFile)) {
+  const files = getAuditLogFiles().reverse(); // newest files first
+  if (files.length === 0) {
     return res.json({ entries: [], total: 0 });
   }
 
-  const content = fs.readFileSync(logFile, 'utf-8');
-  const lines = content.trim().split('\n').filter(Boolean);
-  const entries = lines
-    .map((line) => {
-      try {
-        return JSON.parse(line);
-      } catch {
-        return null;
-      }
-    })
-    .filter(Boolean)
-    .reverse()
-    .slice(0, limit);
+  let allEntries = [];
+  let total = 0;
+  for (const file of files) {
+    const content = fs.readFileSync(file, 'utf-8').trim();
+    if (!content) continue;
+    const lines = content.split('\n').filter(Boolean);
+    total += lines.length;
+    const parsed = lines
+      .map((line) => { try { return JSON.parse(line); } catch { return null; } })
+      .filter(Boolean)
+      .reverse(); // newest entries first within each file
+    allEntries = allEntries.concat(parsed);
+    if (allEntries.length >= limit) break; // stop reading older files once we have enough
+  }
 
-  res.json({ entries, total: lines.length });
+  res.json({ entries: allEntries.slice(0, limit), total });
 });
 
 app.listen(PORT, () => {

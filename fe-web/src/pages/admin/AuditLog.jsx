@@ -6,9 +6,12 @@ import {
   CheckCircle2,
   Clock3,
   Fingerprint,
+  Pencil,
   RefreshCw,
+  RotateCcw,
   Search,
   ShieldCheck,
+  Trash2,
   XCircle,
 } from 'lucide-react';
 
@@ -49,9 +52,11 @@ export function AuditLog() {
   const [query, setQuery] = useState('');
   const [level, setLevel] = useState('all');
   const [chainResult, setChainResult] = useState(null);
-  const [tamperedHash, setTamperedHash] = useState(null);
+  const [tamperedHashes, setTamperedHashes] = useState([]);
   const [signatureResult, setSignatureResult] = useState(null);
   const [applicationId, setApplicationId] = useState('');
+  const [editingEntry, setEditingEntry] = useState(null);
+  const [editForm, setEditForm] = useState({ action: '', userEmail: '', success: true });
   const [error, setError] = useState('');
 
   const fetchEvents = async () => {
@@ -109,23 +114,27 @@ export function AuditLog() {
     try {
       const data = await adminApi.verifyAuditChain();
       if (data.valid) {
-        setTamperedHash(null);
+        setTamperedHashes([]);
         setChainResult({
           valid: true,
           reason: `${data.total} events checked. Legacy skipped: ${data.legacySkipped || 0}. Latest hash: ${data.latestHash}`,
         });
       } else {
-        const te = data.tamperedEntry;
-        setTamperedHash(te?.eventHash || null);
+        const tes = data.tamperedEntries || (data.tamperedEntry ? [data.tamperedEntry] : []);
+        setTamperedHashes(tes.map((t) => t.eventHash).filter(Boolean));
         const failInfo = data.firstFailure || {};
         let reason = `Chain broken at ${failInfo.file || '?'} line ${failInfo.line || '?'}: ${failInfo.reason || 'unknown'}`;
+        if (data.failures && data.failures.length > 1) {
+          reason += `\n\nDetected ${data.failures.length} total chain breaks. The first break details:`;
+        }
+        const te = data.tamperedEntry;
         if (te) {
           reason += `\n\nTampered entry → Action: ${te.action || '-'}, Actor: ${te.userEmail || te.userRole || '-'}, Resource: ${te.resource || '-'}${te.resourceId ? ' #' + te.resourceId : ''}, Hash: ${te.eventHash || '-'}`;
         }
         setChainResult({ valid: false, reason });
       }
     } catch (err) {
-      setTamperedHash(null);
+      setTamperedHashes([]);
       setChainResult({ valid: false, reason: err.message || 'Chain verification failed.' });
     }
   };
@@ -198,6 +207,46 @@ export function AuditLog() {
           <button onClick={verifyChain} className="mb-3 rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold hover:bg-gray-50">
             Verify chain
           </button>
+          <button
+            onClick={async () => {
+              try {
+                const data = await adminApi.resetAuditLogs();
+                setTamperedHashes([]);
+                setChainResult({
+                  valid: true,
+                  reason: `Logs restored from backup. ${data.restoredFiles} file(s) reset.`,
+                });
+                await fetchEvents();
+              } catch (err) {
+                setChainResult({ valid: false, reason: err.message || 'Reset failed.' });
+              }
+            }}
+            className="mb-3 ml-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold hover:bg-gray-50"
+          >
+            <RotateCcw className="mr-1 inline h-3.5 w-3.5" />
+            Reset logs
+          </button>
+          <button
+            onClick={async () => {
+              if (window.confirm("Are you sure you want to completely clear and delete all audit logs? This cannot be undone.")) {
+                try {
+                  const data = await adminApi.clearAllAuditLogs();
+                  setTamperedHashes([]);
+                  setChainResult({
+                    valid: true,
+                    reason: `All logs successfully cleared and deleted.`,
+                  });
+                  await fetchEvents();
+                } catch (err) {
+                  setChainResult({ valid: false, reason: err.message || 'Failed to clear logs.' });
+                }
+              }
+            }}
+            className="mb-3 ml-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-100"
+          >
+            <Trash2 className="mr-1 inline h-3.5 w-3.5" />
+            Clear all logs
+          </button>
           <ResultPanel result={chainResult} />
         </div>
 
@@ -258,9 +307,10 @@ export function AuditLog() {
         {error && <div className="border-b border-red-100 bg-red-50 px-5 py-3 text-sm text-red-700">{error}</div>}
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[980px] text-sm">
+          <table className="w-full min-w-[1060px] text-sm">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                <th className="w-10 px-3 py-3"></th>
                 <th className="px-5 py-3">Time</th>
                 <th className="px-5 py-3">Signal</th>
                 <th className="px-5 py-3">Action</th>
@@ -271,18 +321,41 @@ export function AuditLog() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={6} className="px-5 py-12 text-center text-gray-400">Loading audit events...</td></tr>
+                <tr><td colSpan={7} className="px-5 py-12 text-center text-gray-400">Loading audit events...</td></tr>
               ) : filtered.length === 0 ? (
-                <tr><td colSpan={6} className="px-5 py-12 text-center text-gray-400">No matching audit events.</td></tr>
+                <tr><td colSpan={7} className="px-5 py-12 text-center text-gray-400">No matching audit events.</td></tr>
               ) : filtered.map((entry, index) => {
-                const isTampered = tamperedHash && entry.eventHash === tamperedHash;
+                const isTampered = tamperedHashes && tamperedHashes.includes(entry.eventHash);
+                const isEditing = editingEntry === entry.eventHash;
                 return (
+                <React.Fragment key={`${entry.timestamp}-${entry.eventHash || index}`}>
                 <tr
-                  key={`${entry.timestamp}-${entry.eventHash || index}`}
                   className={isTampered
                     ? 'border-b border-red-200 bg-red-50 ring-2 ring-inset ring-red-400'
                     : 'border-b border-gray-100 hover:bg-gray-50/60'}
                 >
+                  <td className="px-3 py-3.5">
+                    {entry.eventHash && (
+                      <button
+                        title="Edit this log entry"
+                        onClick={() => {
+                          if (isEditing) {
+                            setEditingEntry(null);
+                          } else {
+                            setEditingEntry(entry.eventHash);
+                            setEditForm({
+                              action: entry.action || '',
+                              userEmail: entry.userEmail || '',
+                              success: entry.success ?? true,
+                            });
+                          }
+                        }}
+                        className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                  </td>
                   <td className="whitespace-nowrap px-5 py-3.5 font-mono text-xs text-gray-500">
                     <Clock3 className="mr-1 inline h-3.5 w-3.5" />
                     {formatJakartaTime(entry.timestamp)}
@@ -313,6 +386,62 @@ export function AuditLog() {
                     {isTampered ? '⚠ Hash chain integrity violation detected' : (entry.message || entry.detail || '-')}
                   </td>
                 </tr>
+                {isEditing && (
+                  <tr className="border-b border-amber-200 bg-amber-50/70">
+                    <td colSpan={7} className="px-5 py-3">
+                      <div className="flex flex-wrap items-end gap-3">
+                        <div>
+                          <label className="mb-1 block text-xs font-semibold text-gray-600">Action</label>
+                          <input
+                            value={editForm.action}
+                            onChange={(e) => setEditForm((f) => ({ ...f, action: e.target.value }))}
+                            className="w-52 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:border-brand focus:outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-xs font-semibold text-gray-600">Email</label>
+                          <input
+                            value={editForm.userEmail}
+                            onChange={(e) => setEditForm((f) => ({ ...f, userEmail: e.target.value }))}
+                            className="w-52 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:border-brand focus:outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-xs font-semibold text-gray-600">Success</label>
+                          <select
+                            value={String(editForm.success)}
+                            onChange={(e) => setEditForm((f) => ({ ...f, success: e.target.value === 'true' }))}
+                            className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:border-brand focus:outline-none"
+                          >
+                            <option value="true">true</option>
+                            <option value="false">false</option>
+                          </select>
+                        </div>
+                        <button
+                          onClick={async () => {
+                            try {
+                              await adminApi.editAuditEntry(entry.eventHash, editForm);
+                              setEditingEntry(null);
+                              await fetchEvents();
+                            } catch (err) {
+                              setError(err.message || 'Edit failed.');
+                            }
+                          }}
+                          className="rounded-lg bg-amber-500 px-4 py-1.5 text-sm font-semibold text-white hover:bg-amber-600"
+                        >
+                          Save (breaks chain)
+                        </button>
+                        <button
+                          onClick={() => setEditingEntry(null)}
+                          className="rounded-lg border border-gray-300 px-4 py-1.5 text-sm font-semibold hover:bg-gray-50"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+                </React.Fragment>
                 );
               })}
             </tbody>

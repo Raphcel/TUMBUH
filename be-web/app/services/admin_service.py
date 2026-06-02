@@ -193,7 +193,19 @@ class AdminService:
         """Verify the audit service hash chain through the admin backend boundary."""
         return self._request_audit_service("/audit/verify-chain")
 
-    def _request_audit_service(self, path: str) -> dict:
+    def edit_audit_entry(self, body: dict) -> dict:
+        """DEV TOOLS: edit an audit log entry by eventHash."""
+        return self._request_audit_service("/audit/edit-entry", method="POST", body=body)
+
+    def reset_audit_logs(self) -> dict:
+        """DEV TOOLS: restore audit logs from backup."""
+        return self._request_audit_service("/audit/reset-logs", method="POST")
+
+    def clear_all_audit_logs(self) -> dict:
+        """DEV TOOLS: clear/delete all audit logs completely."""
+        return self._request_audit_service("/audit/clear-all-logs", method="POST")
+
+    def _request_audit_service(self, path: str, method: str = "GET", body: dict | None = None) -> dict:
         base_url = AUDIT_LOG_URL.rsplit("/log", 1)[0]
         url = f"{base_url}{path}"
         headers = {"Accept": "application/json"}
@@ -201,7 +213,12 @@ class AdminService:
         if dashboard_key:
             headers["X-Audit-Dashboard-Key"] = dashboard_key
 
-        req = urllib.request.Request(url, headers=headers, method="GET")
+        data = None
+        if body is not None:
+            headers["Content-Type"] = "application/json"
+            data = json.dumps(body).encode("utf-8")
+
+        req = urllib.request.Request(url, headers=headers, method=method, data=data)
         try:
             with urllib.request.urlopen(req, timeout=AUDIT_LOG_TIMEOUT) as response:
                 return json.loads(response.read().decode("utf-8"))
