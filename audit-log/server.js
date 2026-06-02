@@ -759,6 +759,7 @@ function verifyAuditChain() {
   let total = 0;
   let legacySkipped = 0;
   let firstFailure = null;
+  let tamperedEntry = null;
   let latestHash = expectedPreviousHash;
 
   for (const file of files) {
@@ -783,24 +784,48 @@ function verifyAuditChain() {
       }
 
       if (entry.previousHash !== expectedPreviousHash) {
-        firstFailure = firstFailure || {
-          file: path.basename(file),
-          line: index + 1,
-          reason: 'previousHash does not match the previous eventHash',
-          expectedPreviousHash,
-          actualPreviousHash: entry.previousHash,
-        };
+        if (!firstFailure) {
+          firstFailure = {
+            file: path.basename(file),
+            line: index + 1,
+            reason: 'previousHash does not match the previous eventHash',
+            expectedPreviousHash,
+            actualPreviousHash: entry.previousHash,
+          };
+          tamperedEntry = {
+            eventHash: entry.eventHash,
+            action: entry.action || null,
+            timestamp: entry.timestamp || null,
+            userEmail: entry.userEmail || null,
+            userRole: entry.userRole || null,
+            userId: entry.userId || null,
+            resource: entry.resource || null,
+            resourceId: entry.resourceId || null,
+          };
+        }
       }
 
       const recomputedHash = computeEventHash(entry);
       if (recomputedHash !== entry.eventHash) {
-        firstFailure = firstFailure || {
-          file: path.basename(file),
-          line: index + 1,
-          reason: 'eventHash does not match log contents',
-          expectedEventHash: recomputedHash,
-          actualEventHash: entry.eventHash,
-        };
+        if (!firstFailure) {
+          firstFailure = {
+            file: path.basename(file),
+            line: index + 1,
+            reason: 'eventHash does not match log contents',
+            expectedEventHash: recomputedHash,
+            actualEventHash: entry.eventHash,
+          };
+          tamperedEntry = {
+            eventHash: entry.eventHash,
+            action: entry.action || null,
+            timestamp: entry.timestamp || null,
+            userEmail: entry.userEmail || null,
+            userRole: entry.userRole || null,
+            userId: entry.userId || null,
+            resource: entry.resource || null,
+            resourceId: entry.resourceId || null,
+          };
+        }
       }
 
       expectedPreviousHash = entry.eventHash;
@@ -815,6 +840,7 @@ function verifyAuditChain() {
     files: files.map((file) => path.basename(file)),
     latestHash,
     firstFailure,
+    tamperedEntry,
     checkedAt: new Date().toISOString(),
   };
 }

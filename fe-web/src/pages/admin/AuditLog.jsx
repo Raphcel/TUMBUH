@@ -38,7 +38,7 @@ function ResultPanel({ result }) {
   return (
     <div className={`rounded-xl border p-3 text-sm ${result.valid ? 'border-emerald-100 bg-emerald-50 text-emerald-800' : 'border-red-100 bg-red-50 text-red-800'}`}>
       <div className="font-semibold">{result.valid ? 'Valid' : 'Invalid'}</div>
-      <div className="mt-1 break-words">{result.reason || result.message}</div>
+      <div className="mt-1 break-words whitespace-pre-wrap">{result.reason || result.message}</div>
     </div>
   );
 }
@@ -49,6 +49,7 @@ export function AuditLog() {
   const [query, setQuery] = useState('');
   const [level, setLevel] = useState('all');
   const [chainResult, setChainResult] = useState(null);
+  const [tamperedHash, setTamperedHash] = useState(null);
   const [signatureResult, setSignatureResult] = useState(null);
   const [applicationId, setApplicationId] = useState('');
   const [error, setError] = useState('');
@@ -107,13 +108,24 @@ export function AuditLog() {
   const verifyChain = async () => {
     try {
       const data = await adminApi.verifyAuditChain();
-      setChainResult({
-        valid: data.valid,
-        reason: data.valid
-          ? `${data.total} events checked. Legacy skipped: ${data.legacySkipped || 0}. Latest hash: ${data.latestHash}`
-          : JSON.stringify(data.firstFailure),
-      });
+      if (data.valid) {
+        setTamperedHash(null);
+        setChainResult({
+          valid: true,
+          reason: `${data.total} events checked. Legacy skipped: ${data.legacySkipped || 0}. Latest hash: ${data.latestHash}`,
+        });
+      } else {
+        const te = data.tamperedEntry;
+        setTamperedHash(te?.eventHash || null);
+        const failInfo = data.firstFailure || {};
+        let reason = `Chain broken at ${failInfo.file || '?'} line ${failInfo.line || '?'}: ${failInfo.reason || 'unknown'}`;
+        if (te) {
+          reason += `\n\nTampered entry → Action: ${te.action || '-'}, Actor: ${te.userEmail || te.userRole || '-'}, Resource: ${te.resource || '-'}${te.resourceId ? ' #' + te.resourceId : ''}, Hash: ${te.eventHash || '-'}`;
+        }
+        setChainResult({ valid: false, reason });
+      }
     } catch (err) {
+      setTamperedHash(null);
       setChainResult({ valid: false, reason: err.message || 'Chain verification failed.' });
     }
   };
@@ -262,30 +274,47 @@ export function AuditLog() {
                 <tr><td colSpan={6} className="px-5 py-12 text-center text-gray-400">Loading audit events...</td></tr>
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={6} className="px-5 py-12 text-center text-gray-400">No matching audit events.</td></tr>
-              ) : filtered.map((entry, index) => (
-                <tr key={`${entry.timestamp}-${entry.eventHash || index}`} className="border-b border-gray-100 hover:bg-gray-50/60">
+              ) : filtered.map((entry, index) => {
+                const isTampered = tamperedHash && entry.eventHash === tamperedHash;
+                return (
+                <tr
+                  key={`${entry.timestamp}-${entry.eventHash || index}`}
+                  className={isTampered
+                    ? 'border-b border-red-200 bg-red-50 ring-2 ring-inset ring-red-400'
+                    : 'border-b border-gray-100 hover:bg-gray-50/60'}
+                >
                   <td className="whitespace-nowrap px-5 py-3.5 font-mono text-xs text-gray-500">
                     <Clock3 className="mr-1 inline h-3.5 w-3.5" />
                     {formatJakartaTime(entry.timestamp)}
                   </td>
                   <td className="px-5 py-3.5">
-                    <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${levelClass(entry.level)}`}>
-                      {entry.level || 'info'}
-                    </span>
+                    {isTampered ? (
+                      <span className="inline-flex items-center gap-1 rounded-full border border-red-300 bg-red-100 px-2.5 py-1 text-xs font-bold text-red-700">
+                        <AlertTriangle className="h-3 w-3" />
+                        TAMPERED
+                      </span>
+                    ) : (
+                      <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${levelClass(entry.level)}`}>
+                        {entry.level || 'info'}
+                      </span>
+                    )}
                   </td>
-                  <td className="px-5 py-3.5 font-semibold text-gray-900">{entry.action || '-'}</td>
+                  <td className={`px-5 py-3.5 font-semibold ${isTampered ? 'text-red-800' : 'text-gray-900'}`}>{entry.action || '-'}</td>
                   <td className="px-5 py-3.5">
-                    <div className="font-medium text-gray-900">{entry.userEmail || entry.userRole || 'system'}</div>
+                    <div className={`font-medium ${isTampered ? 'text-red-800' : 'text-gray-900'}`}>{entry.userEmail || entry.userRole || 'system'}</div>
                     <div className="text-xs text-gray-500">{entry.userId ? `ID ${entry.userId}` : 'internal'}</div>
                   </td>
                   <td className="px-5 py-3.5">
-                    <span className="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-700">
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${isTampered ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'}`}>
                       {entry.resource || 'system'}{entry.resourceId ? ` #${entry.resourceId}` : ''}
                     </span>
                   </td>
-                  <td className="max-w-xl px-5 py-3.5 text-gray-600">{entry.message || entry.detail || '-'}</td>
+                  <td className={`max-w-xl px-5 py-3.5 ${isTampered ? 'text-red-700 font-semibold' : 'text-gray-600'}`}>
+                    {isTampered ? '⚠ Hash chain integrity violation detected' : (entry.message || entry.detail || '-')}
+                  </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>
