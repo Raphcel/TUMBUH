@@ -44,6 +44,16 @@ export const adminApi = {
   /** Verify audit log hash-chain integrity */
   verifyAuditChain: () => api.get('/admin/security/audit/verify-chain'),
 
+  /** DEV TOOLS: edit an audit log entry by eventHash */
+  editAuditEntry: (eventHash, changes) =>
+    api.post('/admin/security/audit/edit-entry', { eventHash, changes }),
+
+  /** DEV TOOLS: restore audit logs from backup */
+  resetAuditLogs: () => api.post('/admin/security/audit/reset-logs'),
+
+  /** DEV TOOLS: clear/delete all audit logs completely */
+  clearAllAuditLogs: () => api.post('/admin/security/audit/clear-all-logs'),
+
   /** Verify one application's stored digital signature */
   verifyApplicationSignature: (applicationId) =>
     api.get(`/admin/security/applications/${applicationId}/signature`),

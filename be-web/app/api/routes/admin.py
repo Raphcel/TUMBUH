@@ -151,3 +151,31 @@ def verify_audit_chain(
 ):
     """Verify audit log hash-chain integrity. Admin-only."""
     return service.verify_audit_chain()
+
+
+@router.post("/security/audit/edit-entry")
+def edit_audit_entry(
+    body: dict,
+    _: User = Depends(require_role("admin")),
+    service: AdminService = Depends(get_admin_service),
+):
+    """DEV TOOLS: edit an audit log entry by eventHash. Admin-only."""
+    return service.edit_audit_entry(body)
+
+
+@router.post("/security/audit/reset-logs")
+def reset_audit_logs(
+    _: User = Depends(require_role("admin")),
+    service: AdminService = Depends(get_admin_service),
+):
+    """DEV TOOLS: restore audit logs from backup. Admin-only."""
+    return service.reset_audit_logs()
+
+
+@router.post("/security/audit/clear-all-logs")
+def clear_all_audit_logs(
+    _: User = Depends(require_role("admin")),
+    service: AdminService = Depends(get_admin_service),
+):
+    """DEV TOOLS: delete/clear all audit logs completely. Admin-only."""
+    return service.clear_all_audit_logs()

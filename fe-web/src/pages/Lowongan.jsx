@@ -195,19 +195,19 @@ export function Lowongan() {
   };
 
   return (
-    <div className="bg-white min-h-screen flex flex-col">
-      <main className="max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden">
+    <div className="min-h-screen bg-[#f5f6f8] flex flex-col">
+      <main className="max-w-[1480px] w-full mx-auto px-4 sm:px-6 py-4 flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden">
         {/* Search + Filters */}
-        <section className="mb-6 flex-none">
+        <section className="mb-4 flex-none">
           <form
             onSubmit={handleSearch}
-            className="rounded-2xl border border-surface-border bg-surface p-3 shadow-sm"
+            className="rounded-md border border-gray-200 bg-white p-3 shadow-sm"
           >
-            <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(240px,1fr)_220px_auto]">
+            <div className="grid grid-cols-1 gap-2 lg:grid-cols-[minmax(260px,1fr)_220px_auto]">
               <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-text-light" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <input
-                  className="h-11 w-full rounded-xl border border-surface-border bg-white pl-10 pr-4 text-sm"
+                  className="h-10 w-full rounded-md border border-gray-300 bg-white pl-9 pr-3 text-sm text-gray-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
                   placeholder={t('low_search_ph')}
                   type="text"
                   value={searchTerm}
@@ -215,9 +215,9 @@ export function Lowongan() {
                 />
               </div>
               <div className="relative">
-                <MapPin className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-text-light" />
+                <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <select
-                  className="h-11 w-full appearance-none rounded-xl border border-surface-border bg-white pl-10 pr-4 text-sm"
+                  className="h-10 w-full appearance-none rounded-md border border-gray-300 bg-white pl-9 pr-3 text-sm text-gray-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
                   value={filterLocation}
                   onChange={(e) => setFilterLocation(e.target.value)}
                 >
@@ -231,16 +231,16 @@ export function Lowongan() {
               </div>
               <button
                 type="submit"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand px-5 text-sm font-medium text-white transition-colors hover:bg-brand-dark"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#174d36] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#0f3d2a]"
               >
                 <Search className="h-4 w-4" />
                 {t('low_search_btn')}
               </button>
             </div>
 
-            <div className="mt-3 flex flex-col gap-3 border-t border-surface-border pt-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="mt-3 flex flex-col gap-2 border-t border-gray-100 pt-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-2 pr-2 text-sm font-medium text-text-muted">
+                <span className="inline-flex items-center gap-2 pr-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
                   <SlidersHorizontal className="h-4 w-4" />
                   Filter
                 </span>
@@ -249,10 +249,10 @@ export function Lowongan() {
                     key={type}
                     type="button"
                     onClick={() => setFilterType(type)}
-                    className={`h-9 rounded-lg border px-3 text-sm font-medium transition-colors ${
+                    className={`h-8 rounded-md border px-3 text-xs font-semibold transition-colors ${
                       filterType === type
-                        ? 'border-brand bg-brand-muted text-brand-dark'
-                        : 'border-surface-border bg-white text-text-muted hover:bg-surface-muted'
+                        ? 'border-[#174d36] bg-[#e8f2ec] text-[#174d36]'
+                        : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
                     }`}
                   >
                     {type === 'All' ? t('low_type_all') : type}
@@ -263,7 +263,7 @@ export function Lowongan() {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="inline-flex h-9 items-center gap-2 self-start rounded-lg px-3 text-sm font-medium text-text-muted transition-colors hover:bg-surface-muted hover:text-text lg:self-auto"
+                className="inline-flex h-8 items-center gap-2 self-start rounded-md px-2.5 text-xs font-semibold text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-900 lg:self-auto"
               >
                 <X className="h-4 w-4" />
                 {t('reset')}
@@ -273,19 +273,19 @@ export function Lowongan() {
         </section>
 
         {/* Master-Detail Layout */}
-        <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-0 overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-4 flex-1 min-h-0 overflow-hidden">
           {/* Left: Job listings */}
-          <div className="w-full lg:w-1/2 flex flex-col min-h-0 border border-gray-200 rounded-xl bg-white overflow-hidden">
+          <div className="w-full lg:w-[44%] flex flex-col min-h-0 border border-gray-200 rounded-md bg-white overflow-hidden shadow-sm">
             {/* Results info */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-100 flex-none bg-gray-50/50">
-              <h2 className="text-sm font-medium text-gray-500">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-none bg-white">
+              <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
                 {loading ? t('loading') : `${t('low_found')} ${totalOpportunities} ${t('low_opportunities')}`}
               </h2>
-              <label className="flex items-center gap-2 text-sm text-gray-500">
+              <label className="flex items-center gap-2 text-xs text-gray-500">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="h-8 rounded-lg border border-surface-border bg-white px-2 text-sm text-text"
+                  className="h-8 rounded-md border border-gray-300 bg-white px-2 text-xs font-medium text-gray-700 outline-none"
                 >
                   {SORT_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -297,60 +297,62 @@ export function Lowongan() {
             </div>
 
             {/* Job listings */}
-            <div className="overflow-y-auto flex-1 custom-scrollbar p-3 space-y-3 bg-gray-50/30">
+            <div className="overflow-y-auto flex-1 custom-scrollbar bg-white">
               {loading ? (
                 <div className="flex justify-center py-20">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand" />
                 </div>
               ) : allOpportunities.length > 0 ? (
-                allOpportunities.map((job) => (
+                allOpportunities.map((job, index) => (
                   <article
                     key={job.id}
                     onClick={() => setSelectedJobId(job.id)}
-                    className={`border rounded-lg p-5 bg-white transition-all cursor-pointer hover:shadow-sm ${
-                      selectedJobId === job.id ? 'border-brand ring-1 ring-brand bg-brand/5' : 'border-gray-200 hover:border-brand/50'
+                    className={`relative px-4 py-2.5 transition-colors cursor-pointer ${
+                      index < allOpportunities.length - 1 ? 'border-b border-gray-100/80' : ''
+                    } ${
+                      selectedJobId === job.id
+                        ? 'bg-[#f5faf7] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1 before:rounded-r-sm before:bg-[#174d36]'
+                        : 'hover:bg-gray-50'
                     }`}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-lg border border-gray-200 flex items-center justify-center p-2 bg-white shrink-0">
+                    <div className="flex items-start gap-2.5">
+                      <div className="w-9 h-9 rounded-sm border border-gray-200 flex items-center justify-center p-1.5 bg-white shrink-0">
                         {job.company?.logo ? (
                           <img alt={job.company?.name} className="w-full h-full object-contain" src={job.company.logo} />
                         ) : (
-                          <span className="text-lg font-bold text-gray-400">{job.company?.name?.[0]}</span>
+                          <span className="text-sm font-bold text-gray-400">{job.company?.name?.[0]}</span>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-start gap-2 mb-1">
-                          <h3 className="text-base font-bold text-gray-900 truncate pr-2 hover:text-brand transition-colors">
+                        <div className="flex justify-between items-start gap-2">
+                          <h3 className="text-[13px] font-semibold text-gray-950 truncate pr-2 hover:text-[#174d36] transition-colors">
                             {job.title}
                           </h3>
                           <button
                             onClick={(e) => { e.stopPropagation(); toggleSave(job.id); }}
-                            className={`transition-colors shrink-0 z-10 ${savedJobs.includes(job.id) ? 'text-brand' : 'text-gray-400 hover:text-gray-600'}`}
+                            className={`shrink-0 transition-colors z-10 ${savedJobs.includes(job.id) ? 'text-[#174d36]' : 'text-gray-400 hover:text-gray-600'}`}
                           >
-                            <Bookmark className="w-5 h-5" fill={savedJobs.includes(job.id) ? 'currentColor' : 'none'} />
+                            <Bookmark className="w-4 h-4" fill={savedJobs.includes(job.id) ? 'currentColor' : 'none'} />
                           </button>
                         </div>
-                        <p className="text-sm text-gray-500 mb-2 truncate">{job.company?.name}</p>
-                        <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-3 h-3" /> <span className="truncate max-w-[100px]">{job.location}</span>
-                          </span>
-                          {job.work_mode && (
-                            <><span className="w-1 h-1 bg-gray-300 rounded-full" /><span>{job.work_mode}</span></>
-                          )}
-                          <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                          <span>{job.type}</span>
-                        </div>
-                        <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
-                          {isNew(job) ? (
-                            <span className="bg-green-100 text-brand font-semibold px-2 py-0.5 rounded flex items-center gap-1">
-                              ✓ {t('new_badge')}
+                        <p className="text-[11px] text-gray-500 mt-0.5 truncate">{job.company?.name}</p>
+                        <div className="mt-1.5 flex items-end justify-between gap-3 text-[11px] text-gray-500">
+                          <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+                            {isNew(job) && (
+                              <span className="bg-emerald-50 text-[#174d36] border border-emerald-100 font-semibold px-2 py-0.5 rounded-sm">
+                                {t('new_badge')}
+                              </span>
+                            )}
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" /> <span className="truncate max-w-[100px]">{job.location}</span>
                             </span>
-                          ) : (
-                            <span />
-                          )}
-                          <span>{timeAgo(job.posted_at)}</span>
+                            {job.work_mode && (
+                              <><span className="w-1 h-1 bg-gray-300 rounded-full" /><span>{job.work_mode}</span></>
+                            )}
+                            <span className="w-1 h-1 bg-gray-300 rounded-full" />
+                            <span>{job.type}</span>
+                          </div>
+                          <span className="shrink-0 font-medium text-gray-400">{timeAgo(job.posted_at || job.created_at)}</span>
                         </div>
                       </div>
                     </div>
@@ -371,9 +373,9 @@ export function Lowongan() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="p-4 border-t border-gray-100 flex justify-center items-center gap-2 flex-none bg-white">
+              <div className="px-4 py-3 border-t border-gray-200 flex justify-center items-center gap-1.5 flex-none bg-white">
                 <button
-                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 hover:bg-gray-50 transition-colors disabled:opacity-40"
+                  className="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 transition-colors disabled:opacity-40"
                   disabled={page === 0}
                   onClick={() => setPage(page - 1)}
                 >
@@ -383,8 +385,8 @@ export function Lowongan() {
                   <button
                     key={i}
                     onClick={() => setPage(i)}
-                    className={`w-8 h-8 flex items-center justify-center rounded-lg font-medium text-sm transition-colors ${
-                      page === i ? 'bg-gray-900 text-white' : 'hover:bg-gray-50 text-gray-700'
+                    className={`w-8 h-8 flex items-center justify-center rounded-md font-semibold text-xs transition-colors ${
+                      page === i ? 'bg-[#1f2937] text-white' : 'hover:bg-gray-50 text-gray-700'
                     }`}
                   >
                     {i + 1}
@@ -394,13 +396,13 @@ export function Lowongan() {
                 {totalPages > 5 && (
                   <button
                     onClick={() => setPage(totalPages - 1)}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-50 text-gray-700 font-medium text-sm transition-colors"
+                    className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-50 text-gray-700 font-semibold text-xs transition-colors"
                   >
                     {totalPages}
                   </button>
                 )}
                 <button
-                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-40"
+                  className="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-40"
                   disabled={page >= totalPages - 1}
                   onClick={() => setPage(page + 1)}
                 >
@@ -411,7 +413,7 @@ export function Lowongan() {
           </div>
 
           {/* Right: Job detail pane */}
-          <div className="hidden lg:flex lg:w-1/2 bg-white border border-gray-200 rounded-xl overflow-hidden min-h-0 relative flex-col">
+          <div className="hidden lg:flex lg:w-[56%] bg-white border border-gray-200 rounded-md overflow-hidden min-h-0 relative flex-col shadow-sm">
             {selectedJobId ? (
               <DetailLowongan jobId={selectedJobId} isEmbedded={true} />
             ) : (

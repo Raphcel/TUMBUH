@@ -135,6 +135,10 @@ export function DetailLowongan({ jobId, isEmbedded }) {
   const deadlineStr = job.deadline
     ? new Date(job.deadline).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })
     : '-';
+  const panelClass = isEmbedded ? 'bg-white px-5 py-4' : 'rounded-2xl border border-surface-border bg-white p-5 shadow-sm';
+  const compactPanelClass = isEmbedded ? 'bg-white p-5' : 'rounded-2xl border border-surface-border bg-white p-5 shadow-sm';
+  const tabClass = isEmbedded ? 'border-y border-gray-200 bg-white px-5' : 'mb-6 overflow-x-auto rounded-2xl border border-surface-border bg-white px-4 shadow-sm';
+  const contentGapClass = isEmbedded ? 'gap-0 pb-0' : 'gap-6 pb-8';
 
   return (
     <div className={isEmbedded ? "h-full bg-[#fcfcfd]" : "min-h-screen bg-surface-muted pb-20"}>
@@ -153,7 +157,7 @@ export function DetailLowongan({ jobId, isEmbedded }) {
       </Modal>
 
       {/* ── Main Content ── */}
-      <main className={isEmbedded ? "h-full w-full overflow-y-auto p-5 xl:p-6" : "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8"}>
+      <main className={isEmbedded ? "h-full w-full overflow-y-auto bg-white" : "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8"}>
         {/* Back navigation */}
         {!isEmbedded && (
         <Link
@@ -166,49 +170,46 @@ export function DetailLowongan({ jobId, isEmbedded }) {
         )}
 
         {/* Job header card */}
-        <section className="mb-6 rounded-2xl border border-surface-border bg-white p-5 shadow-sm xl:p-6">
-          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+        <section className={isEmbedded ? panelClass : `${panelClass} mb-6 xl:p-6`}>
+          <div className={isEmbedded ? "flex items-start gap-4" : "flex flex-col items-start gap-5 sm:flex-row sm:items-center"}>
             {/* Company logo */}
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-surface-border bg-white p-2 shadow-sm xl:h-20 xl:w-20">
+            <div className={isEmbedded ? "flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white p-1.5" : "flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-surface-border bg-white p-2 shadow-sm xl:h-20 xl:w-20"}>
               {company.logo
                 ? <img alt={company.name} className="w-full h-auto object-contain" src={company.logo} />
                 : <span className="text-2xl font-bold text-gray-400">{company.name?.[0]}</span>
               }
             </div>
 
-            <div className="flex-1 w-full">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h1 className="mb-1 text-xl font-bold text-text xl:text-2xl">{job.title}</h1>
-                  <p className="mb-3 text-base text-text-muted xl:text-lg">{company.name}</p>
-                </div>
-              </div>
+            <div className="min-w-0 flex-1">
+              <div className={isEmbedded ? "relative min-h-[92px] pr-40" : "flex justify-between items-start"}>
+                <div className="min-w-0">
+                  <h1 className={isEmbedded ? "mb-1 truncate text-lg font-semibold text-gray-950" : "mb-1 text-xl font-bold text-text xl:text-2xl"}>{job.title}</h1>
+                  <p className={isEmbedded ? "mb-2 truncate text-sm text-gray-500" : "mb-3 text-base text-text-muted xl:text-lg"}>{company.name}</p>
 
-              <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-text-muted">
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="text-gray-400" size={16} />
-                  <span>{job.location}</span>
-                </div>
-                {job.work_mode && (
-                  <><div className="w-1 h-1 rounded-full bg-gray-300" /><span>{job.work_mode}</span></>
-                )}
-                <div className="w-1 h-1 rounded-full bg-gray-300" />
-                <span>{job.type}</span>
-              </div>
+                  <div className={isEmbedded ? "mb-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-gray-500" : "mb-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-text-muted"}>
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="text-gray-400" size={16} />
+                      <span>{job.location}</span>
+                    </div>
+                    {job.work_mode && (
+                      <><div className="w-1 h-1 rounded-full bg-gray-300" /><span>{job.work_mode}</span></>
+                    )}
+                    <div className="w-1 h-1 rounded-full bg-gray-300" />
+                    <span>{job.type}</span>
+                  </div>
 
-              <div className="flex flex-col justify-between gap-4 border-t border-surface-border pt-4 sm:flex-row sm:items-center">
-                <div className="flex items-center gap-4 text-sm text-gray-500">
-                  {job.created_at && (
-                    <span>{t('det_posted')} {Math.round((Date.now() - new Date(job.created_at)) / 86400000)}d</span>
+                  {isEmbedded && job.created_at && (
+                    <div className="text-xs text-gray-500">{t('det_posted')} {Math.round((Date.now() - new Date(job.created_at)) / 86400000)}d</div>
                   )}
                 </div>
-                <div className="flex items-center gap-3">
+
+                <div className={isEmbedded ? "absolute bottom-0 right-0 flex items-center gap-2" : "flex items-center gap-3"}>
                   <button
                     type="button"
                     onClick={handleToggleBookmark}
                     disabled={bookmarking}
                     aria-label="Simpan lowongan"
-                    className={`hidden h-9 w-9 items-center justify-center rounded-lg border transition-colors disabled:opacity-60 sm:flex ${
+                    className={`hidden h-9 w-9 items-center justify-center rounded-md border transition-colors disabled:opacity-60 sm:flex ${
                       bookmarked
                         ? 'border-brand/20 bg-brand/10 text-brand'
                         : 'border-surface-border text-text-muted hover:border-brand hover:text-brand'
@@ -218,13 +219,13 @@ export function DetailLowongan({ jobId, isEmbedded }) {
                   </button>
                   {user?.role !== 'hr' && (
                     applied ? (
-                      <div className="flex h-10 items-center gap-2 rounded-lg bg-brand px-4 text-sm font-semibold text-white">
+                      <div className="flex h-9 items-center gap-2 rounded-md bg-[#174d36] px-4 text-sm font-semibold text-white">
                         <CheckCircle size={16} /> {t('det_applied')}
                       </div>
                     ) : (
                       <button
                         onClick={handleApply}
-                        className="h-10 rounded-lg bg-brand px-5 text-sm font-medium text-white transition-colors hover:bg-brand-dark"
+                        className="h-9 rounded-md bg-[#174d36] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#0f3d2a]"
                       >
                         {t('det_apply')}
                       </button>
@@ -232,12 +233,22 @@ export function DetailLowongan({ jobId, isEmbedded }) {
                   )}
                 </div>
               </div>
+
+              {!isEmbedded && (
+                <div className="flex flex-col justify-between gap-4 border-t border-surface-border pt-4 sm:flex-row sm:items-center">
+                  <div className="flex items-center gap-4 text-sm text-gray-500">
+                    {job.created_at && (
+                      <span>{t('det_posted')} {Math.round((Date.now() - new Date(job.created_at)) / 86400000)}d</span>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
 
         {/* Tabs */}
-        <nav className="mb-6 overflow-x-auto rounded-2xl border border-surface-border bg-white px-4 shadow-sm">
+        <nav className={tabClass}>
           <ul className="flex whitespace-nowrap min-w-full">
             {TAB_KEYS.map((tabKey) => {
               const tabLabel = t(`det_tab_${tabKey}`);
@@ -245,7 +256,7 @@ export function DetailLowongan({ jobId, isEmbedded }) {
               <li key={tabKey} className="mr-6">
                 <button
                   onClick={() => setActiveTab(tabKey)}
-                  className={`inline-block py-4 text-sm font-medium transition-colors border-b-2 ${
+                  className={`inline-block ${isEmbedded ? 'py-3 text-xs' : 'py-4 text-sm'} font-semibold transition-colors border-b-2 ${
                     activeTab === tabKey
                       ? 'text-brand border-brand font-semibold'
                       : 'text-gray-500 border-transparent hover:text-gray-800'
@@ -260,23 +271,23 @@ export function DetailLowongan({ jobId, isEmbedded }) {
         </nav>
 
         {/* Content area */}
-        <div className={`grid grid-cols-1 ${isEmbedded ? '' : 'lg:grid-cols-3'} gap-6 pb-8`}>
+        <div className={`grid grid-cols-1 ${isEmbedded ? '' : 'lg:grid-cols-3'} ${contentGapClass}`}>
           {/* Left: main content */}
-          <div className={`${isEmbedded ? '' : 'lg:col-span-2'} space-y-6`}>
+          <div className={`${isEmbedded ? '' : 'lg:col-span-2'} ${isEmbedded ? '' : 'space-y-6'}`}>
             {(activeTab === 'desc' || activeTab === 'qualif' || activeTab === 'benefits') && (
               <>
                 {activeTab === 'desc' && (
-                  <section className="rounded-2xl border border-surface-border bg-white p-5 shadow-sm">
-                    <h2 className="mb-4 text-lg font-bold text-text">{t('det_desc')}</h2>
-                    <div className="whitespace-pre-line text-sm leading-7 text-text-muted">{job.description}</div>
+                  <section className={isEmbedded ? `${compactPanelClass} border-b border-gray-200` : compactPanelClass}>
+                    <h2 className={isEmbedded ? "mb-3 text-sm font-semibold text-gray-950" : "mb-4 text-lg font-bold text-text"}>{t('det_desc')}</h2>
+                    <div className={isEmbedded ? "whitespace-pre-line text-sm leading-6 text-gray-600" : "whitespace-pre-line text-sm leading-7 text-text-muted"}>{job.description}</div>
                   </section>
                 )}
 
                 {activeTab === 'qualif' && (
-                  <section className="rounded-2xl border border-surface-border bg-white p-5 shadow-sm">
-                    <h2 className="mb-4 text-lg font-bold text-text">{t('det_qualifications')}</h2>
+                  <section className={isEmbedded ? `${compactPanelClass} border-b border-gray-200` : compactPanelClass}>
+                    <h2 className={isEmbedded ? "mb-3 text-sm font-semibold text-gray-950" : "mb-4 text-lg font-bold text-text"}>{t('det_qualifications')}</h2>
                     {requirements.length > 0 ? (
-                      <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                      <ul className={isEmbedded ? "list-disc pl-5 space-y-1.5 text-sm text-gray-600" : "list-disc pl-5 space-y-2 text-gray-600"}>
                         {requirements.map((req, idx) => <li key={idx}>{req}</li>)}
                       </ul>
                     ) : (
@@ -286,12 +297,12 @@ export function DetailLowongan({ jobId, isEmbedded }) {
                 )}
 
                 {activeTab === 'benefits' && (
-                  <section className="rounded-2xl border border-surface-border bg-white p-5 shadow-sm">
-                    <h2 className="mb-4 text-lg font-bold text-text">{t('det_benefits')}</h2>
+                  <section className={isEmbedded ? `${compactPanelClass} border-b border-gray-200` : compactPanelClass}>
+                    <h2 className={isEmbedded ? "mb-3 text-sm font-semibold text-gray-950" : "mb-4 text-lg font-bold text-text"}>{t('det_benefits')}</h2>
                     {benefits.length > 0 ? (
                       <div className="flex flex-wrap gap-2.5">
                         {benefits.map((b, idx) => (
-                          <span key={idx} className="inline-flex items-center px-4 py-2 rounded-full border border-gray-200 bg-white text-sm text-gray-600 font-medium">
+                          <span key={idx} className={isEmbedded ? "inline-flex items-center px-3 py-1.5 rounded-sm border border-gray-200 bg-white text-xs text-gray-600 font-medium" : "inline-flex items-center px-4 py-2 rounded-full border border-gray-200 bg-white text-sm text-gray-600 font-medium"}>
                             {b}
                           </span>
                         ))}
@@ -305,8 +316,8 @@ export function DetailLowongan({ jobId, isEmbedded }) {
             )}
 
             {activeTab === 'company' && (
-              <section className="rounded-2xl border border-surface-border bg-white p-5 shadow-sm">
-                <h2 className="mb-4 text-lg font-bold text-text">{t('det_about_company')}: {company.name}</h2>
+              <section className={isEmbedded ? `${compactPanelClass} border-b border-gray-200` : compactPanelClass}>
+                <h2 className={isEmbedded ? "mb-3 text-sm font-semibold text-gray-950" : "mb-4 text-lg font-bold text-text"}>{t('det_about_company')}: {company.name}</h2>
                 <p className="leading-7 text-text-muted">{company.description}</p>
                 <Link
                   to={`/perusahaan/${company.id}`}
@@ -319,17 +330,17 @@ export function DetailLowongan({ jobId, isEmbedded }) {
           </div>
 
           {/* Right: sidebar */}
-          <div className="space-y-6">
+          <div className={isEmbedded ? 'border-b border-gray-200' : 'space-y-6'}>
             {/* Job info card */}
-            <div className="rounded-2xl border border-surface-border bg-white p-5 shadow-sm">
-              <div className="mb-5 flex items-center justify-between gap-3">
-                <h3 className="text-base font-bold text-gray-900">{t('det_overview')}</h3>
+            <div className={isEmbedded ? "bg-white p-5 border-b border-gray-200" : "rounded-2xl border border-surface-border bg-white p-5 shadow-sm"}>
+              <div className={isEmbedded ? "mb-4 flex items-center justify-between gap-3" : "mb-5 flex items-center justify-between gap-3"}>
+                <h3 className={isEmbedded ? "text-sm font-semibold text-gray-950" : "text-base font-bold text-gray-900"}>{t('det_overview')}</h3>
                 <button
                   type="button"
                   onClick={handleToggleBookmark}
                   disabled={bookmarking}
                   aria-label={lang === 'id' ? 'Simpan lowongan' : 'Save opportunity'}
-                  className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border transition-colors disabled:opacity-60 ${
+                  className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition-colors disabled:opacity-60 ${
                     bookmarked
                       ? 'border-brand/20 bg-brand/10 text-brand'
                       : 'border-surface-border text-text-muted hover:border-brand hover:text-brand'
@@ -338,16 +349,16 @@ export function DetailLowongan({ jobId, isEmbedded }) {
                   <Bookmark size={18} fill={bookmarked ? 'currentColor' : 'none'} />
                 </button>
               </div>
-              <ul className="space-y-4">
+              <ul className={isEmbedded ? "grid grid-cols-2 gap-x-4 gap-y-3" : "space-y-4"}>
                 <li className="flex gap-3">
-                  <Briefcase className="text-gray-400 shrink-0 mt-0.5" size={20} />
+                  <Briefcase className="text-gray-400 shrink-0 mt-0.5" size={isEmbedded ? 16 : 20} />
                   <div>
                     <p className="text-xs text-gray-500 mb-0.5">{t('det_type')}</p>
                     <p className="text-sm font-medium text-gray-900">{job.type}</p>
                   </div>
                 </li>
                 <li className="flex gap-3">
-                  <MapPin className="text-gray-400 shrink-0 mt-0.5" size={20} />
+                  <MapPin className="text-gray-400 shrink-0 mt-0.5" size={isEmbedded ? 16 : 20} />
                   <div>
                     <p className="text-xs text-gray-500 mb-0.5">{t('det_location')}</p>
                     <p className="text-sm font-medium text-gray-900">{job.location}</p>
@@ -355,7 +366,7 @@ export function DetailLowongan({ jobId, isEmbedded }) {
                 </li>
                 {job.work_mode && (
                   <li className="flex gap-3">
-                    <Building2 className="text-gray-400 shrink-0 mt-0.5" size={20} />
+                    <Building2 className="text-gray-400 shrink-0 mt-0.5" size={isEmbedded ? 16 : 20} />
                     <div>
                       <p className="text-xs text-gray-500 mb-0.5">Model Kerja</p>
                       <p className="text-sm font-medium text-gray-900">{job.work_mode}</p>
@@ -364,7 +375,7 @@ export function DetailLowongan({ jobId, isEmbedded }) {
                 )}
                 {job.salary && (
                   <li className="flex gap-3">
-                    <Tag className="text-gray-400 shrink-0 mt-0.5" size={20} />
+                    <Tag className="text-gray-400 shrink-0 mt-0.5" size={isEmbedded ? 16 : 20} />
                     <div>
                       <p className="text-xs text-gray-500 mb-0.5">{t('det_salary')}</p>
                       <p className="text-sm font-medium text-gray-900">{job.salary}</p>
@@ -373,7 +384,7 @@ export function DetailLowongan({ jobId, isEmbedded }) {
                 )}
                 {job.deadline && (
                   <li className="flex gap-3">
-                    <Clock className="text-gray-400 shrink-0 mt-0.5" size={20} />
+                    <Clock className="text-gray-400 shrink-0 mt-0.5" size={isEmbedded ? 16 : 20} />
                     <div>
                       <p className="text-xs text-gray-500 mb-0.5">Deadline</p>
                       <p className="text-sm font-medium text-gray-900">{deadlineStr}</p>
@@ -384,17 +395,17 @@ export function DetailLowongan({ jobId, isEmbedded }) {
             </div>
 
             {/* Company profile card */}
-            <div className="rounded-2xl border border-surface-border bg-white p-5 shadow-sm">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-lg border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0">
+            <div className={isEmbedded ? "bg-white p-5" : "rounded-2xl border border-surface-border bg-white p-5 shadow-sm"}>
+              <div className={isEmbedded ? "mb-3 flex items-center gap-3" : "flex items-center gap-4 mb-4"}>
+                <div className={isEmbedded ? "w-10 h-10 rounded-md border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0" : "w-12 h-12 rounded-lg border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0"}>
                   {company.logo
                     ? <img alt={company.name} className="w-full h-auto object-contain" src={company.logo} />
                     : <span className="font-bold text-gray-400">{company.name?.[0]}</span>
                   }
                 </div>
-                <h3 className="text-base font-bold text-gray-900">{company.name}</h3>
+                <h3 className={isEmbedded ? "truncate text-sm font-semibold text-gray-950" : "text-base font-bold text-gray-900"}>{company.name}</h3>
               </div>
-              <p className="text-sm text-gray-600 mb-4 line-clamp-4">{company.description}</p>
+              <p className={isEmbedded ? "mb-3 line-clamp-3 text-sm leading-6 text-gray-600" : "text-sm text-gray-600 mb-4 line-clamp-4"}>{company.description}</p>
               <Link
                 to={`/perusahaan/${company.id}`}
                 className="inline-flex items-center text-sm font-semibold text-brand hover:text-brand-dark group transition-colors"
