@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 export function Card({ className = '', children, ...props }) {
   return (
     <motion.div
-      className={`bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden ${className}`}
+      className={`bg-white rounded-xl border border-[#E6ECF5] shadow-sm overflow-hidden ${className}`}
       {...props}
     >
       {children}
@@ -12,7 +12,7 @@ export function Card({ className = '', children, ...props }) {
 }
 
 export function CardHeader({ className = '', children }) {
-  return <div className={`px-6 py-4 border-b border-gray-100 ${className}`}>{children}</div>;
+  return <div className={`px-6 py-4 border-b border-[#E6ECF5] ${className}`}>{children}</div>;
 }
 
 export function CardBody({ className = '', children }) {
@@ -20,5 +20,5 @@ export function CardBody({ className = '', children }) {
 }
 
 export function CardFooter({ className = '', children }) {
-  return <div className={`px-6 py-4 bg-gray-50 border-t border-gray-100 ${className}`}>{children}</div>;
+  return <div className={`px-6 py-4 bg-[#E6ECF5] border-t border-[#E6ECF5] ${className}`}>{children}</div>;
 }

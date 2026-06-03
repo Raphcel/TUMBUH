@@ -161,7 +161,7 @@ export function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 py-12">
+    <div className="min-h-screen bg-[#E6ECF5] flex items-center justify-center p-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -170,15 +170,13 @@ export function Register() {
       >
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="h-10 w-10 rounded-lg bg-[#0f2854] flex items-center justify-center text-white font-bold text-2xl">
-              T
-            </div>
-            <span className="text-2xl font-bold text-gray-900 tracking-tight">
-              Tumbuh
+            <img src="/tumbuh.svg" alt="tumbuh." className="h-10 w-10" />
+            <span className="text-2xl font-bold text-[#0A1D3D] tracking-tight">
+              tumbuh.
             </span>
           </Link>
-          <h2 className="text-2xl font-bold text-gray-900">{isId ? 'Buat Akun Baru' : 'Create a New Account'}</h2>
-          <p className="mt-2 text-gray-600">
+          <h2 className="text-2xl font-bold text-[#0A1D3D]">{isId ? 'Buat Akun Baru' : 'Create a New Account'}</h2>
+          <p className="mt-2 text-[#0A1D3D]/60">
             {isId ? 'Bergabunglah dengan komunitas karier IPB.' : 'Join the IPB career community.'}
           </p>
         </div>
@@ -253,12 +251,12 @@ export function Register() {
                 error={errors.confirm}
               />
 
-              <div className="block text-sm text-gray-900 pt-2">
+              <div className="block text-sm text-[#0A1D3D] pt-2">
                 {isId ? 'Dengan mendaftar, Anda menyetujui ' : 'By registering, you agree to our '}
                 <button
                   type="button"
                   onClick={() => window.open('/terms', '_blank')}
-                  className="text-[#0f2854] font-medium hover:underline"
+                  className="text-[#1E3A8A] font-medium hover:underline"
                 >
                   {isId ? 'Syarat & Ketentuan' : 'Terms & Conditions'}
                 </button>{' '}
@@ -272,15 +270,15 @@ export function Register() {
               {googleClientId && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="h-px flex-1 bg-gray-200" />
-                    <span className="text-xs uppercase tracking-wide text-gray-400">
+                    <div className="h-px flex-1 bg-[#E6ECF5]" />
+                    <span className="text-xs uppercase tracking-wide text-[#0A1D3D]/40">
                       {isId ? 'atau' : 'or'}
                     </span>
-                    <div className="h-px flex-1 bg-gray-200" />
+                    <div className="h-px flex-1 bg-[#E6ECF5]" />
                   </div>
                   <div className={googleLoading ? 'pointer-events-none opacity-60' : ''} ref={googleButtonRef} />
                   {form.role === 'hr' && (
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-[#0A1D3D]/50">
                       {isId
                         ? 'Untuk HR, isi nama depan dan belakang di atas sebelum daftar dengan Google.'
                         : 'For HR, fill first and last name above before signing up with Google.'}
@@ -291,11 +289,11 @@ export function Register() {
             </motion.form>
 
             <div className="mt-6 text-center text-sm">
-              <p className="text-gray-500">
+              <p className="text-[#0A1D3D]/50">
                 {isId ? 'Sudah punya akun?' : 'Already have an account?'}{' '}
                 <Link
                   to="/login"
-                  className="font-semibold text-[#0f2854] hover:text-[#183a6d]"
+                  className="font-semibold text-[#1E3A8A] hover:text-[#0A1D3D]"
                 >
                   {isId ? 'Masuk di sini' : 'Sign in here'}
                 </Link>

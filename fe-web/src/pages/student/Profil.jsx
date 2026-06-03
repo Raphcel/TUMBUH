@@ -499,12 +499,12 @@ export function ProfilStudent() {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(300px,380px)_minmax(0,1fr)]">
         <aside className="space-y-6">
           <Card className="border-[#becabe]">
-            <div className="h-24 bg-[#e6e8ea]" />
+            <div className="h-24 bg-[#E6ECF5]" />
             <CardBody className="-mt-20 flex flex-col items-center text-center">
               <img
                 src={avatarUrl}
                 alt={fullName}
-                className="h-32 w-32 rounded-full border-4 border-white bg-gray-200 object-cover shadow-lg"
+                className="h-32 w-32 rounded-full border-4 border-white bg-[#E6ECF5] object-cover shadow-lg"
               />
               <h1 className="mt-4 text-2xl font-semibold text-text">{fullName}</h1>
               <p className="mt-1 text-sm text-text-muted">
@@ -722,7 +722,7 @@ export function ProfilStudent() {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">
               {isId ? 'Tentang Saya' : 'About Me'}
             </label>
             <textarea
@@ -733,7 +733,7 @@ export function ProfilStudent() {
           </div>
 
           <div>
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-medium text-[#0A1D3D]/80">
               {isId ? 'Tautan Sosial' : 'Social Links'}
             </p>
             <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -752,7 +752,7 @@ export function ProfilStudent() {
           </div>
 
           <div>
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-medium text-[#0A1D3D]/80">
               {isId ? 'Keahlian' : 'Skills'}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -830,7 +830,7 @@ export function ProfilStudent() {
         <form onSubmit={handleEntrySave} className="space-y-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">
                 {isId ? 'Jenis' : 'Type'}
               </label>
               <select
@@ -843,7 +843,7 @@ export function ProfilStudent() {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">
                 {isId ? 'Status' : 'Status'}
               </label>
               <select
@@ -879,7 +879,7 @@ export function ProfilStudent() {
             className="border border-surface-border"
           />
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">
               {isId ? 'Deskripsi' : 'Description'}
             </label>
             <textarea

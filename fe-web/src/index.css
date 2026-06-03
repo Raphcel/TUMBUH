@@ -19,35 +19,35 @@
 }
 
 @theme {
-    /* Brand Colors — Tumbuh Emerald Green */
-    --color-brand: #1a8754;
-    --color-brand-light: #22a96a;
-    --color-brand-dark: #146c43;
-    --color-brand-muted: #e8f5e9;
+    /* Brand Colors — tumbuh. unified palette */
+    --color-brand: #58C855;
+    --color-brand-light: #58C855;
+    --color-brand-dark: #357963;
+    --color-brand-muted: #E6ECF5;
 
     /* Dark Navy — used for hero backgrounds */
-    --color-navy: #0b1c2d;
-    --color-navy-light: #0f2854;
+    --color-navy: #0A1D3D;
+    --color-navy-light: #1E3A8A;
 
     /* Surface Colors */
     --color-surface: #ffffff;
-    --color-surface-elevated: #fcfcfd;
-    --color-surface-muted: #f9fafb;
-    --color-surface-border: #e5e7eb;
+    --color-surface-elevated: #ffffff;
+    --color-surface-muted: #E6ECF5;
+    --color-surface-border: #E6ECF5;
 
     /* Text Colors */
-    --color-text: #111827;
-    --color-text-muted: #6b7280;
-    --color-text-light: #9ca3af;
+    --color-text: #0A1D3D;
+    --color-text-muted: #1E3A8A;
+    --color-text-light: #1E3A8A;
     --color-text-inverse: #ffffff;
 
     /* Legacy compatibility */
-    --color-primary: #1a8754;
-    --color-secondary: #6b7280;
-    --color-highlight: #bbf7d0;
-    --color-accent: #22a96a;
+    --color-primary: #1E3A8A;
+    --color-secondary: #0A1D3D;
+    --color-highlight: #E6ECF5;
+    --color-accent: #58C855;
     --color-white: #ffffff;
-    --color-bg-light: #f9fafb;
+    --color-bg-light: #E6ECF5;
 
     /* Typography Settings */
     --font-sans: 'Inter', system-ui, sans-serif;

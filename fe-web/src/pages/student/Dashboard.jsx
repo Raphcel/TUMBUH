@@ -80,7 +80,7 @@ export function StudentDashboard() {
   const filledCount = profileFields.filter((f) => f != null && f !== '' && f !== 0).length;
   const completeness = Math.round((filledCount / 10) * 100);
   const completenessLabel = completeness === 100 ? t('sdash_complete') : completeness >= 80 ? t('sdash_good') : completeness >= 50 ? t('sdash_fair') : t('sdash_poor');
-  const completenessColor = completeness === 100 ? 'text-emerald-700 bg-emerald-50 border-emerald-100' : completeness >= 80 ? 'text-blue-700 bg-blue-50 border-blue-100' : completeness >= 50 ? 'text-yellow-700 bg-yellow-50 border-yellow-100' : 'text-red-700 bg-red-50 border-red-100';
+  const completenessColor = completeness === 100 ? 'text-emerald-700 bg-emerald-50 border-emerald-100' : completeness >= 80 ? 'text-blue-700 bg-[#E6ECF5] border-blue-100' : completeness >= 50 ? 'text-yellow-700 bg-yellow-50 border-yellow-100' : 'text-red-700 bg-red-50 border-red-100';
 
   const activeApplications = myApplications.filter((app) =>
     ['Applied', 'Interview', 'Screening'].includes(app.status)
@@ -356,7 +356,7 @@ export function StudentDashboard() {
                 >
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-semibold text-text">{ext.title}</h3>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${ext.status === 'Ongoing' ? 'bg-blue-50 text-blue-700 border border-blue-100' : 'bg-gray-100 text-gray-600 border border-gray-200'}`}>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${ext.status === 'Ongoing' ? 'bg-[#E6ECF5] text-blue-700 border border-blue-100' : 'bg-[#E6ECF5] text-[#0A1D3D]/60 border border-[#E6ECF5]'}`}>
                       {ext.status}
                     </span>
                   </div>
@@ -502,7 +502,7 @@ export function StudentDashboard() {
                 {t('sdash_status')}
               </label>
               <select
-                className="w-full h-10 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-gray-900"
+                className="w-full h-10 px-3 py-2 text-sm bg-white border border-[#E6ECF5] rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-[#0A1D3D]"
                 value={newExternship.status}
                 onChange={(e) =>
                   setNewExternship({

@@ -41,7 +41,8 @@ export function Sidebar({ role = 'student', isCollapsed, isMobileOpen, toggleSid
     { name: t('nav_organization'), path: '/hr/organization', icon: Network },
     { name: t('nav_opportunities'), path: '/hr/opportunities', icon: Briefcase },
   ];
-  const adminLinks = [
+
+  const adminLinks = [
     { name: t('nav_dashboard'), path: '/admin/dashboard', icon: Home },
     { name: t('nav_users'), path: '/admin/users', icon: Users },
     { name: t('nav_companies'), path: '/admin/companies', icon: Building },
@@ -61,24 +62,20 @@ export function Sidebar({ role = 'student', isCollapsed, isMobileOpen, toggleSid
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className={`flex h-screen flex-col border-r border-surface-border bg-surface fixed left-0 top-0 bottom-0 z-50 shadow-sm overflow-hidden transition-transform duration-300 lg:translate-x-0 ${isMobileOpen ? 'translate-x-0 w-64' : '-translate-x-full'
           }`}
-        style={{ width: isCollapsed ? 80 : 256 }} // Fallback for motion
+        style={{ width: isCollapsed ? 80 : 256 }}
       >
         <div className="px-4 py-6 flex-1 flex flex-col">
           <div className={`flex items-center pb-2 border-b border-surface-border ${isCollapsed ? 'justify-center' : 'justify-between'} mb-8 px-2 relative h-10`}>
             {!isCollapsed && (
               <Link to="/" className="flex items-center gap-2" onClick={closeMobile}>
-                <div className="h-8 w-8 rounded-md bg-brand flex items-center justify-center text-white font-bold text-xl">
-                  T
-                </div>
+                <img src="/tumbuh.svg" alt="tumbuh." className="h-8 w-8" />
                 <span className="text-xl font-bold text-text tracking-tight">
-                  Tumbuh.
+                  tumbuh.
                 </span>
               </Link>
             )}
             {isCollapsed && (
-              <div className="h-8 w-8 rounded-md bg-brand flex items-center justify-center text-white font-bold text-xl">
-                T
-              </div>
+              <img src="/tumbuh.svg" alt="tumbuh." className="h-8 w-8" />
             )}
 
             <button

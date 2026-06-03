@@ -12,7 +12,7 @@ export function PublicLayout() {
   );
 
   return (
-    <div className="flex min-h-screen flex-col font-sans text-gray-900">
+    <div className="flex min-h-screen flex-col font-sans text-[#0A1D3D]">
       <Navbar />
       <main className={`flex-1 bg-white ${!isTransparent ? 'pt-20' : ''}`}>
         <Outlet />

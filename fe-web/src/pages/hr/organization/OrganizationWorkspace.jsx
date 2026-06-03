@@ -50,20 +50,20 @@ function OverviewSection({ company, membership, members, canEdit, setTab }) {
     <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
       <WorkspaceCard title="Workspace summary" icon={LayoutDashboard}>
         <div className="grid gap-3 md:grid-cols-3">
-          <div className="rounded-lg bg-gray-50 p-4">
+          <div className="rounded-lg bg-[#E6ECF5] p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-text-light">Company</p>
             <p className="mt-2 truncate text-lg font-bold text-text">{company?.name || '-'}</p>
           </div>
-          <div className="rounded-lg bg-gray-50 p-4">
+          <div className="rounded-lg bg-[#E6ECF5] p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-text-light">Your role</p>
             <p className="mt-2 text-lg font-bold text-text">{roleLabels[membership?.role] || '-'}</p>
           </div>
-          <div className="rounded-lg bg-gray-50 p-4">
+          <div className="rounded-lg bg-[#E6ECF5] p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-text-light">Members</p>
             <p className="mt-2 text-lg font-bold text-text">{memberCount}</p>
           </div>
         </div>
-        <div className="mt-5 rounded-lg border border-gray-100 bg-white p-4">
+        <div className="mt-5 rounded-lg border border-[#E6ECF5] bg-white p-4">
           <p className="text-sm font-semibold text-text">Next useful actions</p>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             <Button type="button" variant="outline" onClick={() => setTab('profile')} className="justify-start gap-2">
@@ -132,8 +132,8 @@ export function OrganizationWorkspace() {
       animate={{ opacity: 1, y: 0 }}
       className="w-full max-w-none space-y-6 pb-12"
     >
-      <div className="rounded-lg border border-gray-200 bg-white">
-        <div className="border-b border-gray-100 px-5 py-5">
+      <div className="rounded-lg border border-[#E6ECF5] bg-white">
+        <div className="border-b border-[#E6ECF5] px-5 py-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="flex min-w-0 items-start gap-4">
               <div className="grid h-14 w-14 flex-shrink-0 place-items-center rounded-lg bg-brand text-lg font-bold text-white">
@@ -164,8 +164,8 @@ export function OrganizationWorkspace() {
         </div>
 
         <div className="grid min-h-[560px] lg:grid-cols-[220px_1fr]">
-          <aside className="border-b border-gray-100 bg-gray-50/70 p-3 lg:border-b-0 lg:border-r">
-            <div className="mb-3 rounded-lg bg-white p-3 shadow-sm ring-1 ring-gray-100">
+          <aside className="border-b border-[#E6ECF5] bg-[#E6ECF5]/70 p-3 lg:border-b-0 lg:border-r">
+            <div className="mb-3 rounded-lg bg-white p-3 shadow-sm ring-1 ring-[#E6ECF5]">
               <p className="text-xs font-semibold uppercase tracking-wide text-text-light">Workspace</p>
               <p className="mt-1 truncate text-sm font-semibold text-text">{activityLabel(company)}</p>
               <p className="mt-1 text-xs text-text-muted">{roleLabels[membership?.role] || 'No role yet'}</p>
@@ -180,7 +180,7 @@ export function OrganizationWorkspace() {
                     type="button"
                     onClick={() => setTab(item.id)}
                     className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium transition ${
-                      active ? 'bg-white text-brand shadow-sm ring-1 ring-gray-100' : 'text-text-muted hover:bg-white hover:text-text'
+                      active ? 'bg-white text-brand shadow-sm ring-1 ring-[#E6ECF5]' : 'text-text-muted hover:bg-white hover:text-text'
                     }`}
                   >
                     <Icon size={16} />

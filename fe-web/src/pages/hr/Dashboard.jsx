@@ -68,7 +68,7 @@ export function HRDashboard() {
   if (onboardingRequired || !companyId) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Card className="max-w-lg rounded-2xl border-gray-100">
+        <Card className="max-w-lg rounded-2xl border-[#E6ECF5]">
           <CardBody className="space-y-4 text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
               <Building2 size={24} />
@@ -150,7 +150,7 @@ export function HRDashboard() {
             variants={itemVariants}
             whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
           >
-            <Card className="border-gray-100 shadow-sm transition-all h-full">
+            <Card className="border-[#E6ECF5] shadow-sm transition-all h-full">
               <CardBody className="flex items-center gap-4 p-6">
                 <div className={`p-3 rounded-xl ${stat.bg}`}>
                   <stat.icon size={24} className={stat.color} />
@@ -175,8 +175,8 @@ export function HRDashboard() {
             <h2 className="text-xl font-bold text-primary flex items-center gap-2">
               <BarChart3 size={20} /> Recruitment Stats
             </h2>
-            <Card className="h-64 flex flex-col items-center justify-center text-secondary bg-gray-50/50 border-dashed border-2 border-gray-200 rounded-xl">
-              <BarChart3 size={48} className="text-gray-300 mb-2" />
+            <Card className="h-64 flex flex-col items-center justify-center text-secondary bg-[#E6ECF5]/50 border-dashed border-2 border-[#E6ECF5] rounded-xl">
+              <BarChart3 size={48} className="text-[#0A1D3D]/30 mb-2" />
               <span className="text-sm font-medium">
                 Chart visualization would appear here
               </span>
@@ -194,7 +194,7 @@ export function HRDashboard() {
                   whileHover={{ scale: 1.01 }}
                   className="group"
                 >
-                  <Card className="border-gray-100 group-hover:border-primary/30 transition-colors">
+                  <Card className="border-[#E6ECF5] group-hover:border-primary/30 transition-colors">
                     <CardBody className="p-4 flex justify-between items-center">
                       <div>
                         <h3 className="font-medium text-primary">{job.title}</h3>

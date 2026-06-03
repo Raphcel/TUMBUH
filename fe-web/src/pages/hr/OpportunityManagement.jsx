@@ -75,7 +75,7 @@ const QUESTION_TYPES = [
 ];
 
 const STATUS_STYLES = {
-  Applied: 'bg-blue-50 text-blue-700 border-blue-200',
+  Applied: 'bg-[#E6ECF5] text-blue-700 border-blue-200',
   Screening: 'bg-amber-50 text-amber-700 border-amber-200',
   Interview: 'bg-purple-50 text-purple-700 border-purple-200',
   Accepted: 'bg-green-50 text-green-700 border-green-200',
@@ -168,7 +168,7 @@ function StatCard({ icon: Icon, label, value, color, helper }) {
   return (
     <MotionDiv
       variants={itemVariants}
-      className="flex min-w-[155px] flex-1 items-center gap-4 rounded-2xl border border-gray-100 bg-white px-5 py-4 shadow-sm"
+      className="flex min-w-[155px] flex-1 items-center gap-4 rounded-2xl border border-[#E6ECF5] bg-white px-5 py-4 shadow-sm"
     >
       <div className={`rounded-xl p-2.5 ${color}`}>
         {React.createElement(Icon, { size: 20, className: 'text-white' })}
@@ -184,7 +184,7 @@ function StatCard({ icon: Icon, label, value, color, helper }) {
 
 function StatusBadge({ status }) {
   return (
-    <span className={`inline-flex rounded-md border px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[status] || 'border-gray-200 bg-gray-50 text-gray-600'}`}>
+    <span className={`inline-flex rounded-md border px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[status] || 'border-[#E6ECF5] bg-[#E6ECF5] text-[#0A1D3D]/60'}`}>
       {status || '-'}
     </span>
   );
@@ -192,10 +192,10 @@ function StatusBadge({ status }) {
 
 function EmptyState({ icon: Icon, title, description, action }) {
   return (
-    <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50/50 py-16 text-center">
-      {React.createElement(Icon, { size: 34, className: 'mx-auto mb-3 text-gray-300' })}
+    <div className="rounded-2xl border border-dashed border-[#E6ECF5] bg-[#E6ECF5]/50 py-16 text-center">
+      {React.createElement(Icon, { size: 34, className: 'mx-auto mb-3 text-[#0A1D3D]/30' })}
       <p className="font-medium text-text-muted">{title}</p>
-      {description && <p className="mx-auto mt-1 max-w-sm text-sm text-gray-400">{description}</p>}
+      {description && <p className="mx-auto mt-1 max-w-sm text-sm text-[#0A1D3D]/40">{description}</p>}
       {action}
     </div>
   );
@@ -212,7 +212,7 @@ function ApplicantAvatar({ app }) {
     <img
       src={url}
       alt={name}
-      className="h-10 w-10 flex-shrink-0 rounded-xl object-cover ring-1 ring-gray-100"
+      className="h-10 w-10 flex-shrink-0 rounded-xl object-cover ring-1 ring-[#E6ECF5]"
     />
   );
 }
@@ -273,7 +273,7 @@ function OverviewTab({ opportunity, applicants, stats, onChangeTab }) {
     <MotionDiv variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <MotionDiv variants={itemVariants} className="xl:col-span-2">
-          <Card className="rounded-2xl border-gray-100">
+          <Card className="rounded-2xl border-[#E6ECF5]">
             <CardBody className="space-y-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
@@ -288,21 +288,21 @@ function OverviewTab({ opportunity, applicants, stats, onChangeTab }) {
               {hasTrend ? (
                 <div className="space-y-5">
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    <div className="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
+                    <div className="rounded-xl border border-[#E6ECF5] bg-[#E6ECF5]/60 p-3">
                       <p className="text-xs text-text-light">Total pelamar</p>
                       <p className="mt-1 text-2xl font-bold text-text tabular-nums">{stats.totalApplicants}</p>
                     </div>
-                    <div className="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
+                    <div className="rounded-xl border border-[#E6ECF5] bg-[#E6ECF5]/60 p-3">
                       <p className="text-xs text-text-light">Hari puncak</p>
                       <p className="mt-1 text-2xl font-bold text-text tabular-nums">{peakDay.count}</p>
                     </div>
-                    <div className="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
+                    <div className="rounded-xl border border-[#E6ECF5] bg-[#E6ECF5]/60 p-3">
                       <p className="text-xs text-text-light">Tanggal puncak</p>
                       <p className="mt-1 text-base font-semibold text-text">{peakDay.label}</p>
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-gray-100 bg-gray-50/50 p-4">
+                  <div className="rounded-2xl border border-[#E6ECF5] bg-[#E6ECF5]/50 p-4">
                     <div className="mb-3 flex items-center justify-between">
                       <p className="text-sm font-medium text-text">30D applicants</p>
                       <p className="text-xs text-text-muted">
@@ -312,8 +312,8 @@ function OverviewTab({ opportunity, applicants, stats, onChangeTab }) {
                     <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="h-56 w-full overflow-visible" role="img" aria-label="Grafik pelamar 30 hari">
                       <defs>
                         <linearGradient id="applicantTrendFill" x1="0" x2="0" y1="0" y2="1">
-                          <stop offset="0%" stopColor="#1a8754" stopOpacity="0.22" />
-                          <stop offset="100%" stopColor="#1a8754" stopOpacity="0.02" />
+                          <stop offset="0%" stopColor="#1E3A8A" stopOpacity="0.22" />
+                          <stop offset="100%" stopColor="#1E3A8A" stopOpacity="0.02" />
                         </linearGradient>
                       </defs>
                       {[0, 0.25, 0.5, 0.75, 1].map((tick) => {
@@ -329,21 +329,21 @@ function OverviewTab({ opportunity, applicants, stats, onChangeTab }) {
                               stroke="#e5e7eb"
                               strokeWidth="1"
                             />
-                            <text x={chartPadding.left - 10} y={y + 4} textAnchor="end" className="fill-gray-400 text-[10px]">
+                            <text x={chartPadding.left - 10} y={y + 4} textAnchor="end" className="fill-[#0A1D3D]/40 text-[10px]">
                               {value}
                             </text>
                           </g>
                         );
                       })}
                       <path d={areaPath} fill="url(#applicantTrendFill)" />
-                      <path d={linePath} fill="none" stroke="#1a8754" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
+                      <path d={linePath} fill="none" stroke="#1E3A8A" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
                       {chartPoints.map((point) => (
                         <circle
                           key={point.date}
                           cx={point.x}
                           cy={point.y}
                           r={point.count > 0 ? 4 : 2.5}
-                          fill={point.count > 0 ? '#1a8754' : '#d1d5db'}
+                          fill={point.count > 0 ? '#1E3A8A' : '#d1d5db'}
                         >
                           <title>{`${point.label}: ${point.count} pelamar`}</title>
                         </circle>
@@ -363,7 +363,7 @@ function OverviewTab({ opportunity, applicants, stats, onChangeTab }) {
         </MotionDiv>
 
         <MotionDiv variants={itemVariants}>
-          <Card className="rounded-2xl border-gray-100">
+          <Card className="rounded-2xl border-[#E6ECF5]">
             <CardBody className="space-y-4">
               <div>
                 <h2 className="text-lg font-semibold text-text">Info cepat</h2>
@@ -392,7 +392,7 @@ function OverviewTab({ opportunity, applicants, stats, onChangeTab }) {
       </div>
 
       <MotionDiv variants={itemVariants}>
-        <Card className="rounded-2xl border-gray-100">
+        <Card className="rounded-2xl border-[#E6ECF5]">
           <CardBody className="space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -406,7 +406,7 @@ function OverviewTab({ opportunity, applicants, stats, onChangeTab }) {
             {recentApplicants.length > 0 ? (
               <div className="space-y-2">
                 {recentApplicants.map((app) => (
-                  <div key={app.id} className="flex items-center gap-3 rounded-xl border border-gray-100 px-3 py-3">
+                  <div key={app.id} className="flex items-center gap-3 rounded-xl border border-[#E6ECF5] px-3 py-3">
                     <ApplicantAvatar app={app} />
                     <div className="min-w-0 flex-1">
                       <p className="line-clamp-1 text-sm font-medium text-text">{app.applicantName}</p>
@@ -529,7 +529,7 @@ function ApplicantsTab({
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Cari nama, email, jurusan..."
-              className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-9 pr-10 text-sm shadow-sm transition focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+              className="w-full rounded-xl border border-[#E6ECF5] bg-white py-2.5 pl-9 pr-10 text-sm shadow-sm transition focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
             />
             {search && (
               <button
@@ -552,7 +552,7 @@ function ApplicantsTab({
               Urutkan
             </Button>
             {showSortMenu && (
-              <div className="absolute right-0 z-20 mt-2 min-w-[210px] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+              <div className="absolute right-0 z-20 mt-2 min-w-[210px] overflow-hidden rounded-xl border border-[#E6ECF5] bg-white shadow-lg">
                 {SORT_OPTIONS.map((option) => (
                   <button
                     key={option}
@@ -563,7 +563,7 @@ function ApplicantsTab({
                     }}
                     className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${sortBy === option
                       ? 'bg-brand/5 font-semibold text-brand'
-                      : 'text-text-muted hover:bg-gray-50 hover:text-text'
+                      : 'text-text-muted hover:bg-[#E6ECF5] hover:text-text'
                       }`}
                   >
                     {sortLabels[option]}
@@ -582,7 +582,7 @@ function ApplicantsTab({
               onClick={() => setStatusFilter(status)}
               className={`rounded-xl border px-3 py-2 text-xs font-semibold transition-all ${statusFilter === status
                 ? 'border-brand bg-brand text-white shadow-sm'
-                : 'border-gray-200 bg-white text-text-muted hover:border-brand/30 hover:text-brand'
+                : 'border-[#E6ECF5] bg-white text-text-muted hover:border-brand/30 hover:text-brand'
                 }`}
             >
               {status === 'All' ? 'Semua' : status}
@@ -591,14 +591,14 @@ function ApplicantsTab({
         </div>
       </MotionDiv>
 
-      <MotionDiv variants={itemVariants} className="rounded-2xl border border-gray-100 bg-white p-3 shadow-sm">
+      <MotionDiv variants={itemVariants} className="rounded-2xl border border-[#E6ECF5] bg-white p-3 shadow-sm">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-text-muted">
             <input
               type="checkbox"
               checked={allVisibleSelected}
               onChange={toggleSelectAll}
-              className="rounded border-gray-300"
+              className="rounded border-[#E6ECF5]"
             />
             Pilih halaman ini ({paginatedApplicants.length})
           </label>
@@ -624,8 +624,8 @@ function ApplicantsTab({
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(330px,0.82fr)_minmax(420px,1.18fr)]">
         <MotionDiv variants={itemVariants} className="min-w-0">
-          <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-            <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/60 px-4 py-3">
+          <div className="overflow-hidden rounded-2xl border border-[#E6ECF5] bg-white shadow-sm">
+            <div className="flex items-center justify-between border-b border-[#E6ECF5] bg-[#E6ECF5]/60 px-4 py-3">
               <p className="text-sm font-medium text-text-muted">
                 {filteredApplicants.length > 0
                   ? `${pageStart + 1}-${pageEnd} dari ${filteredApplicants.length}`
@@ -634,7 +634,7 @@ function ApplicantsTab({
               <span className="text-xs text-text-light">Klik nama untuk melihat profil</span>
             </div>
 
-            <div className="space-y-2 bg-gray-50/30 p-3">
+            <div className="space-y-2 bg-[#E6ECF5]/30 p-3">
               {filteredApplicants.length > 0 ? (
                 paginatedApplicants.map((app) => {
                   const isSelected = selectedApp?.id === app.id;
@@ -644,7 +644,7 @@ function ApplicantsTab({
                       onClick={() => onSelectApplicant(app)}
                       className={`applicant-card cursor-pointer rounded-xl border bg-white p-4 transition-all ${isSelected
                         ? 'border-brand bg-brand/5 ring-1 ring-brand'
-                        : 'border-gray-100 hover:border-brand/30 hover:shadow-sm'
+                        : 'border-[#E6ECF5] hover:border-brand/30 hover:shadow-sm'
                         }`}
                     >
                       <div className="applicant-card-layout">
@@ -654,7 +654,7 @@ function ApplicantsTab({
                             checked={selectedIds.has(app.id)}
                             onClick={(event) => event.stopPropagation()}
                             onChange={() => toggleSelection(app.id)}
-                            className="rounded border-gray-300"
+                            className="rounded border-[#E6ECF5]"
                             aria-label={`Pilih ${app.applicantName}`}
                           />
                           <ApplicantAvatar app={app} />
@@ -724,7 +724,7 @@ function ApplicantsTab({
             </div>
 
             {filteredApplicants.length > APPLICANTS_PER_PAGE && (
-              <div className="flex flex-col gap-3 border-t border-gray-100 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 border-t border-[#E6ECF5] bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-xs text-text-light">
                   Halaman {safePage} dari {pageCount}
                 </p>
@@ -733,7 +733,7 @@ function ApplicantsTab({
                     type="button"
                     onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
                     disabled={safePage === 1}
-                    className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-45"
+                    className="inline-flex h-9 items-center gap-1 rounded-lg border border-[#E6ECF5] bg-white px-3 text-sm font-medium text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-45"
                   >
                     <ChevronLeft size={15} />
                     Sebelumnya
@@ -742,7 +742,7 @@ function ApplicantsTab({
                     type="button"
                     onClick={() => setCurrentPage((page) => Math.min(pageCount, page + 1))}
                     disabled={safePage === pageCount}
-                    className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-45"
+                    className="inline-flex h-9 items-center gap-1 rounded-lg border border-[#E6ECF5] bg-white px-3 text-sm font-medium text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-45"
                   >
                     Berikutnya
                     <ChevronRight size={15} />
@@ -924,7 +924,7 @@ function DetailsTab({ opportunity, onOpportunityUpdated }) {
       {!isEditing ? (
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
           <MotionDiv variants={itemVariants} className="xl:col-span-2">
-            <Card className="rounded-2xl border-gray-100">
+            <Card className="rounded-2xl border-[#E6ECF5]">
               <CardBody className="space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold text-text">Deskripsi</h2>
@@ -953,7 +953,7 @@ function DetailsTab({ opportunity, onOpportunityUpdated }) {
           </MotionDiv>
 
           <MotionDiv variants={itemVariants}>
-            <Card className="rounded-2xl border-gray-100">
+            <Card className="rounded-2xl border-[#E6ECF5]">
               <CardBody className="space-y-5">
                 <div>
                   <h2 className="text-lg font-semibold text-text">Metadata</h2>
@@ -1033,12 +1033,12 @@ function DetailsTab({ opportunity, onOpportunityUpdated }) {
                       placeholder="Contoh: Rp 3.000.000 - Rp 5.000.000"
                     />
                   </Field>
-                  <label className="flex items-center gap-2 self-end rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-text-muted">
+                  <label className="flex items-center gap-2 self-end rounded-xl border border-[#E6ECF5] bg-[#E6ECF5] px-3 py-2.5 text-sm text-text-muted">
                     <input
                       type="checkbox"
                       checked={form.is_active}
                       onChange={handleChange('is_active')}
-                      className="rounded border-gray-300"
+                      className="rounded border-[#E6ECF5]"
                     />
                     Lowongan aktif
                   </label>
@@ -1089,7 +1089,7 @@ function DetailsTab({ opportunity, onOpportunityUpdated }) {
 
                   <div>
                     <label className="mb-2 block text-sm font-medium text-text-muted">Tag keahlian</label>
-                    <div className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-brand/20">
+                    <div className="rounded-xl border border-[#E6ECF5] bg-white p-3 shadow-sm focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-brand/20">
                       {selectedSkillTags.length > 0 && (
                         <div className="mb-3 flex flex-wrap gap-2">
                           {selectedSkillTags.map((skill) => (
@@ -1111,12 +1111,12 @@ function DetailsTab({ opportunity, onOpportunityUpdated }) {
                           onChange={(event) => setSkillInput(event.target.value)}
                           onKeyDown={handleSkillInputKeyDown}
                           placeholder="Cari atau ketik skill"
-                          className="min-w-0 flex-1 border-none bg-transparent text-sm outline-none placeholder:text-gray-400"
+                          className="min-w-0 flex-1 border-none bg-transparent text-sm outline-none placeholder:text-[#0A1D3D]/40"
                         />
                         <button
                           type="button"
                           onClick={() => addSkillTag(skillInput)}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-brand transition-colors hover:border-brand/30 hover:bg-brand/5"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#E6ECF5] text-brand transition-colors hover:border-brand/30 hover:bg-brand/5"
                         >
                           <Plus size={15} />
                         </button>
@@ -1130,7 +1130,7 @@ function DetailsTab({ opportunity, onOpportunityUpdated }) {
                             key={skill}
                             type="button"
                             onClick={() => addSkillTag(skill)}
-                            className="rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-xs font-medium text-text-muted transition-colors hover:border-brand/30 hover:bg-brand/5 hover:text-brand"
+                            className="rounded-lg border border-[#E6ECF5] bg-white px-2.5 py-1 text-xs font-medium text-text-muted transition-colors hover:border-brand/30 hover:bg-brand/5 hover:text-brand"
                           >
                             {skill}
                           </button>
@@ -1299,12 +1299,12 @@ function QuestionsTab({ opportunity, onOpportunityUpdated }) {
         </div>
       </MotionDiv>
 
-      <MotionDiv variants={itemVariants} className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+      <MotionDiv variants={itemVariants} className="overflow-hidden rounded-2xl border border-[#E6ECF5] bg-white shadow-sm">
         {questions.length === 0 ? (
           <div className="px-5 py-14 text-center">
-            <BookOpen size={34} className="mx-auto mb-3 text-gray-300" />
+            <BookOpen size={34} className="mx-auto mb-3 text-[#0A1D3D]/30" />
             <p className="font-semibold text-text-muted">Belum ada pertanyaan tambahan</p>
-            <p className="mx-auto mt-1 max-w-md text-sm text-gray-400">
+            <p className="mx-auto mt-1 max-w-md text-sm text-[#0A1D3D]/40">
               Gunakan ini untuk pertanyaan screening seperti portfolio, ketersediaan mulai, atau motivasi spesifik.
             </p>
             <Button type="button" variant="outline" className="mt-5 gap-2" onClick={addQuestion}>
@@ -1313,7 +1313,7 @@ function QuestionsTab({ opportunity, onOpportunityUpdated }) {
             </Button>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-[#E6ECF5]">
             {questions.map((question, index) => (
               <section key={question.id} className="p-5">
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_220px_auto] lg:items-start">
@@ -1350,7 +1350,7 @@ function QuestionsTab({ opportunity, onOpportunityUpdated }) {
                     type="checkbox"
                     checked={question.required}
                     onChange={(event) => updateQuestion(question.id, { required: event.target.checked })}
-                    className="rounded border-gray-300"
+                    className="rounded border-[#E6ECF5]"
                   />
                   Wajib dijawab
                 </label>
@@ -1421,7 +1421,7 @@ function TagList({ items, empty }) {
 }
 
 const FIELD_INPUT_CLASS =
-  'w-full rounded-xl !border !border-gray-300 bg-white px-3 py-2.5 text-sm shadow-sm transition focus:!border-brand/50 focus:outline-none focus:ring-2 focus:ring-brand/20';
+  'w-full rounded-xl !border !border-[#E6ECF5] bg-white px-3 py-2.5 text-sm shadow-sm transition focus:!border-brand/50 focus:outline-none focus:ring-2 focus:ring-brand/20';
 
 function Field({ label, children }) {
   return (
@@ -1524,14 +1524,14 @@ function PdfCanvasViewer({ data, label }) {
           canvas.height = Math.floor(viewport.height * pixelRatio);
           canvas.style.width = `${viewport.width}px`;
           canvas.style.height = `${viewport.height}px`;
-          canvas.className = 'mx-auto block rounded-lg bg-white shadow-sm ring-1 ring-gray-200';
+          canvas.className = 'mx-auto block rounded-lg bg-white shadow-sm ring-1 ring-[#E6ECF5]';
           context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
           const pageShell = document.createElement('div');
           pageShell.className = 'space-y-2';
 
           const pageLabel = document.createElement('div');
-          pageLabel.className = 'text-center text-[11px] font-medium text-gray-400';
+          pageLabel.className = 'text-center text-[11px] font-medium text-[#0A1D3D]/40';
           pageLabel.textContent = `Halaman ${pageNumber} dari ${pdf.numPages}`;
 
           pageShell.appendChild(canvas);
@@ -1559,21 +1559,21 @@ function PdfCanvasViewer({ data, label }) {
   if (renderError) {
     return (
       <div className="flex min-h-[420px] flex-col items-center justify-center p-6 text-center">
-        <FileDown size={38} className="mb-3 text-gray-300" />
+        <FileDown size={38} className="mb-3 text-[#0A1D3D]/30" />
         <p className="font-medium text-text-muted">CV tidak bisa ditampilkan</p>
-        <p className="mt-1 max-w-sm text-sm text-gray-400">{renderError}</p>
+        <p className="mt-1 max-w-sm text-sm text-[#0A1D3D]/40">{renderError}</p>
       </div>
     );
   }
 
   return (
-    <div ref={shellRef} className="bg-gray-100">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 bg-white px-3 py-2">
+    <div ref={shellRef} className="bg-[#E6ECF5]">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E6ECF5] bg-white px-3 py-2">
         <div className="min-w-0">
           <p className="line-clamp-1 text-xs font-semibold text-text">{label}</p>
           <p className="text-[11px] text-text-light">{pageCount ? `${pageCount} halaman` : 'Rendering...'}</p>
         </div>
-        <div className="flex items-center rounded-lg border border-gray-200 bg-gray-50 p-1">
+        <div className="flex items-center rounded-lg border border-[#E6ECF5] bg-[#E6ECF5] p-1">
           <button
             type="button"
             onClick={() => setZoom((value) => Math.max(0.75, Number((value - 0.15).toFixed(2))))}
@@ -1643,11 +1643,11 @@ function ApplicantDetailPanel({
 
   if (!app) {
     return (
-      <Card className="rounded-2xl border-dashed border-gray-200 bg-gray-50/50">
+      <Card className="rounded-2xl border-dashed border-[#E6ECF5] bg-[#E6ECF5]/50">
         <CardBody className="flex min-h-[420px] flex-col items-center justify-center text-center">
-          <Users size={40} className="mb-3 text-gray-300" />
+          <Users size={40} className="mb-3 text-[#0A1D3D]/30" />
           <p className="font-semibold text-text-muted">Pilih pelamar</p>
-          <p className="mt-1 max-w-xs text-sm text-gray-400">
+          <p className="mt-1 max-w-xs text-sm text-[#0A1D3D]/40">
             Detail profil, CV, cover letter, dan riwayat status akan tampil di panel ini.
           </p>
         </CardBody>
@@ -1663,9 +1663,9 @@ function ApplicantDetailPanel({
   const questionAnswers = app.question_answers || {};
 
   return (
-    <Card className="rounded-2xl border-gray-100">
+    <Card className="rounded-2xl border-[#E6ECF5]">
       <CardBody className="space-y-5">
-        <div className="flex rounded-xl border border-gray-200 bg-gray-50 p-1">
+        <div className="flex rounded-xl border border-[#E6ECF5] bg-[#E6ECF5] p-1">
           {[
             { id: 'profile', label: 'Profil' },
             { id: 'cv', label: 'CV' },
@@ -1687,7 +1687,7 @@ function ApplicantDetailPanel({
 
         {activeDetailTab === 'profile' ? (
           <div className="min-w-0 space-y-5">
-            <div className="rounded-2xl border border-gray-100 bg-white p-4">
+            <div className="rounded-2xl border border-[#E6ECF5] bg-white p-4">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
                 <img
                   src={
@@ -1695,7 +1695,7 @@ function ApplicantDetailPanel({
                     `https://ui-avatars.com/api/?name=${encodeURIComponent(app.applicantName || 'Applicant')}&background=1a8754&color=fff&size=96`
                   }
                   alt={app.applicantName}
-                  className="h-16 w-16 flex-shrink-0 rounded-2xl object-cover ring-1 ring-gray-100"
+                  className="h-16 w-16 flex-shrink-0 rounded-2xl object-cover ring-1 ring-[#E6ECF5]"
                 />
                 <div className="min-w-0 flex-1">
                   <h3 className="line-clamp-2 text-lg font-bold leading-tight text-text">{app.applicantName}</h3>
@@ -1709,7 +1709,7 @@ function ApplicantDetailPanel({
                   <select
                     value={app.status || ''}
                     onChange={(event) => onStatusChange(app.id, event.target.value)}
-                    className="h-10 w-full rounded-lg border border-gray-200 bg-white px-2.5 text-sm font-medium text-text shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                    className="h-10 w-full rounded-lg border border-[#E6ECF5] bg-white px-2.5 text-sm font-medium text-text shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
                   >
                     {STATUS_OPTIONS.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -1724,7 +1724,7 @@ function ApplicantDetailPanel({
             {student.bio && (
               <div>
                 <p className="mb-1 text-xs font-semibold text-text-muted">Bio</p>
-                <p className="whitespace-pre-wrap rounded-xl bg-gray-50 p-3 text-sm leading-6 text-text-muted">
+                <p className="whitespace-pre-wrap rounded-xl bg-[#E6ECF5] p-3 text-sm leading-6 text-text-muted">
                   {student.bio}
                 </p>
               </div>
@@ -1740,7 +1740,7 @@ function ApplicantDetailPanel({
             {app.cover_letter && (
               <div>
                 <p className="mb-1 text-xs font-semibold text-text-muted">Cover letter</p>
-                <p className="max-h-[220px] overflow-y-auto whitespace-pre-wrap rounded-xl bg-gray-50 p-3 text-sm leading-6 text-text-muted">
+                <p className="max-h-[220px] overflow-y-auto whitespace-pre-wrap rounded-xl bg-[#E6ECF5] p-3 text-sm leading-6 text-text-muted">
                   {app.cover_letter}
                 </p>
               </div>
@@ -1751,7 +1751,7 @@ function ApplicantDetailPanel({
                 <p className="mb-2 text-xs font-semibold text-text-muted">Jawaban pertanyaan</p>
                 <div className="space-y-2">
                   {applicationQuestions.map((question) => (
-                    <div key={question.id} className="rounded-xl bg-gray-50 p-3">
+                    <div key={question.id} className="rounded-xl bg-[#E6ECF5] p-3">
                       <p className="text-xs font-semibold text-text">{question.label}</p>
                       <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-text-muted">
                         {questionAnswers[question.id] || '-'}
@@ -1791,9 +1791,9 @@ function ApplicantDetailPanel({
 
                   {!cvLoading && cvError && (
                     <div className="flex min-h-[420px] flex-col items-center justify-center p-6 text-center">
-                      <FileDown size={38} className="mb-3 text-gray-300" />
+                      <FileDown size={38} className="mb-3 text-[#0A1D3D]/30" />
                       <p className="font-medium text-text-muted">CV tidak bisa ditampilkan</p>
-                      <p className="mt-1 max-w-sm text-sm text-gray-400">{cvError}</p>
+                      <p className="mt-1 max-w-sm text-sm text-[#0A1D3D]/40">{cvError}</p>
                     </div>
                   )}
 
@@ -1810,10 +1810,10 @@ function ApplicantDetailPanel({
                 </div>
               </>
             ) : (
-              <div className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white/70 p-6 text-center">
-                <FileDown size={38} className="mb-3 text-gray-300" />
+              <div className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#E6ECF5] bg-white/70 p-6 text-center">
+                <FileDown size={38} className="mb-3 text-[#0A1D3D]/30" />
                 <p className="font-medium text-text-muted">CV belum tersedia</p>
-                <p className="mt-1 text-sm text-gray-400">Pelamar ini belum mengunggah CV.</p>
+                <p className="mt-1 text-sm text-[#0A1D3D]/40">Pelamar ini belum mengunggah CV.</p>
               </div>
             )}
           </div>
@@ -1825,7 +1825,7 @@ function ApplicantDetailPanel({
 
 function InfoBox({ icon: Icon, label, value }) {
   return (
-    <div className="rounded-lg border border-gray-100 bg-gray-50/60 px-2.5 py-2">
+    <div className="rounded-lg border border-[#E6ECF5] bg-[#E6ECF5]/60 px-2.5 py-2">
       <div className="flex items-center gap-2 text-xs text-text-light">
         {React.createElement(Icon, { size: 14 })}
         {label}
@@ -2044,7 +2044,7 @@ export function OpportunityManagement() {
         <StatCard icon={XCircle} label="Ditolak" value={stats.rejected} color="bg-red-500" />
       </MotionDiv>
 
-      <MotionDiv variants={itemVariants} className="border-b border-gray-200">
+      <MotionDiv variants={itemVariants} className="border-b border-[#E6ECF5]">
         <div className="flex gap-2 overflow-x-auto">
           {TABS.map((tab) => {
             const Icon = tab.icon;

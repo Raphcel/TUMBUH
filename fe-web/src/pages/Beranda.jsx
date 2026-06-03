@@ -61,7 +61,7 @@ export function Beranda() {
       color: 'blue',
       hoverBorder: 'hover:border-blue-200',
       hoverText: 'group-hover:text-blue-600',
-      iconBg: 'bg-blue-50 text-blue-600 group-hover:bg-blue-100',
+      iconBg: 'bg-[#E6ECF5] text-blue-600 group-hover:bg-blue-100',
       type: 'Full-time',
     },
     {
@@ -109,7 +109,7 @@ export function Beranda() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="bg-[#0b1c2d] text-white relative pt-16 overflow-hidden">
+      <section className="bg-[#0A1D3D] text-white relative pt-16 overflow-hidden">
         <div className="max-w-7xl mx-auto pt-25 px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pb-20">
           {/* Left: copy + search */}
           <div className="max-w-2xl">
@@ -126,7 +126,7 @@ export function Beranda() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="text-lg text-gray-300 mb-8 max-w-lg"
+              className="text-lg text-[#E6ECF5]/80 mb-8 max-w-lg"
             >
               {t('hero_subtitle')}
             </motion.p>
@@ -139,21 +139,21 @@ export function Beranda() {
               onSubmit={handleSearch}
               className="bg-white rounded-lg p-2 flex flex-col md:flex-row gap-2 shadow-lg mb-6"
             >
-              <div className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 px-3 py-2">
-                <Search className="w-5 h-5 text-gray-400 mr-2 shrink-0" />
+              <div className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-[#E6ECF5] px-3 py-2">
+                <Search className="w-5 h-5 text-[#0A1D3D]/40 mr-2 shrink-0" />
                 <input
                   type="text"
-                  className="w-full text-gray-800 placeholder-gray-400 text-sm bg-transparent focus:outline-none"
+                  className="w-full text-[#0A1D3D] placeholder-[#0A1D3D]/40 text-sm bg-transparent focus:outline-none"
                   placeholder={t('hero_search_ph')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <div className="flex-1 flex items-center px-3 py-2">
-                <MapPin className="w-5 h-5 text-gray-400 mr-2 shrink-0" />
+                <MapPin className="w-5 h-5 text-[#0A1D3D]/40 mr-2 shrink-0" />
                 <input
                   type="text"
-                  className="w-full text-gray-800 placeholder-gray-400 text-sm bg-transparent focus:outline-none"
+                  className="w-full text-[#0A1D3D] placeholder-[#0A1D3D]/40 text-sm bg-transparent focus:outline-none"
                   placeholder={t('hero_location_ph')}
                   value={locationQuery}
                   onChange={(e) => setLocationQuery(e.target.value)}
@@ -161,7 +161,7 @@ export function Beranda() {
               </div>
               <button
                 type="submit"
-                className="bg-brand hover:bg-brand-dark text-white px-8 py-3 rounded-md font-medium transition-colors w-full md:w-auto"
+                className="bg-[#1E3A8A] hover:bg-[#0A1D3D] text-white px-8 py-3 rounded-md font-medium transition-colors w-full md:w-auto"
               >
                 {t('hero_search_btn')}
               </button>
@@ -172,7 +172,7 @@ export function Beranda() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.45 }}
-              className="flex flex-wrap items-center gap-3 text-sm text-gray-300"
+              className="flex flex-wrap items-center gap-3 text-sm text-[#E6ECF5]/70"
             >
               <span>{t('hero_popular')}</span>
               {POPULAR_TAGS.map((tag) => (
@@ -190,14 +190,14 @@ export function Beranda() {
           {/* Right: hero image with floating card */}
           <div className="relative hidden lg:block">
             <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl -z-10" />
-            <div className="absolute bottom-0 right-32 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl -z-10" />
+            <div className="absolute bottom-0 right-32 w-80 h-80 bg-[#E6ECF5]0/20 rounded-full blur-3xl -z-10" />
           </div>
         </div>
 
         {/* ── Trusted Brands ── */}
         <div className="relative z-10 py-16 bottom-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-sm text-gray-400 mb-6 font-medium">{t('hero_trusted')}</p>
+            <p className="text-sm text-[#E6ECF5]/60 mb-6 font-medium">{t('hero_trusted')}</p>
             {companies.length > 0 ? (
               <div className="flex overflow-hidden">
                 <div className="flex space-x-16 animate-scroll">
@@ -211,7 +211,7 @@ export function Beranda() {
                         company={company}
                         className="h-8 w-28 border-0 bg-transparent p-0 brightness-0 invert"
                         imageClassName="h-8 w-auto max-w-28 object-contain"
-                        fallbackClassName="text-xl font-bold text-gray-300"
+                        fallbackClassName="text-xl font-bold text-[#E6ECF5]/60"
                       />
                     </Link>
                   ))}
@@ -220,7 +220,7 @@ export function Beranda() {
             ) : (
               <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60">
                 {['gojek', 'tokopedia', 'DANA', 'BCA', 'Ruangguru', 'Telkomsel'].map((name) => (
-                  <span key={name} className="text-xl font-bold text-gray-300">{name}</span>
+                  <span key={name} className="text-xl font-bold text-[#E6ECF5]/60">{name}</span>
                 ))}
               </div>
             )}
@@ -232,10 +232,10 @@ export function Beranda() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-10">
-            <h2 className="text-3xl font-bold text-gray-900">{t('cat_title')}</h2>
+            <h2 className="text-3xl font-bold text-[#0A1D3D]">{t('cat_title')}</h2>
             <Link
               to="/lowongan"
-              className="text-brand font-medium flex items-center gap-1 hover:underline text-sm"
+              className="text-[#1E3A8A] font-medium flex items-center gap-1 hover:underline text-sm"
             >
               {t('cat_see_all')} <ArrowRight className="w-4 h-4" />
             </Link>
@@ -245,12 +245,12 @@ export function Beranda() {
               <Link
                 key={cat.label}
                 to={`/lowongan?type=${encodeURIComponent(cat.type)}`}
-                className={`group block p-6 border border-gray-200 rounded-2xl ${cat.hoverBorder} hover:shadow-lg transition-all bg-white relative overflow-hidden`}
+                className={`group block p-6 border border-[#E6ECF5] rounded-2xl ${cat.hoverBorder} hover:shadow-lg transition-all bg-white relative overflow-hidden`}
               >
                 <div className="mb-8">
-                  <h3 className={`text-xl font-bold text-gray-900 mb-1 ${cat.hoverText} transition-colors`}>{cat.label}</h3>
-                  <p className="text-xs text-gray-500 font-medium mb-3">{cat.count}</p>
-                  <p className="text-sm text-gray-600">{cat.desc}</p>
+                  <h3 className={`text-xl font-bold text-[#0A1D3D] mb-1 ${cat.hoverText} transition-colors`}>{cat.label}</h3>
+                  <p className="text-xs text-[#0A1D3D]/50 font-medium mb-3">{cat.count}</p>
+                  <p className="text-sm text-[#0A1D3D]/60">{cat.desc}</p>
                 </div>
                 <div className={`absolute bottom-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-colors ${cat.iconBg}`}>
                   {cat.icon}
@@ -262,13 +262,13 @@ export function Beranda() {
       </section>
 
       {/* ── Stats Footer ── */}
-      <footer className="bg-[#0b1c2d] text-white py-12 border-t border-gray-800">
+      <footer className="bg-[#0A1D3D] text-white py-12 border-t border-[#0A1D3D]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-800">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-[#1E3A8A]/30">
             {STATS.map((stat) => (
               <div key={stat.label}>
                 <h4 className="text-3xl font-bold mb-2">{stat.value}</h4>
-                <p className="text-gray-400 text-sm">{stat.label}</p>
+                <p className="text-[#E6ECF5]/60 text-sm">{stat.label}</p>
               </div>
             ))}
           </div>

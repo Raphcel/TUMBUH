@@ -137,9 +137,9 @@ export function TopLayout({ onMenuClick }) {
                                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
                                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                        className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden origin-top-right"
+                                        className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#E6ECF5] py-2 z-50 overflow-hidden origin-top-right"
                                     >
-                                        <div className="px-4 py-2 border-b border-gray-50 flex justify-between items-center">
+                                        <div className="px-4 py-2 border-b border-[#E6ECF5] flex justify-between items-center">
                                             <h3 className="font-semibold text-primary text-sm">{t('nav_notifications')}</h3>
                                             <Link to="/notifications" className="text-xs text-accent hover:underline">
                                                 {t('nav_see_all')}
@@ -151,20 +151,20 @@ export function TopLayout({ onMenuClick }) {
                                                     <div
                                                         key={notification.id}
                                                         onClick={() => handleNotificationClick(notification)}
-                                                        className={`px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-0 ${!notification.is_read ? 'bg-blue-50/30' : ''}`}
+                                                        className={`px-4 py-3 hover:bg-[#E6ECF5] cursor-pointer border-b border-[#E6ECF5] last:border-0 ${!notification.is_read ? 'bg-[#E6ECF5]/30' : ''}`}
                                                     >
                                                         <div className="flex gap-3">
                                                             <div className="mt-1 flex-shrink-0">
                                                                 {getIcon(notification.type)}
                                                             </div>
                                                             <div>
-                                                                <h4 className={`text-sm ${!notification.is_read ? 'font-semibold text-primary' : 'font-medium text-gray-700'}`}>
+                                                                <h4 className={`text-sm ${!notification.is_read ? 'font-semibold text-primary' : 'font-medium text-[#0A1D3D]/80'}`}>
                                                                     {notification.title}
                                                                 </h4>
                                                                 <p className="text-xs text-secondary mt-1 line-clamp-2">
                                                                     {notification.message}
                                                                 </p>
-                                                                <p className="text-[10px] text-gray-400 mt-2">
+                                                                <p className="text-[10px] text-[#0A1D3D]/40 mt-2">
                                                                     {formatNotificationDate(notification.created_at)}
                                                                 </p>
                                                             </div>
@@ -196,11 +196,11 @@ export function TopLayout({ onMenuClick }) {
                 {selectedNotification && (
                     <div className="space-y-4">
                         <div className="flex items-start gap-4">
-                            <div className="mt-1 p-2 bg-gray-50 rounded-lg">
+                            <div className="mt-1 p-2 bg-[#E6ECF5] rounded-lg">
                                 {getIcon(selectedNotification.type)}
                             </div>
                             <div>
-                                <p className="text-sm text-gray-700 leading-relaxed">
+                                <p className="text-sm text-[#0A1D3D]/80 leading-relaxed">
                                     {selectedNotification.message}
                                 </p>
                                 <p className="text-xs text-secondary mt-3 font-medium">

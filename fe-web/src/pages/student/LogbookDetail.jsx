@@ -33,13 +33,13 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf
 
 const CATEGORIES = [
   { value: 'Development', dot: 'bg-emerald-500', bg: 'bg-emerald-50', text: 'text-emerald-700' },
-  { value: 'Meeting', dot: 'bg-blue-500', bg: 'bg-blue-50', text: 'text-blue-700' },
+  { value: 'Meeting', dot: 'bg-[#E6ECF5]0', bg: 'bg-[#E6ECF5]', text: 'text-blue-700' },
   { value: 'Training', dot: 'bg-violet-500', bg: 'bg-violet-50', text: 'text-violet-700' },
   { value: 'Research', dot: 'bg-cyan-500', bg: 'bg-cyan-50', text: 'text-cyan-700' },
   { value: 'Documentation', dot: 'bg-amber-500', bg: 'bg-amber-50', text: 'text-amber-700' },
   { value: 'Presentation', dot: 'bg-rose-500', bg: 'bg-rose-50', text: 'text-rose-700' },
-  { value: 'Administration', dot: 'bg-slate-500', bg: 'bg-slate-50', text: 'text-slate-700' },
-  { value: 'Other', dot: 'bg-gray-500', bg: 'bg-gray-50', text: 'text-gray-700' },
+  { value: 'Administration', dot: 'bg-[#E6ECF5]0', bg: 'bg-[#E6ECF5]', text: 'text-[#0A1D3D]/80' },
+  { value: 'Other', dot: 'bg-[#E6ECF5]0', bg: 'bg-[#E6ECF5]', text: 'text-[#0A1D3D]/80' },
 ];
 
 const containerVariants = {
@@ -54,7 +54,7 @@ const itemVariants = {
 
 const statStyles = {
   time: 'bg-emerald-50 text-brand',
-  entries: 'bg-blue-50 text-blue-600',
+  entries: 'bg-[#E6ECF5] text-blue-600',
   files: 'bg-amber-50 text-amber-600',
   progress: 'bg-green-50 text-green-600',
 };
@@ -919,12 +919,12 @@ export function LogbookDetail() {
               <Input type="number" min="0.5" step="0.5" label={t('logbook_field_target')} value={logbookForm.target_hours} onChange={(e) => updateLogbookForm('target_hours', e.target.value)} />
             </div>
             <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">{t('logbook_field_notes')}</span>
+              <span className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">{t('logbook_field_notes')}</span>
               <textarea
                 rows={4}
                 value={logbookForm.notes}
                 onChange={(e) => updateLogbookForm('notes', e.target.value)}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/20"
+                className="w-full rounded-lg border border-[#E6ECF5] px-3 py-2 text-sm shadow-sm outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/20"
               />
             </label>
           </form>
@@ -961,22 +961,22 @@ export function LogbookDetail() {
             options={categoryOptions}
           />
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-gray-700">{t('logbook_entry_desc')}</span>
+            <span className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">{t('logbook_entry_desc')}</span>
             <textarea
               rows={4}
               value={entryForm.description}
               onChange={(e) => updateEntryForm('description', e.target.value)}
-              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/20"
+              className="w-full rounded-lg border border-[#E6ECF5] px-3 py-2 text-sm shadow-sm outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/20"
             />
           </label>
           {!editingEntry && (
             <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">{t('logbook_entry_file_optional')}</span>
+              <span className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">{t('logbook_entry_file_optional')}</span>
               <input
                 type="file"
                 accept="image/jpeg,image/png,image/webp,application/pdf"
                 onChange={(event) => updateEntryForm('file', event.target.files?.[0] || null)}
-                className="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm file:mr-3 file:rounded-md file:border-0 file:bg-brand-muted file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-brand"
+                className="block w-full rounded-lg border border-[#E6ECF5] bg-white px-3 py-2 text-sm shadow-sm file:mr-3 file:rounded-md file:border-0 file:bg-brand-muted file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-brand"
               />
               <span className="mt-1 block text-xs text-text-light">{t('logbook_file_hint')}</span>
             </label>

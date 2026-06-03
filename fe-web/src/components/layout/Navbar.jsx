@@ -7,19 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { UserMenu } from './UserMenu';
 import { useTranslation } from '../../context/LanguageContext';
 
-// Tumbuh SVG Logo (layered leaves)
-function TumbuhLogo({ className = 'w-6 h-6' }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#1a8754" />
-      <path d="M2 17L12 22L22 17" stroke="#1a8754" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-      <path d="M2 12L12 17L22 12" stroke="#1a8754" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-    </svg>
-  );
-}
-
-
-
 export function Navbar() {
   const [openNav, setOpenNav] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -59,7 +46,7 @@ export function Navbar() {
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isTransparent
           ? 'bg-transparent'
-          : 'bg-white border-b border-gray-100 shadow-sm'
+          : 'bg-white border-b border-[#E6ECF5] shadow-sm'
       }`}
     >
       <nav
@@ -68,9 +55,9 @@ export function Navbar() {
       >
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <TumbuhLogo className="w-6 h-6" />
-          <span className={`text-xl font-bold tracking-tight transition-colors ${isTransparent ? 'text-white' : 'text-gray-900'}`}>
-            Tumbuh
+          <img src="/tumbuh.svg" alt="tumbuh." className="w-7 h-7" />
+          <span className={`text-xl font-bold tracking-tight transition-colors ${isTransparent ? 'text-white' : 'text-[#0A1D3D]'}`}>
+            tumbuh.
           </span>
         </Link>
 
@@ -82,16 +69,15 @@ export function Navbar() {
               to={link.path}
               className={`text-sm font-medium transition-colors pb-0.5 border-b-2 ${
                 isActive(link.path)
-                  ? 'text-brand border-brand'
+                  ? 'text-[#1E3A8A] border-[#1E3A8A]'
                   : isTransparent
                     ? 'text-white/90 border-transparent hover:text-white'
-                    : 'text-gray-600 border-transparent hover:text-gray-900'
+                    : 'text-[#0A1D3D]/60 border-transparent hover:text-[#0A1D3D]'
               }`}
             >
               {link.name}
             </Link>
           ))}
-          {/* Dropdown placeholders removed */}
         </div>
 
         {/* Auth actions */}
@@ -104,7 +90,7 @@ export function Navbar() {
                 onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
                 title={t('language')}
                 className={`p-2 rounded-md transition-colors flex items-center gap-1 text-sm font-medium ${
-                  isTransparent ? 'text-white/80 hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100'
+                  isTransparent ? 'text-white/80 hover:bg-white/10' : 'text-[#0A1D3D]/60 hover:bg-[#E6ECF5]'
                 }`}
               >
                 <Globe size={16} />
@@ -115,14 +101,14 @@ export function Navbar() {
                 className={`text-sm font-medium px-4 py-2 border rounded-md transition-all ${
                   isTransparent
                     ? 'border-white/50 text-white hover:bg-white/10'
-                    : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                    : 'border-[#E6ECF5] text-[#0A1D3D] hover:bg-[#E6ECF5]'
                 }`}
               >
                 {t('navbar_login')}
               </Link>
               <Link
                 to="/register"
-                className="text-sm font-medium px-4 py-2 bg-brand hover:bg-brand-dark text-white rounded-md transition-colors"
+                className="text-sm font-medium px-4 py-2 bg-[#1E3A8A] hover:bg-[#0A1D3D] text-white rounded-md transition-colors"
               >
                 {t('navbar_register')}
               </Link>
@@ -133,7 +119,7 @@ export function Navbar() {
         {/* Mobile hamburger */}
         <button
           type="button"
-          className={`lg:hidden p-2 rounded-md transition-colors ${isTransparent ? 'text-white' : 'text-gray-700'}`}
+          className={`lg:hidden p-2 rounded-md transition-colors ${isTransparent ? 'text-white' : 'text-[#0A1D3D]'}`}
           onClick={() => setOpenNav(!openNav)}
         >
           <span className="sr-only">Buka menu</span>
@@ -149,7 +135,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="lg:hidden bg-white border-t border-gray-100 shadow-sm overflow-hidden"
+            className="lg:hidden bg-white border-t border-[#E6ECF5] shadow-sm overflow-hidden"
           >
             <div className="px-4 py-4 space-y-1">
               {NAV_LINKS.map((link) => (
@@ -159,22 +145,22 @@ export function Navbar() {
                   onClick={() => setOpenNav(false)}
                   className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     isActive(link.path)
-                      ? 'bg-brand/10 text-brand font-semibold'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-brand'
+                      ? 'bg-[#E6ECF5] text-[#1E3A8A] font-semibold'
+                      : 'text-[#0A1D3D] hover:bg-[#E6ECF5] hover:text-[#1E3A8A]'
                   }`}
                 >
                   {link.name}
                 </Link>
               ))}
-              <div className="pt-3 border-t border-gray-100 mt-3 flex flex-col gap-2">
+              <div className="pt-3 border-t border-[#E6ECF5] mt-3 flex flex-col gap-2">
                 {user ? (
                   <UserMenu isMobile />
                 ) : (
                   <>
-                    <Link to="/login" onClick={() => setOpenNav(false)} className="text-center py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50">
+                    <Link to="/login" onClick={() => setOpenNav(false)} className="text-center py-2 text-sm font-medium text-[#0A1D3D] border border-[#E6ECF5] rounded-md hover:bg-[#E6ECF5]">
                       {t('navbar_login')}
                     </Link>
-                    <Link to="/register" onClick={() => setOpenNav(false)} className="text-center py-2 text-sm font-medium text-white bg-brand hover:bg-brand-dark rounded-md">
+                    <Link to="/register" onClick={() => setOpenNav(false)} className="text-center py-2 text-sm font-medium text-white bg-[#1E3A8A] hover:bg-[#0A1D3D] rounded-md">
                       {t('navbar_register')}
                     </Link>
                   </>

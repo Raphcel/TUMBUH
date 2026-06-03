@@ -66,13 +66,13 @@ export function MembersSection({ members, permissions, canInvite, addToast }) {
         eyebrow={`${activeMembers.length} active${pendingMembers.length ? `, ${pendingMembers.length} pending` : ''}`}
         icon={Users}
       >
-        <div className="overflow-hidden rounded-lg border border-gray-100">
-          <div className="grid grid-cols-[1.2fr_140px_120px] gap-3 bg-gray-50 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-text-light">
+        <div className="overflow-hidden rounded-lg border border-[#E6ECF5]">
+          <div className="grid grid-cols-[1.2fr_140px_120px] gap-3 bg-[#E6ECF5] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-text-light">
             <span>Person</span>
             <span>Role</span>
             <span>Status</span>
           </div>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-[#E6ECF5]">
             {members.map((member) => (
               <div key={member.id || member.user_id} className="grid grid-cols-[1.2fr_140px_120px] items-center gap-3 px-4 py-3">
                 <div className="flex min-w-0 items-center gap-3">
@@ -124,7 +124,7 @@ export function MembersSection({ members, permissions, canInvite, addToast }) {
             </p>
           )}
           {invite && (
-            <div className="mt-4 space-y-3 rounded-lg border border-gray-100 bg-gray-50 p-3">
+            <div className="mt-4 space-y-3 rounded-lg border border-[#E6ECF5] bg-[#E6ECF5] p-3">
               <code className="block break-all text-xs text-text">{invite.invite_url || invite.token}</code>
               <Button type="button" variant="outline" size="sm" onClick={copyInvite} className="w-full gap-2">
                 <Copy size={14} />

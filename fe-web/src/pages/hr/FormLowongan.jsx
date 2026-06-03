@@ -211,7 +211,7 @@ export function FormLowongan() {
   if (!canCreate || onboardingRequired) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Card className="max-w-lg rounded-2xl border-gray-100">
+        <Card className="max-w-lg rounded-2xl border-[#E6ECF5]">
           <CardBody className="space-y-4 text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
               <Building2 size={24} />
@@ -241,11 +241,11 @@ export function FormLowongan() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/hr/opportunities')}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-[#E6ECF5] rounded-lg transition-colors"
         >
           <ArrowLeft size={20} />
         </button>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-[#0A1D3D]">
           {isEdit ? (isId ? 'Edit Lowongan' : 'Edit Opportunity') : (isId ? 'Buat Lowongan Baru' : 'Create New Opportunity')}
         </h1>
       </div>
@@ -263,7 +263,7 @@ export function FormLowongan() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{isId ? 'Tipe' : 'Type'}</label>
+                <label className="block text-sm font-medium text-[#0A1D3D]/80 mb-1">{isId ? 'Tipe' : 'Type'}</label>
                 <Select
                   value={form.type}
                   onChange={handleChange('type')}
@@ -300,9 +300,9 @@ export function FormLowongan() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{isId ? 'Deskripsi' : 'Description'}</label>
+              <label className="block text-sm font-medium text-[#0A1D3D]/80 mb-1">{isId ? 'Deskripsi' : 'Description'}</label>
               <textarea
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary min-h-[120px] resize-y"
+                className="w-full rounded-lg border border-[#E6ECF5] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary min-h-[120px] resize-y"
                 value={form.description}
                 onChange={handleChange('description')}
                 placeholder={isId ? 'Deskripsikan lowongan ini...' : 'Describe this opportunity...'}
@@ -311,7 +311,7 @@ export function FormLowongan() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{isId ? 'Target jurusan' : 'Target majors'}</label>
+                <label className="block text-sm font-medium text-[#0A1D3D]/80 mb-2">{isId ? 'Target jurusan' : 'Target majors'}</label>
                 <div className="space-y-2">
                   {form.target_majors.map((major, index) => (
                     <div key={index} className="flex items-center gap-2">
@@ -344,8 +344,8 @@ export function FormLowongan() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{isId ? 'Tag keahlian' : 'Skill tags'}</label>
-                <div className="rounded-lg border border-gray-300 bg-white p-3 shadow-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
+                <label className="block text-sm font-medium text-[#0A1D3D]/80 mb-2">{isId ? 'Tag keahlian' : 'Skill tags'}</label>
+                <div className="rounded-lg border border-[#E6ECF5] bg-white p-3 shadow-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
                   {selectedSkillTags.length > 0 && (
                     <div className="mb-3 flex flex-wrap gap-2">
                       {selectedSkillTags.map((skill) => (
@@ -368,7 +368,7 @@ export function FormLowongan() {
                       onChange={(event) => setSkillInput(event.target.value)}
                       onKeyDown={handleSkillInputKeyDown}
                       placeholder={isId ? 'Cari atau ketik skill' : 'Search or type a skill'}
-                      className="min-w-0 flex-1 border-none bg-transparent text-sm outline-none placeholder:text-gray-400"
+                      className="min-w-0 flex-1 border-none bg-transparent text-sm outline-none placeholder:text-[#0A1D3D]/40"
                     />
                     <button
                       type="button"
@@ -398,7 +398,7 @@ export function FormLowongan() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{isId ? 'Persyaratan' : 'Requirements'}</label>
+              <label className="block text-sm font-medium text-[#0A1D3D]/80 mb-2">{isId ? 'Persyaratan' : 'Requirements'}</label>
               <div className="space-y-2">
                 {form.requirements.map((req, index) => (
                   <div key={index} className="flex items-center gap-2">
@@ -435,9 +435,9 @@ export function FormLowongan() {
                 id="is_active"
                 checked={form.is_active}
                 onChange={handleChange('is_active')}
-                className="rounded border-gray-300"
+                className="rounded border-[#E6ECF5]"
               />
-              <label htmlFor="is_active" className="text-sm text-gray-700">
+              <label htmlFor="is_active" className="text-sm text-[#0A1D3D]/80">
                 {isId ? 'Lowongan aktif' : 'Active opportunity'}
               </label>
             </div>

@@ -33,7 +33,7 @@ export function VerifyEmail() {
   }, [isId, params]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#E6ECF5] flex items-center justify-center p-4">
       <Card className="max-w-md w-full">
         <CardBody className="text-center space-y-5">
           <div className={`mx-auto h-12 w-12 rounded-full flex items-center justify-center font-bold ${
@@ -42,19 +42,19 @@ export function VerifyEmail() {
             {status === 'loading' ? '...' : status === 'success' ? 'OK' : '!'}
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-[#0A1D3D]">
               {status === 'loading'
                 ? (isId ? 'Memverifikasi email...' : 'Verifying email...')
                 : status === 'success'
                   ? (isId ? 'Email Terverifikasi' : 'Email Verified')
                   : (isId ? 'Verifikasi Gagal' : 'Verification Failed')}
             </h1>
-            <p className="mt-2 text-gray-600">{message}</p>
+            <p className="mt-2 text-[#0A1D3D]/60">{message}</p>
           </div>
           <Button to="/login" className="w-full">
             {isId ? 'Masuk' : 'Sign In'}
           </Button>
-          <Link to="/" className="block text-sm text-gray-500 hover:text-gray-800">
+          <Link to="/" className="block text-sm text-[#0A1D3D]/50 hover:text-[#0A1D3D]">
             {isId ? 'Kembali ke beranda' : 'Back to home'}
           </Link>
         </CardBody>

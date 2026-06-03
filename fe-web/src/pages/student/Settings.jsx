@@ -113,7 +113,7 @@ export function StudentSettings() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left ${
                   active
-                    ? 'bg-[#e6e8ea] font-semibold text-brand-dark'
+                    ? 'bg-[#E6ECF5] font-semibold text-brand-dark'
                     : 'text-text-muted hover:bg-surface-muted'
                 }`}
               >
@@ -166,7 +166,7 @@ export function StudentSettings() {
                     className="border border-surface-border"
                   />
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                    <label className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">
                       {isId ? 'Tentang Saya' : 'About Me'}
                     </label>
                     <textarea

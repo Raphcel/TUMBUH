@@ -17,9 +17,9 @@ export function CompanyLogo({
   name,
   logo,
   alt,
-  className = 'h-10 w-10 rounded-lg border border-gray-200 bg-white p-1',
+  className = 'h-10 w-10 rounded-lg border border-[#E6ECF5] bg-white p-1',
   imageClassName = 'h-full w-full object-contain',
-  fallbackClassName = 'text-sm font-bold text-gray-400',
+  fallbackClassName = 'text-sm font-bold text-[#0A1D3D]/40',
   fallbackIcon = Building2,
   useIconFallback = false,
 }) {

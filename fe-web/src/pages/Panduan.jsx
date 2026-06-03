@@ -25,7 +25,7 @@ export function Panduan() {
         ? 'Kenali minatmu dan aktif di organisasi kampus. Jaga IPK tetap tinggi di atas 3.0.'
         : 'Discover your interests and join student organizations (UKM). Keep your GPA high > 3.0.',
       color: 'text-blue-500',
-      bg: 'bg-blue-50',
+      bg: 'bg-[#E6ECF5]',
     },
     {
       title: isId ? 'Tahun 2: Bangun Keahlian' : 'Year 2: Skill Building',
@@ -105,7 +105,7 @@ export function Panduan() {
           {steps.map((step, idx) => (
             <motion.div key={idx} variants={itemVariants}>
               <Card
-                className="border-none shadow-lg shadow-gray-200/50 hover:-translate-y-1 transition-transform duration-300 h-full"
+                className="border-none shadow-lg shadow-[#E6ECF5]/50 hover:-translate-y-1 transition-transform duration-300 h-full"
               >
                 <CardBody className="p-6 text-center h-full flex flex-col items-center">
                   <div
@@ -153,7 +153,7 @@ export function Panduan() {
               ].map((item, i) => (
                 <motion.div key={i} variants={itemVariants}>
                   <div
-                    className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100"
+                    className="flex items-center gap-4 p-4 bg-[#E6ECF5] rounded-xl border border-[#E6ECF5]"
                   >
                     <CheckCircle className="text-accent shrink-0" />
                     <span className="font-medium text-primary">{item}</span>
@@ -168,7 +168,7 @@ export function Panduan() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gradient-to-r from-[#0f2854] to-[#727272] rounded-3xl p-10 text-white relative overflow-hidden"
+            className="bg-gradient-to-r from-[#1E3A8A] to-[#727272] rounded-3xl p-10 text-white relative overflow-hidden"
           >
             <div className="relative z-10">
               <Award size={48} className="text-accent mb-6" />

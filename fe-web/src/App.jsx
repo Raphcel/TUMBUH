@@ -71,9 +71,9 @@ function ErrorBoundaryFallback() {
       };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
-      <h1 className="text-4xl font-bold text-gray-800 mb-4">{copy.title}</h1>
-      <p className="text-gray-600 mb-8 text-center max-w-md">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#E6ECF5] px-4">
+      <h1 className="text-4xl font-bold text-[#0A1D3D] mb-4">{copy.title}</h1>
+      <p className="text-[#0A1D3D]/60 mb-8 text-center max-w-md">
         {copy.description}
       </p>
       <button
@@ -129,10 +129,10 @@ function NotFound() {
       };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#E6ECF5] px-4">
       <h1 className="text-7xl font-bold text-brand mb-4">404</h1>
-      <h2 className="text-2xl font-semibold text-gray-800 mb-2">{copy.title}</h2>
-      <p className="text-gray-600 mb-8 text-center max-w-md">
+      <h2 className="text-2xl font-semibold text-[#0A1D3D] mb-2">{copy.title}</h2>
+      <p className="text-[#0A1D3D]/60 mb-8 text-center max-w-md">
         {copy.description}
       </p>
       <Link
@@ -156,7 +156,7 @@ function ProtectedRoute({ allowedRole, children }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0f2854]" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E3A8A]" />
       </div>
     );
   }

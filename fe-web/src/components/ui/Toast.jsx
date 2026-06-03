@@ -13,7 +13,7 @@ const bgColors = {
     success: 'bg-green-50 border-green-200',
     error: 'bg-red-50 border-red-200',
     warning: 'bg-yellow-50 border-yellow-200',
-    info: 'bg-blue-50 border-blue-200',
+    info: 'bg-[#E6ECF5] border-blue-200',
 };
 
 export function Toast({ id, type = 'info', title, message, onClose, duration = 5000 }) {
@@ -35,12 +35,12 @@ export function Toast({ id, type = 'info', title, message, onClose, duration = 5
         >
             <div className="flex-shrink-0 mt-0.5">{icons[type] || icons.info}</div>
             <div className="flex-1 pr-6">
-                {title && <h4 className="text-sm font-bold text-gray-900 mb-1">{title}</h4>}
-                <p className="text-sm text-gray-600 leading-relaxed">{message}</p>
+                {title && <h4 className="text-sm font-bold text-[#0A1D3D] mb-1">{title}</h4>}
+                <p className="text-sm text-[#0A1D3D]/60 leading-relaxed">{message}</p>
             </div>
             <button
                 onClick={() => onClose(id)}
-                className="absolute top-2 right-2 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-black/5 transition-colors absolute"
+                className="absolute top-2 right-2 p-1 rounded-full text-[#0A1D3D]/40 hover:text-[#0A1D3D]/60 hover:bg-black/5 transition-colors absolute"
             >
                 <X size={14} />
             </button>
@@ -53,7 +53,7 @@ export function Toast({ id, type = 'info', title, message, onClose, duration = 5
                 className={`absolute bottom-0 left-0 h-1 ${type === 'success' ? 'bg-green-500' :
                         type === 'error' ? 'bg-red-500' :
                             type === 'warning' ? 'bg-yellow-500' :
-                                'bg-blue-500'
+                                'bg-[#E6ECF5]0'
                     } opacity-30`}
             />
         </motion.div>

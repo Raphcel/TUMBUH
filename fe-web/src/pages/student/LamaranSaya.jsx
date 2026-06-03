@@ -64,7 +64,7 @@ function StatCard({ icon: Icon, label, value, color }) {
   return (
     <MotionDiv
       variants={itemVariants}
-      className="flex items-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4 flex-1 min-w-[140px]"
+      className="flex items-center gap-4 bg-white rounded-2xl border border-[#E6ECF5] shadow-sm px-5 py-4 flex-1 min-w-[140px]"
     >
       <div className={`p-2.5 rounded-xl ${color}`}>
         {React.createElement(Icon, { size: 20, className: 'text-white' })}
@@ -154,7 +154,7 @@ function ApplicationCard({ app, t, locale, highlighted, copy }) {
   return (
     <MotionDiv variants={itemVariants} layout>
       <div className={`group rounded-2xl border bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md ${
-        highlighted ? 'border-brand ring-4 ring-brand/10' : isDraft ? 'border-amber-200 hover:border-amber-300' : 'border-gray-100 hover:border-brand/20'
+        highlighted ? 'border-brand ring-4 ring-brand/10' : isDraft ? 'border-amber-200 hover:border-amber-300' : 'border-[#E6ECF5] hover:border-brand/20'
       }`}>
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex gap-3 flex-1 min-w-0">
@@ -408,7 +408,7 @@ export function LamaranSaya() {
                 setSearch(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-9 pr-10 py-2.5 text-sm rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand/40 transition"
+              className="w-full pl-9 pr-10 py-2.5 text-sm rounded-xl border border-[#E6ECF5] bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand/40 transition"
             />
             {search && (
               <button
@@ -434,7 +434,7 @@ export function LamaranSaya() {
               <ChevronDown size={14} className={`transition-transform ${showSortMenu ? 'rotate-180' : ''}`} />
             </Button>
             {showSortMenu && (
-              <div className="absolute right-0 mt-2 min-w-[220px] rounded-xl border border-gray-200 bg-white shadow-lg z-20 overflow-hidden">
+              <div className="absolute right-0 mt-2 min-w-[220px] rounded-xl border border-[#E6ECF5] bg-white shadow-lg z-20 overflow-hidden">
                 {SORT_OPTIONS.map((option) => (
                   <button
                     key={option}
@@ -446,7 +446,7 @@ export function LamaranSaya() {
                     className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${
                       sortBy === option
                         ? 'bg-brand/5 text-brand font-semibold'
-                        : 'text-text-muted hover:bg-gray-50 hover:text-text'
+                        : 'text-text-muted hover:bg-[#E6ECF5] hover:text-text'
                     }`}
                   >
                     {sortLabels[option]}
@@ -468,7 +468,7 @@ export function LamaranSaya() {
               className={`px-3 py-2 text-xs font-semibold rounded-xl border transition-all ${
                 filterStatus === status
                   ? 'bg-brand text-white border-brand shadow-sm'
-                  : 'bg-white text-text-muted border-gray-200 hover:border-brand/30 hover:text-brand'
+                  : 'bg-white text-text-muted border-[#E6ECF5] hover:border-brand/30 hover:text-brand'
               }`}
             >
               {status === 'All'
@@ -496,7 +496,7 @@ export function LamaranSaya() {
               ))}
 
             {filtered.length > ITEMS_PER_PAGE && (
-              <div className="flex flex-col gap-3 rounded-2xl border border-gray-100 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 rounded-2xl border border-[#E6ECF5] bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-text-muted">
                   {pageStart + 1}-{pageEnd} / {filtered.length} · {copy.page} {safePage} {copy.of} {pageCount}
                 </p>
@@ -505,7 +505,7 @@ export function LamaranSaya() {
                     type="button"
                     onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
                     disabled={safePage === 1}
-                    className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-sm font-semibold text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-45"
+                    className="inline-flex h-9 items-center gap-1 rounded-lg border border-[#E6ECF5] bg-white px-3 text-sm font-semibold text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-45"
                   >
                     <ChevronLeft size={15} />
                     {copy.previous}
@@ -514,7 +514,7 @@ export function LamaranSaya() {
                     type="button"
                     onClick={() => setCurrentPage((page) => Math.min(pageCount, page + 1))}
                     disabled={safePage === pageCount}
-                    className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-sm font-semibold text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-45"
+                    className="inline-flex h-9 items-center gap-1 rounded-lg border border-[#E6ECF5] bg-white px-3 text-sm font-semibold text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-45"
                   >
                     {copy.next}
                     <ChevronRight size={15} />
@@ -527,11 +527,11 @@ export function LamaranSaya() {
           <MotionDiv
             key="empty"
             variants={itemVariants}
-            className="text-center py-24 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50/50"
+            className="text-center py-24 border-2 border-dashed border-[#E6ECF5] rounded-2xl bg-[#E6ECF5]/50"
           >
-            <FileText size={40} className="mx-auto text-gray-300 mb-4" />
+            <FileText size={40} className="mx-auto text-[#0A1D3D]/30 mb-4" />
             <p className="font-semibold text-text-muted">{t('lamaran_empty_title')}</p>
-            <p className="text-sm text-gray-400 mt-1 max-w-xs mx-auto">{t('lamaran_empty_sub')}</p>
+            <p className="text-sm text-[#0A1D3D]/40 mt-1 max-w-xs mx-auto">{t('lamaran_empty_sub')}</p>
             <div className="mt-6 flex justify-center gap-3">
               <Button to="/lowongan" variant="primary" className="text-white">
                 {t('lamaran_find_opp')}
@@ -545,9 +545,9 @@ export function LamaranSaya() {
           <MotionDiv
             key="no-results"
             variants={itemVariants}
-            className="text-center py-16 rounded-2xl bg-gray-50/50 border border-dashed border-gray-200"
+            className="text-center py-16 rounded-2xl bg-[#E6ECF5]/50 border border-dashed border-[#E6ECF5]"
           >
-            <Filter size={32} className="mx-auto text-gray-300 mb-3" />
+            <Filter size={32} className="mx-auto text-[#0A1D3D]/30 mb-3" />
             <p className="text-text-muted font-medium">{t('lamaran_no_results')}</p>
             <Button
               variant="ghost"

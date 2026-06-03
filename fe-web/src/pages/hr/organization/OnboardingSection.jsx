@@ -68,7 +68,7 @@ export function OnboardingSection({ initialToken, onJoined, onSubmitted, addToas
             value={companyForm.description}
             onChange={handleCompanyChange('description')}
             placeholder="What does this company do?"
-            className="min-h-28 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+            className="min-h-28 w-full rounded-lg border border-[#E6ECF5] px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
           />
           <Button type="submit" disabled={submitting} className="w-full gap-2">
             <Send size={16} />

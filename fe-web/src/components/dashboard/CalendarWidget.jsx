@@ -121,7 +121,7 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
 
   return (
     <>
-      <Card className="border-gray-100 shadow-sm flex flex-col overflow-hidden w-full">
+      <Card className="border-[#E6ECF5] shadow-sm flex flex-col overflow-hidden w-full">
         <CardBody className="p-6 flex flex-col">
 
           {/* ── Header ─────────────────────────────────────── */}
@@ -133,13 +133,13 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
             <div className="flex gap-1">
               <button
                 onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-                className="p-1 hover:bg-gray-100 rounded-full text-secondary transition-colors"
+                className="p-1 hover:bg-[#E6ECF5] rounded-full text-secondary transition-colors"
               >
                 <ChevronLeft size={18} />
               </button>
               <button
                 onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-                className="p-1 hover:bg-gray-100 rounded-full text-secondary transition-colors"
+                className="p-1 hover:bg-[#E6ECF5] rounded-full text-secondary transition-colors"
               >
                 <ChevronRight size={18} />
               </button>
@@ -147,9 +147,9 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
           </div>
 
           {/* ── Day-of-week labels ─────────────────────────── */}
-          <div className="grid grid-cols-7 mb-1 bg-gray-50/50 rounded-lg">
+          <div className="grid grid-cols-7 mb-1 bg-[#E6ECF5]/50 rounded-lg">
             {DAY_LABELS.map((label) => (
-              <div key={label} className="text-center text-xs font-semibold text-gray-400 py-2">
+              <div key={label} className="text-center text-xs font-semibold text-[#0A1D3D]/40 py-2">
                 {label}
               </div>
             ))}
@@ -181,10 +181,10 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
                           className={[
                             'relative aspect-square flex items-center justify-center text-sm rounded-full cursor-pointer transition-colors duration-200',
                             !isCurrentMonth
-                              ? 'text-gray-300'
-                              : 'text-gray-700 hover:bg-gray-50',
+                              ? 'text-[#0A1D3D]/30'
+                              : 'text-[#0A1D3D]/80 hover:bg-[#E6ECF5]',
                             isSelected
-                              ? 'bg-primary text-white font-bold shadow-md hover:bg-gray-200 hover:text-primary'
+                              ? 'bg-primary text-white font-bold shadow-md hover:bg-[#E6ECF5] hover:text-primary'
                               : '',
                             hasEvent && !isSelected ? 'font-semibold text-primary' : '',
                           ].join(' ')}
@@ -204,7 +204,7 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
           </div>
 
           {/* ── Day schedule ───────────────────────────────── */}
-          <div className="mt-auto pt-5 border-t border-gray-100">
+          <div className="mt-auto pt-5 border-t border-[#E6ECF5]">
             <h4 className="text-xs font-semibold text-secondary uppercase tracking-wider mb-3 flex items-center gap-2">
               <Clock size={12} />
               {copy.scheduleFor} {format(selectedDate, 'MMM d, yyyy')}
@@ -220,7 +220,7 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
                       onClick={() => setSelectedEvent(event)}
-                      className="group flex gap-3 p-2.5 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all cursor-pointer"
+                      className="group flex gap-3 p-2.5 rounded-lg hover:bg-[#E6ECF5] border border-transparent hover:border-[#E6ECF5] transition-all cursor-pointer"
                     >
                       <div
                         className={`w-1 rounded-full ${
@@ -243,7 +243,7 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
                                 ? 'bg-red-50 text-red-600'
                                 : event.type === 'Application'
                                 ? 'bg-green-50 text-green-600'
-                                : 'bg-blue-50 text-blue-600'
+                                : 'bg-[#E6ECF5] text-blue-600'
                             }`}
                           >
                             {event.type}
@@ -258,7 +258,7 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="flex flex-col items-center justify-center py-6 text-gray-400 border-2 border-dashed border-gray-100 rounded-lg bg-gray-50/50"
+                    className="flex flex-col items-center justify-center py-6 text-[#0A1D3D]/40 border-2 border-dashed border-[#E6ECF5] rounded-lg bg-[#E6ECF5]/50"
                   >
                     <CalendarIcon size={24} className="mb-2 opacity-20" />
                     <p className="text-xs">{copy.noSchedule}</p>
@@ -299,7 +299,7 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
                 className={`text-xs font-medium px-2 py-1 rounded-full ${
                   selectedEvent.type === 'Deadline'
                     ? 'bg-red-50 text-red-700'
-                    : 'bg-blue-50 text-blue-700'
+                    : 'bg-[#E6ECF5] text-blue-700'
                 }`}
               >
                 {selectedEvent.type === 'Deadline' ? copy.deadline : copy.application}
@@ -307,7 +307,7 @@ export function CalendarWidget({ applications = [], opportunities = [] }) {
             </div>
 
             {selectedEvent.description && (
-              <div className="bg-gray-50 p-3 rounded-lg text-sm text-gray-700 whitespace-pre-wrap">
+              <div className="bg-[#E6ECF5] p-3 rounded-lg text-sm text-[#0A1D3D]/80 whitespace-pre-wrap">
                 {selectedEvent.description}
               </div>
             )}

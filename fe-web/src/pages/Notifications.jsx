@@ -86,7 +86,7 @@ export function Notifications() {
 
     return (
         <div className="max-w-3xl mx-auto space-y-6 min-h-screen pb-20">
-            <div className="flex justify-between items-center border-b border-gray-200 pb-6">
+            <div className="flex justify-between items-center border-b border-[#E6ECF5] pb-6">
                 <div>
                     <h1 className="text-2xl font-semibold text-primary tracking-tight flex items-center gap-2">
                         <Bell className="text-accent fill-current" size={24} /> {copy.title}
@@ -112,7 +112,7 @@ export function Notifications() {
                     notifications.map((notification) => (
                         <Card
                             key={notification.id}
-                            className={`border-l-4 transition-all hover:shadow-sm cursor-pointer ${!notification.is_read ? 'border-l-accent bg-white' : 'border-l-gray-200 bg-gray-50/50'
+                            className={`border-l-4 transition-all hover:shadow-sm cursor-pointer ${!notification.is_read ? 'border-l-accent bg-white' : 'border-l-[#E6ECF5] bg-[#E6ECF5]/50'
                                 }`}
                             onClick={() => !notification.is_read && markAsRead(notification.id)}
                         >
@@ -122,7 +122,7 @@ export function Notifications() {
                                 </div>
                                 <div className="flex-1">
                                     <div className="flex justify-between items-start gap-4">
-                                        <h3 className={`font-semibold ${!notification.is_read ? 'text-primary' : 'text-gray-600'}`}>
+                                        <h3 className={`font-semibold ${!notification.is_read ? 'text-primary' : 'text-[#0A1D3D]/60'}`}>
                                             {notification.title}
                                         </h3>
                                         <span className="text-xs text-secondary whitespace-nowrap">
@@ -158,8 +158,8 @@ export function Notifications() {
                         </Card>
                     ))
                 ) : (
-                    <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                        <Bell size={32} className="mx-auto text-gray-300 mb-3" />
+                    <div className="text-center py-12 bg-[#E6ECF5] rounded-xl border border-dashed border-[#E6ECF5]">
+                        <Bell size={32} className="mx-auto text-[#0A1D3D]/30 mb-3" />
                         <p className="text-secondary">{copy.empty}</p>
                     </div>
                 )}

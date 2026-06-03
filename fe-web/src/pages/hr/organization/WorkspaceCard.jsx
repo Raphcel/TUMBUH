@@ -2,8 +2,8 @@ import React from 'react';
 
 export function WorkspaceCard({ title, eyebrow, icon: Icon, action, children, className = '' }) {
   return (
-    <section className={`rounded-lg border border-gray-200 bg-white ${className}`}>
-      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-100 px-5 py-4">
+    <section className={`rounded-lg border border-[#E6ECF5] bg-white ${className}`}>
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#E6ECF5] px-5 py-4">
         <div className="flex min-w-0 items-start gap-3">
           {Icon && (
             <div className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-lg bg-brand/10 text-brand">
@@ -27,7 +27,7 @@ export function StatusPill({ children, tone = 'neutral' }) {
     green: 'border-emerald-200 bg-emerald-50 text-emerald-700',
     amber: 'border-amber-200 bg-amber-50 text-amber-700',
     red: 'border-red-200 bg-red-50 text-red-700',
-    neutral: 'border-gray-200 bg-gray-50 text-text-muted',
+    neutral: 'border-[#E6ECF5] bg-[#E6ECF5] text-text-muted',
     brand: 'border-brand/20 bg-brand/10 text-brand',
   };
 

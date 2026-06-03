@@ -10,12 +10,12 @@ export function Input({ label, error, className = '', ...props }) {
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-[#0A1D3D]/80 mb-1">
           {label}
         </label>
       )}
       <input
-        className={`w-full rounded-lg px-3 py-2 text-sm disabled:bg-gray-50 disabled:text-gray-500 shadow-sm border ${error
+        className={`w-full rounded-lg px-3 py-2 text-sm disabled:bg-[#E6ECF5] disabled:text-[#0A1D3D]/50 shadow-sm border ${error
           ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
           : 'border-none'
           } ${className}`}
@@ -124,7 +124,7 @@ export function Select({ label, error, options = [], className = '', value, onCh
   return (
     <div className="w-full relative" ref={containerRef}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-[#0A1D3D]/80 mb-1">
           {label}
         </label>
       )}
@@ -134,16 +134,16 @@ export function Select({ label, error, options = [], className = '', value, onCh
           ? 'border-red-300 focus:ring-red-500'
           : isOpen
             ? 'border-primary ring-1 ring-primary/20'
-            : 'border-gray-300 hover:border-gray-400'
+            : 'border-[#E6ECF5] hover:border-[#1E3A8A]'
           } ${className}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className={`${!selectedOption ? 'text-gray-500' : 'text-gray-900'} truncate`}>
+        <span className={`${!selectedOption ? 'text-[#0A1D3D]/50' : 'text-[#0A1D3D]'} truncate`}>
           {selectedOption ? selectedOption.label : placeholder}
         </span>
         <ChevronDown
           size={16}
-          className={`text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
+          className={`text-[#0A1D3D]/40 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
             }`}
         />
       </div>
@@ -165,10 +165,10 @@ export function Select({ label, error, options = [], className = '', value, onCh
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="bg-white rounded-lg shadow-lg border border-gray-100 py-1 max-h-60 overflow-auto focus:outline-none"
+              className="bg-white rounded-lg shadow-lg border border-[#E6ECF5] py-1 max-h-60 overflow-auto focus:outline-none"
               onWheel={(event) => event.stopPropagation()}
             >
-              <div className="sticky top-0 z-10 border-b border-gray-100 bg-white p-2">
+              <div className="sticky top-0 z-10 border-b border-[#E6ECF5] bg-white p-2">
                 <input
                   ref={searchInputRef}
                   value={searchTerm}
@@ -179,7 +179,7 @@ export function Select({ label, error, options = [], className = '', value, onCh
                   onKeyDown={handleSearchKeyDown}
                   onClick={(event) => event.stopPropagation()}
                   placeholder="Type to search..."
-                  className="w-full rounded-md border border-gray-200 px-2.5 py-1.5 text-sm text-gray-900 outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                  className="w-full rounded-md border border-[#E6ECF5] px-2.5 py-1.5 text-sm text-[#0A1D3D] outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
                 />
               </div>
               {filteredOptions.length > 0 ? (
@@ -188,7 +188,7 @@ export function Select({ label, error, options = [], className = '', value, onCh
                     key={opt.value}
                     className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${value === opt.value || index === safeActiveIndex
                       ? 'bg-primary/5 text-primary font-medium'
-                      : 'text-gray-700 hover:bg-gray-50'
+                      : 'text-[#0A1D3D]/80 hover:bg-[#E6ECF5]'
                       }`}
                     onMouseEnter={() => setActiveIndex(index)}
                     onClick={() => handleSelect(opt.value)}
@@ -200,7 +200,7 @@ export function Select({ label, error, options = [], className = '', value, onCh
                   </div>
                 ))
               ) : (
-                <div className="px-3 py-2 text-sm text-gray-400 text-center">
+                <div className="px-3 py-2 text-sm text-[#0A1D3D]/40 text-center">
                   No matches
                 </div>
               )}

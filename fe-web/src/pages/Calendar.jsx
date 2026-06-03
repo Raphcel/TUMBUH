@@ -91,7 +91,7 @@ export function Calendar() {
             case 'Deadline': return 'bg-red-50 border-red-100 border-l-red-500 text-red-700';
             case 'Personal': return 'bg-green-50 border-green-100 border-l-green-500 text-green-700';
             case 'Onetime': return 'bg-purple-50 border-purple-100 border-l-purple-500 text-purple-700';
-            default: return 'bg-blue-50 border-blue-100 border-l-blue-500 text-blue-700';
+            default: return 'bg-[#E6ECF5] border-blue-100 border-l-blue-500 text-blue-700';
         }
     };
 
@@ -168,31 +168,31 @@ export function Calendar() {
             <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
                 <div className="flex items-center gap-4">
 
-                    <div className="flex bg-white rounded-lg border border-gray-200 p-1 shadow-sm">
+                    <div className="flex bg-white rounded-lg border border-[#E6ECF5] p-1 shadow-sm">
                         <button
                             onClick={() => setViewMode('month')}
-                            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${viewMode === 'month' ? 'bg-gray-100 text-primary' : 'text-secondary hover:text-primary'}`}
+                            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${viewMode === 'month' ? 'bg-[#E6ECF5] text-primary' : 'text-secondary hover:text-primary'}`}
                         >
                             Month
                         </button>
                         <button
                             onClick={() => setViewMode('week')}
-                            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${viewMode === 'week' ? 'bg-gray-100 text-primary' : 'text-secondary hover:text-primary'}`}
+                            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${viewMode === 'week' ? 'bg-[#E6ECF5] text-primary' : 'text-secondary hover:text-primary'}`}
                         >
                             Week
                         </button>
                     </div>
 
-                    <div className="h-6 w-px bg-gray-200 mx-2 hidden md:block"></div>
+                    <div className="h-6 w-px bg-[#E6ECF5] mx-2 hidden md:block"></div>
 
                     <h1 className="text-xl font-bold text-primary flex items-center gap-2 min-w-[200px]">
                         <CalendarIcon className="text-accent" size={24} /> {rangeText}
                     </h1>
 
-                    <div className="flex bg-white rounded-lg border border-gray-200 p-1 shadow-sm ml-2">
+                    <div className="flex bg-white rounded-lg border border-[#E6ECF5] p-1 shadow-sm ml-2">
                         <button
                             onClick={handlePrevious}
-                            className="p-1.5 hover:bg-gray-50 rounded-md text-secondary transition-colors"
+                            className="p-1.5 hover:bg-[#E6ECF5] rounded-md text-secondary transition-colors"
                         >
                             <ChevronLeft size={20} />
                         </button>
@@ -204,7 +204,7 @@ export function Calendar() {
                         </button>
                         <button
                             onClick={handleNext}
-                            className="p-1.5 hover:bg-gray-50 rounded-md text-secondary transition-colors"
+                            className="p-1.5 hover:bg-[#E6ECF5] rounded-md text-secondary transition-colors"
                         >
                             <ChevronRight size={20} />
                         </button>
@@ -227,16 +227,16 @@ export function Calendar() {
 
     const renderSummary = () => (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-            <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+            <div className="bg-white p-4 rounded-xl border border-[#E6ECF5] shadow-sm flex items-center justify-between">
                 <div>
                     <p className="text-sm text-secondary font-medium">Events Today</p>
                     <p className="text-2xl font-bold text-primary">{todayEvents}</p>
                 </div>
-                <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                <div className="h-10 w-10 rounded-full bg-[#E6ECF5] flex items-center justify-center text-blue-600">
                     <CalendarIcon size={20} />
                 </div>
             </div>
-            <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+            <div className="bg-white p-4 rounded-xl border border-[#E6ECF5] shadow-sm flex items-center justify-between">
                 <div>
                     <p className="text-sm text-secondary font-medium">Upcoming This Week</p>
                     <p className="text-2xl font-bold text-primary">{upcomingEvents}</p>
@@ -259,12 +259,12 @@ export function Calendar() {
             const dayEvents = events.filter(e => isSameDay(e.date, day));
 
             days.push(
-                <div key={i} className="flex-1 flex flex-col border-r border-gray-100 last:border-r-0 min-h-[400px]">
-                    <div className={`text-center py-3 border-b border-gray-100 ${isToday ? 'bg-blue-50/30' : 'bg-gray-50/30'}`}>
+                <div key={i} className="flex-1 flex flex-col border-r border-[#E6ECF5] last:border-r-0 min-h-[400px]">
+                    <div className={`text-center py-3 border-b border-[#E6ECF5] ${isToday ? 'bg-[#E6ECF5]/30' : 'bg-[#E6ECF5]/30'}`}>
                         <div className="text-xs font-semibold text-secondary uppercase mb-1">{format(day, 'EEE')}</div>
                         <div
                             className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto text-sm font-bold cursor-pointer transition-colors
-                                ${isToday ? 'bg-primary text-white shadow-md' : 'text-gray-700 hover:bg-gray-200'}
+                                ${isToday ? 'bg-primary text-white shadow-md' : 'text-[#0A1D3D]/80 hover:bg-[#E6ECF5]'}
                                 ${isSelected && !isToday ? 'bg-primary/10 text-primary' : ''}
                             `}
                             onClick={() => setSelectedDate(day)}
@@ -272,7 +272,7 @@ export function Calendar() {
                             {format(day, 'd')}
                         </div>
                     </div>
-                    <div className="flex-1 p-2 space-y-2 group relative hover:bg-gray-50/30 transition-colors"
+                    <div className="flex-1 p-2 space-y-2 group relative hover:bg-[#E6ECF5]/30 transition-colors"
                         onClick={() => setSelectedDate(day)}
                     >
                         {dayEvents.map((event, idx) => (
@@ -292,7 +292,7 @@ export function Calendar() {
                             </div>
                         ))}
                         <button
-                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 rounded text-secondary transition-opacity"
+                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 hover:bg-[#E6ECF5] rounded text-secondary transition-opacity"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedDate(day);
@@ -307,7 +307,7 @@ export function Calendar() {
         }
 
         return (
-            <div className="flex bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+            <div className="flex bg-white rounded-xl border border-[#E6ECF5] overflow-hidden shadow-sm">
                 {days}
             </div>
         );
@@ -328,7 +328,7 @@ export function Calendar() {
         const headerDays = [];
         for (let i = 0; i < 7; i++) {
             headerDays.push(
-                <div key={i} className="text-center text-sm font-semibold text-secondary py-4 bg-gray-50/50 border-b border-gray-100">
+                <div key={i} className="text-center text-sm font-semibold text-secondary py-4 bg-[#E6ECF5]/50 border-b border-[#E6ECF5]">
                     {format(addDays(startDate, i), 'EEEE')}
                 </div>
             );
@@ -346,9 +346,9 @@ export function Calendar() {
                     <div
                         key={day}
                         className={`
-              min-h-[120px] p-2 border-r border-b border-gray-100 transition-colors relative group
-              ${!isCurrentMonth ? 'bg-gray-50/30 text-gray-300' : 'bg-white text-gray-700'}
-              ${isSelected ? 'bg-blue-50/50' : 'hover:bg-gray-50'}
+              min-h-[120px] p-2 border-r border-b border-[#E6ECF5] transition-colors relative group
+              ${!isCurrentMonth ? 'bg-[#E6ECF5]/30 text-[#0A1D3D]/30' : 'bg-white text-[#0A1D3D]/80'}
+              ${isSelected ? 'bg-[#E6ECF5]/50' : 'hover:bg-[#E6ECF5]'}
               ${i === 6 ? 'border-r-0' : ''} 
             `}
                         onClick={() => setSelectedDate(cloneDay)}
@@ -387,7 +387,7 @@ export function Calendar() {
                         </div>
 
                         <button
-                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 rounded text-secondary transition-opacity"
+                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 hover:bg-[#E6ECF5] rounded text-secondary transition-opacity"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedDate(cloneDay);
@@ -402,7 +402,7 @@ export function Calendar() {
                 day = addDays(day, 1);
             }
             rows.push(
-                <div key={day} className="grid grid-cols-7 border-l border-gray-200">
+                <div key={day} className="grid grid-cols-7 border-l border-[#E6ECF5]">
                     {days}
                 </div>
             );
@@ -410,8 +410,8 @@ export function Calendar() {
         }
 
         return (
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-                <div className="grid grid-cols-7 border-b border-gray-200">
+            <div className="bg-white rounded-xl border border-[#E6ECF5] overflow-hidden shadow-sm">
+                <div className="grid grid-cols-7 border-b border-[#E6ECF5]">
                     {headerDays}
                 </div>
                 {rows}
@@ -423,7 +423,7 @@ export function Calendar() {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="p-8 max-w-7xl mx-auto min-h-screen bg-gray-50/30"
+            className="p-8 max-w-7xl mx-auto min-h-screen bg-[#E6ECF5]/30"
         >
             {renderHeader()}
 
@@ -491,9 +491,9 @@ export function Calendar() {
                     />
 
                     <div className="space-y-1">
-                        <label className="block text-sm font-medium text-gray-700">Description</label>
+                        <label className="block text-sm font-medium text-[#0A1D3D]/80">Description</label>
                         <textarea
-                            className="w-full px-3 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                            className="w-full px-3 py-2 text-sm text-[#0A1D3D]/80 border border-[#E6ECF5] rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                             rows="3"
                             placeholder="Add details..."
                             value={newEvent.description}
@@ -502,9 +502,9 @@ export function Calendar() {
                     </div>
 
                     <div className="space-y-1">
-                        <label className="block text-sm font-medium text-gray-700">Invitees (comma separated)</label>
+                        <label className="block text-sm font-medium text-[#0A1D3D]/80">Invitees (comma separated)</label>
                         <input
-                            className="w-full px-3 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                            className="w-full px-3 py-2 text-sm text-[#0A1D3D]/80 border border-[#E6ECF5] rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                             type="text"
                             placeholder="email1@example.com, email2@example.com"
                             value={newEvent.invitees}
@@ -582,18 +582,18 @@ export function Calendar() {
                                     onChange={(e) => setSelectedEvent({ ...selectedEvent, location: e.target.value })}
                                 />
                                 <div className="space-y-1">
-                                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                                    <label className="block text-sm font-medium text-[#0A1D3D]/80">Description</label>
                                     <textarea
-                                        className="w-full px-3 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                                        className="w-full px-3 py-2 text-sm text-[#0A1D3D]/80 border border-[#E6ECF5] rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                                         rows="3"
                                         value={selectedEvent.description || ''}
                                         onChange={(e) => setSelectedEvent({ ...selectedEvent, description: e.target.value })}
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="block text-sm font-medium text-gray-700">Invitees</label>
+                                    <label className="block text-sm font-medium text-[#0A1D3D]/80">Invitees</label>
                                     <input
-                                        className="w-full px-3 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                                        className="w-full px-3 py-2 text-sm text-[#0A1D3D]/80 border border-[#E6ECF5] rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                                         type="text"
                                         value={selectedEvent.invitees || ''}
                                         onChange={(e) => setSelectedEvent({ ...selectedEvent, invitees: e.target.value })}
@@ -624,7 +624,7 @@ export function Calendar() {
                                         <h2 className="text-xl font-bold text-primary mb-1">{selectedEvent.title}</h2>
                                         <button
                                             onClick={() => setIsEditing(true)}
-                                            className="p-1.5 text-gray-400 hover:text-primary transition-colors rounded hover:bg-gray-100"
+                                            className="p-1.5 text-[#0A1D3D]/40 hover:text-primary transition-colors rounded hover:bg-[#E6ECF5]"
                                             title="Edit Event"
                                         >
                                             <Edit2 size={18} />
@@ -639,17 +639,17 @@ export function Calendar() {
                                             <span className="flex items-center gap-1"><MapPin size={16} /> {selectedEvent.location}</span>
                                         )}
                                     </div>
-                                    <div className="mt-2 text-sm text-gray-500">
+                                    <div className="mt-2 text-sm text-[#0A1D3D]/50">
                                         {format(selectedEvent.date, 'EEEE, MMMM do, yyyy')}
                                     </div>
                                 </div>
 
                                 {selectedEvent.description && (
-                                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                    <div className="bg-[#E6ECF5] p-3 rounded-lg border border-[#E6ECF5]">
                                         <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider mb-1">
                                             <AlignLeft size={14} /> Description
                                         </div>
-                                        <p className="text-sm text-gray-700 leading-relaxed">
+                                        <p className="text-sm text-[#0A1D3D]/80 leading-relaxed">
                                             {selectedEvent.description}
                                         </p>
                                     </div>
@@ -662,7 +662,7 @@ export function Calendar() {
                                         </div>
                                         <div className="flex flex-wrap gap-2">
                                             {selectedEvent.invitees.split(',').map((email, i) => (
-                                                <span key={i} className="text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full border border-blue-100">
+                                                <span key={i} className="text-xs bg-[#E6ECF5] text-blue-700 px-2.5 py-1 rounded-full border border-blue-100">
                                                     {email.trim()}
                                                 </span>
                                             ))}

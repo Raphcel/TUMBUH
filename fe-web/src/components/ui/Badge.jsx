@@ -5,7 +5,7 @@ const variants = {
   warning: "bg-yellow-50 text-yellow-700 border border-yellow-200",
   error: "bg-red-50 text-red-700 border border-red-200",
   info: "bg-highlight/50 text-primary border border-highlight/50",
-  neutral: "bg-gray-50 text-secondary border border-gray-200",
+  neutral: "bg-[#E6ECF5] text-secondary border border-[#E6ECF5]",
   primary: "bg-primary/10 text-primary border border-primary/20",
 };
 

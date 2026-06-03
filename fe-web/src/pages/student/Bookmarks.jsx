@@ -88,7 +88,7 @@ export function Bookmarks() {
     return (
         <div className="max-w-5xl space-y-8 min-h-screen pb-20">
             {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-200 pb-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[#E6ECF5] pb-6">
                 <div>
                     <h1 className="text-3xl font-semibold text-primary tracking-tight flex items-center gap-2">
                         <Bookmark className="text-accent fill-current" size={28} /> {isId ? 'Lowongan Tersimpan' : 'Saved Opportunities'}
@@ -97,7 +97,7 @@ export function Bookmarks() {
                         {isId ? 'Kelola lowongan dan magang yang kamu simpan.' : 'Manage your bookmarked jobs and internships.'}
                     </p>
                 </div>
-                <div className="flex items-center gap-2 bg-blue-50 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
+                <div className="flex items-center gap-2 bg-[#E6ECF5] text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
                     {loading ? '...' : bookmarks.length} {isId ? 'Item Tersimpan' : 'Saved Items'}
                 </div>
             </div>
@@ -110,14 +110,14 @@ export function Bookmarks() {
                 <>
                     {/* Controls */}
                     <div className="sticky top-4 z-30">
-                        <Card className="border-gray-100 shadow-sm bg-white">
+                        <Card className="border-[#E6ECF5] shadow-sm bg-white">
                             <CardBody className="p-4 flex flex-col md:flex-row gap-4">
                                 <div className="flex-1 relative">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0A1D3D]/40" size={18} />
                                     <input
                                         type="text"
                                         placeholder={isId ? 'Cari lowongan tersimpan...' : 'Search saved jobs...'}
-                                        className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                        className="w-full pl-10 pr-4 py-2 bg-[#E6ECF5] border border-[#E6ECF5] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
@@ -125,7 +125,7 @@ export function Bookmarks() {
                                 <div className="flex items-center gap-2 min-w-50">
                                     <ArrowUpDown size={18} className="text-secondary" />
                                     <select
-                                        className="flex-1 p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer"
+                                        className="flex-1 p-2 bg-[#E6ECF5] border border-[#E6ECF5] rounded-lg text-sm text-[#0A1D3D]/80 outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer"
                                         value={sortBy}
                                         onChange={(e) => setSortBy(e.target.value)}
                                     >
@@ -144,22 +144,22 @@ export function Bookmarks() {
                             filteredBookmarks.map((job) => (
                                 <Card
                                     key={job.id}
-                                    className="group border border-gray-100 hover:border-primary/30 transition-all hover:shadow-md"
+                                    className="group border border-[#E6ECF5] hover:border-primary/30 transition-all hover:shadow-md"
                                 >
                                     <CardBody className="p-6">
                                         <div className="flex flex-col md:flex-row gap-6">
                                             {/* Logo */}
                                             <CompanyLogo
                                                 company={job.company}
-                                                className="h-16 w-16 rounded-lg border border-gray-100 bg-gray-50 p-2"
-                                                fallbackClassName="text-xl font-bold text-gray-400"
+                                                className="h-16 w-16 rounded-lg border border-[#E6ECF5] bg-[#E6ECF5] p-2"
+                                                fallbackClassName="text-xl font-bold text-[#0A1D3D]/40"
                                             />
 
                                             {/* Content */}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex justify-between items-start gap-4">
                                                     <div>
-                                                        <h3 className="text-lg font-bold text-primary group-hover:text-[#0f2854] transition-colors">
+                                                        <h3 className="text-lg font-bold text-primary group-hover:text-[#1E3A8A] transition-colors">
                                                             <Link to={`/lowongan/${job.id}`}>
                                                                 {job.title}
                                                             </Link>
@@ -191,7 +191,7 @@ export function Bookmarks() {
                                             </div>
 
                                             {/* Actions */}
-                                            <div className="flex flex-row md:flex-col gap-3 justify-center border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-6 mt-4 md:mt-0">
+                                            <div className="flex flex-row md:flex-col gap-3 justify-center border-t md:border-t-0 md:border-l border-[#E6ECF5] pt-4 md:pt-0 md:pl-6 mt-4 md:mt-0">
                                                 <Button
                                                     to={`/lowongan/${job.id}`}
                                                     variant="primary"
@@ -212,8 +212,8 @@ export function Bookmarks() {
                                 </Card>
                             ))
                         ) : (
-                            <div className="text-center py-20 bg-gray-50/50 rounded-xl border-2 border-dashed border-gray-200">
-                                <Bookmark className="mx-auto text-gray-300 mb-4" size={48} />
+                            <div className="text-center py-20 bg-[#E6ECF5]/50 rounded-xl border-2 border-dashed border-[#E6ECF5]">
+                                <Bookmark className="mx-auto text-[#0A1D3D]/30 mb-4" size={48} />
                                 <h3 className="text-lg font-medium text-primary">{isId ? 'Tidak ada bookmark' : 'No bookmarks found'}</h3>
                                 <p className="text-secondary mt-1">
                                     {searchTerm

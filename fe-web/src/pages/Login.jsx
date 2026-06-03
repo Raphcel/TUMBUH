@@ -182,7 +182,7 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#E6ECF5] flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -191,18 +191,16 @@ export function Login() {
       >
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="h-10 w-10 rounded-lg bg-[#0f2854] flex items-center justify-center text-white font-bold text-2xl">
-              T
-            </div>
-            <span className="text-2xl font-bold text-gray-900 tracking-tight">
-              Tumbuh
+            <img src="/tumbuh.svg" alt="tumbuh." className="h-10 w-10" />
+            <span className="text-2xl font-bold text-[#0A1D3D] tracking-tight">
+              tumbuh.
             </span>
           </Link>
           <motion.h2
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-2xl font-bold text-gray-900"
+            className="text-2xl font-bold text-[#0A1D3D]"
           >
             {copy.title}
           </motion.h2>
@@ -210,7 +208,7 @@ export function Login() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="mt-2 text-gray-600"
+            className="mt-2 text-[#0A1D3D]/60"
           >
             {copy.subtitle}
           </motion.p>
@@ -259,11 +257,11 @@ export function Login() {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-[#0f2854] focus:ring-[#0f2854]"
+                    className="h-4 w-4 rounded border-[#E6ECF5] text-[#1E3A8A] focus:ring-[#1E3A8A]"
                   />
                   <label
                     htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-900"
+                    className="ml-2 block text-sm text-[#0A1D3D]"
                   >
                     {copy.remember}
                   </label>
@@ -272,7 +270,7 @@ export function Login() {
                   <button
                     type="button"
                     onClick={() => addToast({ type: 'info', title: copy.forgotTitle, message: copy.forgotMessage })}
-                    className="font-medium text-[#0f2854] hover:text-[#183a6d]"
+                    className="font-medium text-[#1E3A8A] hover:text-[#0A1D3D]"
                   >
                     {copy.forgot}
                   </button>
@@ -286,9 +284,9 @@ export function Login() {
               {googleClientId && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="h-px flex-1 bg-gray-200" />
-                    <span className="text-xs uppercase tracking-wide text-gray-400">{copy.or}</span>
-                    <div className="h-px flex-1 bg-gray-200" />
+                    <div className="h-px flex-1 bg-[#E6ECF5]" />
+                    <span className="text-xs uppercase tracking-wide text-[#0A1D3D]/40">{copy.or}</span>
+                    <div className="h-px flex-1 bg-[#E6ECF5]" />
                   </div>
                   <div className={googleLoading ? 'pointer-events-none opacity-60' : ''} ref={googleButtonRef} />
                 </div>
@@ -296,11 +294,11 @@ export function Login() {
             </motion.form>
 
             <div className="mt-6 text-center text-sm">
-              <p className="text-gray-500">
+              <p className="text-[#0A1D3D]/50">
                 {copy.noAccount}{' '}
                 <Link
                   to="/register"
-                  className="font-semibold text-[#0f2854] hover:text-[#183a6d]"
+                  className="font-semibold text-[#1E3A8A] hover:text-[#0A1D3D]"
                 >
                   {copy.register}
                 </Link>

@@ -426,7 +426,7 @@ function SectionIntro({ title, description }) {
   return (
     <div className="space-y-1">
       <h2 className="text-[1.75rem] font-semibold tracking-tight text-slate-950">{title}</h2>
-      <p className="max-w-[56ch] text-sm leading-6 text-slate-500">{description}</p>
+      <p className="max-w-[56ch] text-sm leading-6 text-[#0A1D3D]/50">{description}</p>
     </div>
   );
 }
@@ -446,20 +446,20 @@ function FieldGroup({ children, columns = 'one' }) {
 function TextareaField({ label, helper, className = '', ...props }) {
   return (
     <div className="w-full">
-      {label && <label className="mb-1 block text-sm font-medium text-slate-700">{label}</label>}
+      {label && <label className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">{label}</label>}
       <textarea
-        className={`min-h-[120px] w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition-colors focus:border-[#1a8754] focus:ring-2 focus:ring-[#1a8754]/10 ${className}`}
+        className={`min-h-[120px] w-full rounded-xl border border-[#E6ECF5] bg-white px-4 py-3 text-sm text-[#0A1D3D] shadow-sm transition-colors focus:border-[#1E3A8A] focus:ring-2 focus:ring-[#1E3A8A]/10 ${className}`}
         {...props}
       />
-      {helper && <p className="mt-2 text-xs text-slate-500">{helper}</p>}
+      {helper && <p className="mt-2 text-xs text-[#0A1D3D]/50">{helper}</p>}
     </div>
   );
 }
 
 function DraftPill({ children, tone = 'neutral' }) {
   const toneClass = tone === 'accent'
-    ? 'bg-[#eaf7f0] text-[#1a8754]'
-    : 'bg-slate-100 text-slate-600';
+    ? 'bg-[#E6ECF5] text-[#1E3A8A]'
+    : 'bg-[#E6ECF5] text-[#0A1D3D]/60';
 
   return (
     <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${toneClass}`}>
@@ -473,8 +473,8 @@ function PreviewSection({ title, children }) {
 
   return (
     <section className="space-y-3">
-      <div className="border-t border-slate-200 pt-8">
-        <h3 className="text-xs font-bold uppercase tracking-[0.32em] text-slate-500">{title}</h3>
+      <div className="border-t border-[#E6ECF5] pt-8">
+        <h3 className="text-xs font-bold uppercase tracking-[0.32em] text-[#0A1D3D]/50">{title}</h3>
       </div>
       {children}
     </section>
@@ -495,7 +495,7 @@ function CVPreview({ draft, user, locale }) {
   ].filter((item) => item.value);
   return (
     <div className="mx-auto" style={{ width: `${A4_WIDTH}px` }}>
-      <div className="border border-slate-200 bg-white p-10 shadow-sm" style={{ minHeight: `${A4_HEIGHT}px` }}>
+      <div className="border border-[#E6ECF5] bg-white p-10 shadow-sm" style={{ minHeight: `${A4_HEIGHT}px` }}>
         <div className="space-y-8">
           <header className="space-y-5">
             <div className="flex items-start justify-between gap-6">
@@ -504,27 +504,27 @@ function CVPreview({ draft, user, locale }) {
                   <h1 className="text-[28px] font-semibold tracking-tight text-slate-950">
                     {personal.full_name || 'Your Name'}
                   </h1>
-                  <p className="text-[14px] text-slate-500">
+                  <p className="text-[14px] text-[#0A1D3D]/50">
                     {personal.headline || 'Professional headline'}
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-x-5 gap-y-2 text-[12px] text-slate-600">
+                <div className="flex flex-wrap gap-x-5 gap-y-2 text-[12px] text-[#0A1D3D]/60">
                   {contactItems.map(({ key, value, icon }) => (
                     <span key={key} className="inline-flex items-center gap-2">
-                      {React.createElement(icon, { size: 15, className: 'text-slate-400' })}
+                      {React.createElement(icon, { size: 15, className: 'text-[#0A1D3D]/40' })}
                       {value}
                     </span>
                   ))}
                 </div>
 
                 {personal.links.length > 0 && (
-                  <div className="flex flex-wrap gap-x-5 gap-y-2 text-[12px] text-slate-600">
+                  <div className="flex flex-wrap gap-x-5 gap-y-2 text-[12px] text-[#0A1D3D]/60">
                     {personal.links
                       .filter((item) => item.url || item.label)
                       .map((item, index) => (
                         <span key={`${item.label}-${index}`} className="inline-flex items-center gap-2">
-                          <Link2 size={15} className="text-slate-400" />
+                          <Link2 size={15} className="text-[#0A1D3D]/40" />
                           {item.url || item.label}
                         </span>
                       ))}
@@ -543,7 +543,7 @@ function CVPreview({ draft, user, locale }) {
           </header>
 
           <PreviewSection title="Profil">
-            <p className="text-[12px] leading-6 text-slate-700">
+            <p className="text-[12px] leading-6 text-[#0A1D3D]/80">
               {professional.summary || 'Add a short profile summary here.'}
             </p>
           </PreviewSection>
@@ -555,18 +555,18 @@ function CVPreview({ draft, user, locale }) {
                   <div key={`experience-preview-${index}`} className="space-y-3">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h4 className="text-[14px] font-semibold text-slate-900">{item.role || 'Role'}</h4>
-                        <p className="text-[12px] text-slate-600">{item.organization || 'Organization'}</p>
+                        <h4 className="text-[14px] font-semibold text-[#0A1D3D]">{item.role || 'Role'}</h4>
+                        <p className="text-[12px] text-[#0A1D3D]/60">{item.organization || 'Organization'}</p>
                       </div>
-                      <p className="text-[12px] text-slate-500">
+                      <p className="text-[12px] text-[#0A1D3D]/50">
                         {[item.start_date, item.end_date].filter(Boolean).map((value) => formatMonthValue(value, locale)).join(' - ') || '-'}
                       </p>
                     </div>
                     {item.organization_description && (
-                      <p className="text-[12px] leading-6 text-slate-700">{item.organization_description}</p>
+                      <p className="text-[12px] leading-6 text-[#0A1D3D]/80">{item.organization_description}</p>
                     )}
                     {!!item.achievements?.length && (
-                      <ul className="list-disc space-y-1 pl-5 text-[12px] leading-6 text-slate-700">
+                      <ul className="list-disc space-y-1 pl-5 text-[12px] leading-6 text-[#0A1D3D]/80">
                         {item.achievements.filter((line) => line.trim()).map((line, lineIndex) => (
                           <li key={`${index}-${lineIndex}`}>{line}</li>
                         ))}
@@ -585,15 +585,15 @@ function CVPreview({ draft, user, locale }) {
                   <div key={`education-preview-${index}`} className="space-y-2">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h4 className="text-[14px] font-semibold text-slate-900">{item.institution || 'Institution'}</h4>
-                        <p className="text-[12px] text-slate-600">{[item.degree, item.major].filter(Boolean).join(', ') || '-'}</p>
+                        <h4 className="text-[14px] font-semibold text-[#0A1D3D]">{item.institution || 'Institution'}</h4>
+                        <p className="text-[12px] text-[#0A1D3D]/60">{[item.degree, item.major].filter(Boolean).join(', ') || '-'}</p>
                       </div>
-                      <p className="text-[12px] text-slate-500">
+                      <p className="text-[12px] text-[#0A1D3D]/50">
                         {[item.start_date, item.end_date].filter(Boolean).map((value) => formatMonthValue(value, locale)).join(' - ') || '-'}
                       </p>
                     </div>
-                    {item.gpa && <p className="text-[12px] text-slate-600">GPA {item.gpa}</p>}
-                    {item.description && <p className="text-[12px] leading-6 text-slate-700">{item.description}</p>}
+                    {item.gpa && <p className="text-[12px] text-[#0A1D3D]/60">GPA {item.gpa}</p>}
+                    {item.description && <p className="text-[12px] leading-6 text-[#0A1D3D]/80">{item.description}</p>}
                   </div>
                 ))}
               </div>
@@ -605,10 +605,10 @@ function CVPreview({ draft, user, locale }) {
               <div className="space-y-8">
                 {!!professional.skills.length && (
                   <div className="space-y-3">
-                    <h4 className="text-[13px] font-semibold text-slate-900">Keterampilan</h4>
+                    <h4 className="text-[13px] font-semibold text-[#0A1D3D]">Keterampilan</h4>
                     <div className="flex flex-wrap gap-2">
                       {professional.skills.map((skill) => (
-                        <span key={skill} className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-700">
+                        <span key={skill} className="rounded-full bg-[#E6ECF5] px-3 py-1.5 text-[11px] font-medium text-[#0A1D3D]/80">
                           {skill}
                         </span>
                       ))}
@@ -618,17 +618,17 @@ function CVPreview({ draft, user, locale }) {
 
                 {!!professional.projects.length && (
                   <div className="space-y-5">
-                    <h4 className="text-[13px] font-semibold text-slate-900">Proyek</h4>
+                    <h4 className="text-[13px] font-semibold text-[#0A1D3D]">Proyek</h4>
                     {professional.projects.map((item, index) => (
                       <div key={`project-preview-${index}`} className="space-y-2">
                         <div className="flex items-start justify-between gap-4">
                           <div>
-                            <h5 className="text-[13px] font-semibold text-slate-900">{item.name || 'Project'}</h5>
-                            {item.role && <p className="text-[12px] text-slate-600">{item.role}</p>}
+                            <h5 className="text-[13px] font-semibold text-[#0A1D3D]">{item.name || 'Project'}</h5>
+                            {item.role && <p className="text-[12px] text-[#0A1D3D]/60">{item.role}</p>}
                           </div>
-                          {item.link && <p className="text-[11px] text-slate-500">{item.link}</p>}
+                          {item.link && <p className="text-[11px] text-[#0A1D3D]/50">{item.link}</p>}
                         </div>
-                        {item.description && <p className="text-[12px] leading-6 text-slate-700">{item.description}</p>}
+                        {item.description && <p className="text-[12px] leading-6 text-[#0A1D3D]/80">{item.description}</p>}
                       </div>
                     ))}
                   </div>
@@ -642,17 +642,17 @@ function CVPreview({ draft, user, locale }) {
               <div className="space-y-8">
                 {!!organisational.organizations.length && (
                   <div className="space-y-4">
-                    <h4 className="text-[13px] font-semibold text-slate-900">Organisasi</h4>
+                    <h4 className="text-[13px] font-semibold text-[#0A1D3D]">Organisasi</h4>
                     {organisational.organizations.map((item, index) => (
                       <div key={`organization-preview-${index}`} className="space-y-2">
                         <div className="flex items-start justify-between gap-4">
                           <div>
-                            <h5 className="text-[13px] font-semibold text-slate-900">{item.name || 'Organization'}</h5>
-                            <p className="text-[12px] text-slate-600">{item.role || '-'}</p>
+                            <h5 className="text-[13px] font-semibold text-[#0A1D3D]">{item.name || 'Organization'}</h5>
+                            <p className="text-[12px] text-[#0A1D3D]/60">{item.role || '-'}</p>
                           </div>
-                          <p className="text-[12px] text-slate-500">{[item.start_date, item.end_date].filter(Boolean).map((value) => formatMonthValue(value, locale)).join(' - ') || '-'}</p>
+                          <p className="text-[12px] text-[#0A1D3D]/50">{[item.start_date, item.end_date].filter(Boolean).map((value) => formatMonthValue(value, locale)).join(' - ') || '-'}</p>
                         </div>
-                        {item.description && <p className="text-[12px] leading-6 text-slate-700">{item.description}</p>}
+                        {item.description && <p className="text-[12px] leading-6 text-[#0A1D3D]/80">{item.description}</p>}
                       </div>
                     ))}
                   </div>
@@ -660,8 +660,8 @@ function CVPreview({ draft, user, locale }) {
 
                 {!!other.certifications.length && (
                   <div className="space-y-3">
-                    <h4 className="text-[13px] font-semibold text-slate-900">Sertifikasi</h4>
-                    <div className="space-y-2 text-[12px] text-slate-700">
+                    <h4 className="text-[13px] font-semibold text-[#0A1D3D]">Sertifikasi</h4>
+                    <div className="space-y-2 text-[12px] text-[#0A1D3D]/80">
                       {other.certifications.map((item, index) => (
                         <p key={`certification-preview-${index}`}>
                           {item.name || 'Certification'}
@@ -675,8 +675,8 @@ function CVPreview({ draft, user, locale }) {
 
                 {!!other.awards.length && (
                   <div className="space-y-3">
-                    <h4 className="text-[13px] font-semibold text-slate-900">Penghargaan</h4>
-                    <div className="space-y-2 text-[12px] text-slate-700">
+                    <h4 className="text-[13px] font-semibold text-[#0A1D3D]">Penghargaan</h4>
+                    <div className="space-y-2 text-[12px] text-[#0A1D3D]/80">
                       {other.awards.map((item, index) => (
                         <p key={`award-preview-${index}`}>
                           {item.name || 'Award'}
@@ -690,8 +690,8 @@ function CVPreview({ draft, user, locale }) {
 
                 {!!other.languages.length && (
                   <div className="space-y-3">
-                    <h4 className="text-[13px] font-semibold text-slate-900">Bahasa</h4>
-                    <div className="space-y-2 text-[12px] text-slate-700">
+                    <h4 className="text-[13px] font-semibold text-[#0A1D3D]">Bahasa</h4>
+                    <div className="space-y-2 text-[12px] text-[#0A1D3D]/80">
                       {other.languages.map((item, index) => (
                         <p key={`language-preview-${index}`}>
                           {item.name || 'Language'}
@@ -704,8 +704,8 @@ function CVPreview({ draft, user, locale }) {
 
                 {!!other.interests.length && (
                   <div className="space-y-3">
-                    <h4 className="text-[13px] font-semibold text-slate-900">Minat</h4>
-                    <p className="text-[12px] text-slate-700">{other.interests.join(', ')}</p>
+                    <h4 className="text-[13px] font-semibold text-[#0A1D3D]">Minat</h4>
+                    <p className="text-[12px] text-[#0A1D3D]/80">{other.interests.join(', ')}</p>
                   </div>
                 )}
               </div>
@@ -719,7 +719,7 @@ function CVPreview({ draft, user, locale }) {
 
 function EntryCard({ title, subtitle, onRemove, children, collapsible = false, expanded = true, onToggle }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="rounded-xl border border-[#E6ECF5] bg-white p-4 shadow-sm">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <button
@@ -728,13 +728,13 @@ function EntryCard({ title, subtitle, onRemove, children, collapsible = false, e
             className={`flex w-full items-start justify-between gap-3 text-left ${collapsible ? 'cursor-pointer' : 'cursor-default'}`}
           >
             <div className="min-w-0">
-              <h4 className="text-sm font-semibold text-slate-900">{title}</h4>
-              {subtitle && <p className="mt-1 text-xs leading-5 text-slate-500">{subtitle}</p>}
+              <h4 className="text-sm font-semibold text-[#0A1D3D]">{title}</h4>
+              {subtitle && <p className="mt-1 text-xs leading-5 text-[#0A1D3D]/50">{subtitle}</p>}
             </div>
             {collapsible && (
               <ChevronDown
                 size={16}
-                className={`mt-0.5 shrink-0 text-slate-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
+                className={`mt-0.5 shrink-0 text-[#0A1D3D]/40 transition-transform ${expanded ? 'rotate-180' : ''}`}
               />
             )}
           </button>
@@ -742,7 +742,7 @@ function EntryCard({ title, subtitle, onRemove, children, collapsible = false, e
         <button
           type="button"
           onClick={onRemove}
-          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#E6ECF5] text-[#0A1D3D]/40 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
         >
           <Trash2 size={16} />
         </button>
@@ -757,7 +757,7 @@ function AddRowButton({ label, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+      className="inline-flex items-center gap-2 rounded-lg border border-[#E6ECF5] bg-white px-3.5 py-2 text-sm font-medium text-[#0A1D3D]/80 transition-colors hover:border-[#E6ECF5] hover:bg-[#E6ECF5]"
     >
       <FilePlus2 size={15} />
       {label}
@@ -767,7 +767,7 @@ function AddRowButton({ label, onClick }) {
 
 function EditorPanel({ children }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
+    <div className="rounded-xl border border-[#E6ECF5] bg-white p-5 shadow-sm md:p-6">
       {children}
     </div>
   );
@@ -775,13 +775,13 @@ function EditorPanel({ children }) {
 
 function DraftLibraryCard({ draft, isId, onOpen, onDelete }) {
   return (
-    <div className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-[1px] hover:border-slate-300">
+    <div className="group rounded-xl border border-[#E6ECF5] bg-white p-5 shadow-sm transition-all hover:-translate-y-[1px] hover:border-[#E6ECF5]">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-3">
           <DraftPill tone="accent">{isId ? 'Klasik' : 'Classic'}</DraftPill>
           <div className="space-y-1">
             <h3 className="text-xl font-semibold tracking-tight text-slate-950">{draft.title}</h3>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-[#0A1D3D]/50">
               {isId ? 'Terakhir disimpan' : 'Last saved'} {formatTimestamp(draft.updated_at, isId ? 'id-ID' : 'en-US')}
             </p>
           </div>
@@ -790,21 +790,21 @@ function DraftLibraryCard({ draft, isId, onOpen, onDelete }) {
         <button
           type="button"
           onClick={() => onDelete(draft)}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#E6ECF5] text-[#0A1D3D]/40 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
         >
           <Trash2 size={16} />
         </button>
       </div>
 
       <div className="mt-8 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+        <div className="flex items-center gap-2 text-sm text-[#0A1D3D]/50">
           <FileText size={16} />
           <span>{isId ? 'Draft CV aktif' : 'Structured CV draft'}</span>
         </div>
         <button
           type="button"
           onClick={() => onOpen(draft)}
-          className="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+          className="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#0A1D3D]"
         >
           {isId ? 'Buka Editor' : 'Open Editor'}
           <ChevronDown size={14} className="-rotate-90" />
@@ -1207,7 +1207,7 @@ export function CVBuilder() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-[#1a8754]" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#1E3A8A]" />
       </div>
     );
   }
@@ -1222,7 +1222,7 @@ export function CVBuilder() {
               <h1 className="max-w-[14ch] text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
                 {isId ? 'Kelola draft CV Anda dengan alur yang lebih rapi.' : 'Manage your CV drafts in a cleaner editor workflow.'}
               </h1>
-              <p className="max-w-[64ch] text-base leading-7 text-slate-500">
+              <p className="max-w-[64ch] text-base leading-7 text-[#0A1D3D]/50">
                 {isId
                   ? 'Buat hingga dua draft CV, buka masing-masing draft dalam editor penuh, unduh PDF saat diperlukan, lalu putuskan sendiri kapan salah satunya menjadi CV akun aktif.'
                   : 'Keep up to two CV drafts, open each in a focused editor, export PDFs on demand, and choose exactly when a draft becomes your active account CV.'}
@@ -1231,13 +1231,13 @@ export function CVBuilder() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-500 shadow-sm">
+            <div className="rounded-xl border border-[#E6ECF5] bg-white px-4 py-3 text-sm text-[#0A1D3D]/50 shadow-sm">
               {drafts.length}/2 {isId ? 'draft tersimpan' : 'drafts saved'}
             </div>
             <Button
               onClick={handleCreateDraft}
               disabled={creating || drafts.length >= 2}
-              className="rounded-lg bg-[#1a8754] px-4 py-2.5 text-sm font-semibold hover:bg-[#146c43]"
+              className="rounded-lg bg-[#1E3A8A] px-4 py-2.5 text-sm font-semibold hover:bg-[#0A1D3D]"
             >
               <FilePlus2 size={16} className="mr-2" />
               {creating ? (isId ? 'Membuat...' : 'Creating...') : (isId ? 'Buat Draft Baru' : 'Create Draft')}
@@ -1248,14 +1248,14 @@ export function CVBuilder() {
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_380px]">
           <div className="space-y-6">
             {drafts.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-slate-300 bg-white px-8 py-14 text-center shadow-sm">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-[#eaf7f0] text-[#1a8754]">
+              <div className="rounded-xl border border-dashed border-[#E6ECF5] bg-white px-8 py-14 text-center shadow-sm">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-[#E6ECF5] text-[#1E3A8A]">
                   <Sparkles size={24} />
                 </div>
                 <h2 className="mt-6 text-2xl font-semibold tracking-tight text-slate-950">
                   {isId ? 'Belum ada draft CV.' : 'No CV drafts yet.'}
                 </h2>
-                <p className="mx-auto mt-3 max-w-[52ch] text-sm leading-7 text-slate-500">
+                <p className="mx-auto mt-3 max-w-[52ch] text-sm leading-7 text-[#0A1D3D]/50">
                   {isId
                     ? 'Mulai dengan membuat draft pertama. Setelah itu Anda akan masuk ke editor khusus dengan preview langsung seperti workspace CV.'
                     : 'Start by creating your first draft. You will then move into a dedicated CV workspace with live preview.'}
@@ -1263,7 +1263,7 @@ export function CVBuilder() {
                 <Button
                   onClick={handleCreateDraft}
                   disabled={creating}
-                  className="mt-8 rounded-lg bg-[#1a8754] px-4 py-2.5 text-sm font-semibold hover:bg-[#146c43]"
+                  className="mt-8 rounded-lg bg-[#1E3A8A] px-4 py-2.5 text-sm font-semibold hover:bg-[#0A1D3D]"
                 >
                   <FilePlus2 size={16} className="mr-2" />
                   {creating ? (isId ? 'Membuat...' : 'Creating...') : (isId ? 'Buat Draft Pertama' : 'Create First Draft')}
@@ -1284,52 +1284,52 @@ export function CVBuilder() {
             )}
           </div>
 
-          <Card className="rounded-xl border-slate-200 shadow-sm">
+          <Card className="rounded-xl border-[#E6ECF5] shadow-sm">
             <CardBody className="space-y-6 p-7">
               <div className="space-y-3">
                 <DraftPill>{isId ? 'Cara kerja' : 'Workflow'}</DraftPill>
                 <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
                   {isId ? 'Draft library + editor fokus.' : 'Draft library + focused editor.'}
                 </h2>
-                <p className="text-sm leading-7 text-slate-500">
+                <p className="text-sm leading-7 text-[#0A1D3D]/50">
                   {isId
                     ? 'Halaman ini sekarang dipisah menjadi dua langkah: pilih draft di library, lalu edit di workspace yang terpisah dengan tabs dan live preview.'
                     : 'This page is now split into two steps: choose a draft from the library, then edit it in a dedicated workspace with tabs and live preview.'}
                 </p>
               </div>
 
-              <div className="space-y-4 rounded-xl bg-slate-50 p-5">
+              <div className="space-y-4 rounded-xl bg-[#E6ECF5] p-5">
                 <div className="flex items-start gap-3">
-                  <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-white text-slate-700 shadow-sm">
+                  <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-white text-[#0A1D3D]/80 shadow-sm">
                     <FileText size={16} />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-900">{isId ? '1. Buat atau pilih draft' : '1. Create or open a draft'}</h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-500">
+                    <h3 className="text-sm font-semibold text-[#0A1D3D]">{isId ? '1. Buat atau pilih draft' : '1. Create or open a draft'}</h3>
+                    <p className="mt-1 text-sm leading-6 text-[#0A1D3D]/50">
                       {isId ? 'Setiap pengguna menyimpan maksimal dua draft aktif.' : 'Each user can keep up to two active drafts.'}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-white text-slate-700 shadow-sm">
+                  <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-white text-[#0A1D3D]/80 shadow-sm">
                     <PencilLine size={16} />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-900">{isId ? '2. Edit di workspace khusus' : '2. Edit in a dedicated workspace'}</h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-500">
+                    <h3 className="text-sm font-semibold text-[#0A1D3D]">{isId ? '2. Edit di workspace khusus' : '2. Edit in a dedicated workspace'}</h3>
+                    <p className="mt-1 text-sm leading-6 text-[#0A1D3D]/50">
                       {isId ? 'Editor meniru tampilan CV maker modern dengan tab form di kiri dan preview di kanan.' : 'The editor mirrors a modern CV maker with form tabs on the left and preview on the right.'}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-white text-slate-700 shadow-sm">
+                  <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-white text-[#0A1D3D]/80 shadow-sm">
                     <FileDown size={16} />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-900">{isId ? '3. Unduh atau jadikan CV akun' : '3. Download or promote to account CV'}</h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-500">
+                    <h3 className="text-sm font-semibold text-[#0A1D3D]">{isId ? '3. Unduh atau jadikan CV akun' : '3. Download or promote to account CV'}</h3>
+                    <p className="mt-1 text-sm leading-6 text-[#0A1D3D]/50">
                       {isId ? 'PDF tetap generated on demand, tidak disimpan permanen sebagai file baru.' : 'PDFs stay on-demand only and are not permanently stored as extra files.'}
                     </p>
                   </div>
@@ -1337,11 +1337,11 @@ export function CVBuilder() {
               </div>
 
               {user?.has_cv ? (
-                <div className="rounded-xl border border-[#d8eee2] bg-[#f4fbf7] px-4 py-4 text-sm text-slate-600">
+                <div className="rounded-xl border border-[#E6ECF5] bg-[#E6ECF5] px-4 py-4 text-sm text-[#0A1D3D]/60">
                   {isId ? 'CV akun aktif Anda tetap aman. Draft builder tidak akan menggantinya kecuali Anda memilih "Update CV Akun".' : 'Your active account CV remains untouched unless you explicitly choose "Update Account CV".'}
                 </div>
               ) : (
-                <div className="rounded-xl border border-slate-200 bg-white px-4 py-4 text-sm text-slate-600">
+                <div className="rounded-xl border border-[#E6ECF5] bg-white px-4 py-4 text-sm text-[#0A1D3D]/60">
                   {isId ? 'Belum ada CV akun aktif. Anda tetap bisa menyiapkan draft dan mengunggahnya nanti.' : 'You do not have an active account CV yet. You can still prepare drafts and upload one later.'}
                 </div>
               )}
@@ -1358,14 +1358,14 @@ export function CVBuilder() {
         <button
           type="button"
           onClick={handleBackToLibrary}
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition-colors hover:text-slate-900"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#0A1D3D]/50 transition-colors hover:text-[#0A1D3D]"
         >
           <ArrowLeft size={16} />
           {isId ? 'Kembali ke CV Builder' : 'Back to CV Builder'}
         </button>
 
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <Check size={16} className={isDirty ? 'text-slate-300' : 'text-[#1a8754]'} />
+        <div className="flex items-center gap-2 text-sm text-[#0A1D3D]/50">
+          <Check size={16} className={isDirty ? 'text-[#0A1D3D]/30' : 'text-[#1E3A8A]'} />
           {isDirty
             ? (isId ? 'Ada perubahan yang belum disimpan' : 'You have unsaved changes')
             : (isId ? 'Semua perubahan disimpan' : 'All changes saved')}
@@ -1378,12 +1378,12 @@ export function CVBuilder() {
             <input
               value={draftForm.title}
               onChange={(event) => updateDraftForm((prev) => ({ ...prev, title: event.target.value }))}
-              className="min-w-[220px] bg-transparent text-[1.9rem] font-semibold tracking-tight text-slate-950 outline-none placeholder:text-slate-300 md:text-[2.2rem]"
+              className="min-w-[220px] bg-transparent text-[1.9rem] font-semibold tracking-tight text-slate-950 outline-none placeholder:text-[#0A1D3D]/30 md:text-[2.2rem]"
               placeholder={isId ? 'Nama draft CV' : 'CV draft title'}
             />
-            <PencilLine size={18} className="text-slate-300" />
+            <PencilLine size={18} className="text-[#0A1D3D]/30" />
           </div>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-[#0A1D3D]/50">
             {isId ? 'Terakhir disimpan' : 'Last saved'} {formatTimestamp(draftForm.updated_at, locale)}
           </p>
         </div>
@@ -1392,7 +1392,7 @@ export function CVBuilder() {
           <Button
             onClick={handleDownloadPdf}
             disabled={downloading}
-            className="rounded-lg bg-[#1a8754] px-4 py-2.5 font-semibold hover:bg-[#146c43]"
+            className="rounded-lg bg-[#1E3A8A] px-4 py-2.5 font-semibold hover:bg-[#0A1D3D]"
           >
             <FileDown size={16} className="mr-2" />
             {downloading ? (isId ? 'Menyiapkan PDF...' : 'Preparing PDF...') : (isId ? 'Unduh PDF' : 'Download PDF')}
@@ -1402,14 +1402,14 @@ export function CVBuilder() {
             <button
               type="button"
               onClick={() => setActionsOpen((prev) => !prev)}
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
+              className="inline-flex items-center gap-2 rounded-lg border border-[#E6ECF5] bg-white px-4 py-2.5 text-sm font-semibold text-[#0A1D3D]/80 shadow-sm transition-colors hover:border-[#E6ECF5] hover:bg-[#E6ECF5]"
             >
               {isId ? 'Aksi Draft' : 'Draft Actions'}
               <ChevronDown size={16} className={`transition-transform ${actionsOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {actionsOpen && (
-              <div className="absolute right-0 top-full z-20 mt-2 w-60 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_24px_48px_-24px_rgba(15,23,42,0.32)]">
+              <div className="absolute right-0 top-full z-20 mt-2 w-60 overflow-hidden rounded-xl border border-[#E6ECF5] bg-white shadow-[0_24px_48px_-24px_rgba(15,23,42,0.32)]">
                 <button
                   type="button"
                   onClick={() => {
@@ -1417,9 +1417,9 @@ export function CVBuilder() {
                     saveCurrentDraft();
                   }}
                   disabled={saving || !isDirty}
-                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:text-slate-300"
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#0A1D3D]/80 transition-colors hover:bg-[#E6ECF5] disabled:cursor-not-allowed disabled:text-[#0A1D3D]/30"
                 >
-                  <Save size={16} className="text-[#1a8754]" />
+                  <Save size={16} className="text-[#1E3A8A]" />
                   <span>{saving ? (isId ? 'Menyimpan...' : 'Saving...') : (isId ? 'Simpan Draft' : 'Save Draft')}</span>
                 </button>
 
@@ -1430,9 +1430,9 @@ export function CVBuilder() {
                     handlePublishAccountCv();
                   }}
                   disabled={publishing}
-                  className="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:text-slate-300"
+                  className="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm text-[#0A1D3D]/80 transition-colors hover:bg-[#E6ECF5] disabled:cursor-not-allowed disabled:text-[#0A1D3D]/30"
                 >
-                  <FileUp size={16} className="text-slate-500" />
+                  <FileUp size={16} className="text-[#0A1D3D]/50" />
                   <span>{publishing ? (isId ? 'Memperbarui...' : 'Updating...') : (isId ? 'Update CV Akun' : 'Update Account CV')}</span>
                 </button>
 
@@ -1454,7 +1454,7 @@ export function CVBuilder() {
         </div>
       </div>
 
-      <div className="overflow-x-auto border-b border-slate-200">
+      <div className="overflow-x-auto border-b border-[#E6ECF5]">
         <div className="flex min-w-max items-center gap-6">
           {tabs.map((tab) => (
             <button
@@ -1463,8 +1463,8 @@ export function CVBuilder() {
               onClick={() => setActiveTab(tab.key)}
               className={`border-b-2 px-1 pb-4 text-sm font-semibold transition-colors ${
                 activeTab === tab.key
-                  ? 'border-[#1a8754] text-[#1a8754]'
-                  : 'border-transparent text-slate-500 hover:text-slate-900'
+                  ? 'border-[#1E3A8A] text-[#1E3A8A]'
+                  : 'border-transparent text-[#0A1D3D]/50 hover:text-[#0A1D3D]'
               }`}
             >
               {tab.label}
@@ -1484,17 +1484,17 @@ export function CVBuilder() {
                 />
 
                 <FieldGroup>
-                  <Input label={isId ? 'Nama Lengkap' : 'Full Name'} value={draftForm.personal_info.full_name} onChange={(event) => setPersonalField('full_name', event.target.value)} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                  <Input label="Headline" value={draftForm.personal_info.headline} onChange={(event) => setPersonalField('headline', event.target.value)} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                  <Input label={isId ? 'Nama Lengkap' : 'Full Name'} value={draftForm.personal_info.full_name} onChange={(event) => setPersonalField('full_name', event.target.value)} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                  <Input label="Headline" value={draftForm.personal_info.headline} onChange={(event) => setPersonalField('headline', event.target.value)} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                 </FieldGroup>
 
                 <FieldGroup columns="two">
-                  <Input label="Email" value={draftForm.personal_info.email} onChange={(event) => setPersonalField('email', event.target.value)} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                  <Input label={isId ? 'No. Telepon' : 'Phone'} value={draftForm.personal_info.phone} onChange={(event) => setPersonalField('phone', event.target.value)} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                  <Input label="Email" value={draftForm.personal_info.email} onChange={(event) => setPersonalField('email', event.target.value)} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                  <Input label={isId ? 'No. Telepon' : 'Phone'} value={draftForm.personal_info.phone} onChange={(event) => setPersonalField('phone', event.target.value)} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                 </FieldGroup>
 
                 <FieldGroup columns="two">
-                  <Input label={isId ? 'Lokasi' : 'Location'} value={draftForm.personal_info.location} onChange={(event) => setPersonalField('location', event.target.value)} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                  <Input label={isId ? 'Lokasi' : 'Location'} value={draftForm.personal_info.location} onChange={(event) => setPersonalField('location', event.target.value)} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                   <Input
                     label="LinkedIn"
                     value={draftForm.personal_info.links[0]?.url || ''}
@@ -1504,32 +1504,32 @@ export function CVBuilder() {
                         : [{ label: 'LinkedIn', url: event.target.value }];
                       setPersonalField('links', nextLinks);
                     }}
-                    className="rounded-xl border border-slate-200 px-4 py-2.5"
+                    className="rounded-xl border border-[#E6ECF5] px-4 py-2.5"
                   />
                 </FieldGroup>
 
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div className="rounded-xl border border-[#E6ECF5] bg-[#E6ECF5] p-4">
                   <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="h-14 w-14 overflow-hidden rounded-xl border border-slate-200 bg-white">
+                      <div className="h-14 w-14 overflow-hidden rounded-xl border border-[#E6ECF5] bg-white">
                         {user?.avatar ? (
                           <img src={resolveUploadUrl(user.avatar)} alt="" className="h-full w-full object-cover" />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center text-xs text-slate-400">
+                          <div className="flex h-full w-full items-center justify-center text-xs text-[#0A1D3D]/40">
                             {isId ? 'Tanpa foto' : 'No photo'}
                           </div>
                         )}
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-slate-900">{isId ? 'Foto Profil di CV' : 'Profile Photo in CV'}</h3>
-                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                        <h3 className="text-sm font-semibold text-[#0A1D3D]">{isId ? 'Foto Profil di CV' : 'Profile Photo in CV'}</h3>
+                        <p className="mt-1 text-xs leading-5 text-[#0A1D3D]/50">
                           {isId ? 'Gunakan foto profil akun saat ini, atau unggah foto profil baru untuk dipakai juga di CV.' : 'Use your current account profile photo, or upload a new profile photo that will also be used in the CV.'}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
-                      <label className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                      <label className="inline-flex items-center gap-2 rounded-lg border border-[#E6ECF5] bg-white px-3 py-2 text-sm text-[#0A1D3D]/80">
                         <input
                           type="checkbox"
                           checked={draftForm.personal_info.show_photo}
@@ -1549,7 +1549,7 @@ export function CVBuilder() {
                         type="button"
                         onClick={() => avatarInputRef.current?.click()}
                         disabled={uploadingAvatar}
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-100 disabled:opacity-60"
+                        className="inline-flex items-center gap-2 rounded-lg border border-[#E6ECF5] bg-white px-3 py-2 text-sm font-medium text-[#0A1D3D]/80 transition-colors hover:border-[#E6ECF5] hover:bg-[#E6ECF5] disabled:opacity-60"
                       >
                         <ImageUp size={16} />
                         {uploadingAvatar ? (isId ? 'Mengunggah...' : 'Uploading...') : (isId ? 'Unggah Foto Baru' : 'Upload New Photo')}
@@ -1558,7 +1558,7 @@ export function CVBuilder() {
                   </div>
                 </div>
 
-                <div className="border-t border-slate-200 pt-7">
+                <div className="border-t border-[#E6ECF5] pt-7">
                   <TextareaField
                     label={isId ? 'Ringkasan' : 'Summary'}
                     helper={isId ? 'Ceritakan tentang diri Anda secara singkat.' : 'Describe yourself in a concise professional summary.'}
@@ -1590,14 +1590,14 @@ export function CVBuilder() {
                       onToggle={() => toggleExperienceCard(index)}
                     >
                       <FieldGroup columns="two">
-                        <Input label={isId ? 'Role' : 'Role'} value={item.role} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, role: event.target.value }))} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label={isId ? 'Organisasi / Perusahaan' : 'Organization / Company'} value={item.organization} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, organization: event.target.value }))} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input label={isId ? 'Role' : 'Role'} value={item.role} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, role: event.target.value }))} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label={isId ? 'Organisasi / Perusahaan' : 'Organization / Company'} value={item.organization} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, organization: event.target.value }))} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
 
                       <FieldGroup columns="three">
-                        <Input label={isId ? 'Lokasi' : 'Location'} value={item.location} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, location: event.target.value }))} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input type="month" label={isId ? 'Mulai' : 'Start'} value={item.start_date} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, start_date: event.target.value }))} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input type="month" label={isId ? 'Selesai' : 'End'} value={item.end_date} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, end_date: event.target.value }))} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input label={isId ? 'Lokasi' : 'Location'} value={item.location} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, location: event.target.value }))} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input type="month" label={isId ? 'Mulai' : 'Start'} value={item.start_date} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, start_date: event.target.value }))} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input type="month" label={isId ? 'Selesai' : 'End'} value={item.end_date} onChange={(event) => setProfessionalField('experiences', updateAtIndex(draftForm.professional_info.experiences, index, { ...item, end_date: event.target.value }))} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
 
                       <TextareaField
@@ -1628,10 +1628,10 @@ export function CVBuilder() {
                   />
                 </div>
 
-                <div className="space-y-4 border-t border-slate-200 pt-7">
+                <div className="space-y-4 border-t border-[#E6ECF5] pt-7">
                   <div className="space-y-1">
-                    <h3 className="text-lg font-semibold text-slate-900">{isId ? 'Pengalaman Organisasi' : 'Organizational Experience'}</h3>
-                    <p className="text-sm text-slate-500">
+                    <h3 className="text-lg font-semibold text-[#0A1D3D]">{isId ? 'Pengalaman Organisasi' : 'Organizational Experience'}</h3>
+                    <p className="text-sm text-[#0A1D3D]/50">
                       {isId ? 'Gunakan bagian ini untuk himpunan, kepanitiaan, atau komunitas.' : 'Use this for student bodies, committees, and communities.'}
                     </p>
                   </div>
@@ -1644,13 +1644,13 @@ export function CVBuilder() {
                       onRemove={() => setOrganisationalInfo({ organizations: removeAtIndex(draftForm.organisational_info.organizations, index) })}
                     >
                       <FieldGroup columns="two">
-                        <Input label={isId ? 'Nama Organisasi' : 'Organization Name'} value={item.name} onChange={(event) => setOrganisationalInfo({ organizations: updateAtIndex(draftForm.organisational_info.organizations, index, { ...item, name: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label={isId ? 'Peran' : 'Role'} value={item.role} onChange={(event) => setOrganisationalInfo({ organizations: updateAtIndex(draftForm.organisational_info.organizations, index, { ...item, role: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input label={isId ? 'Nama Organisasi' : 'Organization Name'} value={item.name} onChange={(event) => setOrganisationalInfo({ organizations: updateAtIndex(draftForm.organisational_info.organizations, index, { ...item, name: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label={isId ? 'Peran' : 'Role'} value={item.role} onChange={(event) => setOrganisationalInfo({ organizations: updateAtIndex(draftForm.organisational_info.organizations, index, { ...item, role: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
 
                       <FieldGroup columns="two">
-                        <Input type="month" label={isId ? 'Mulai' : 'Start'} value={item.start_date} onChange={(event) => setOrganisationalInfo({ organizations: updateAtIndex(draftForm.organisational_info.organizations, index, { ...item, start_date: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input type="month" label={isId ? 'Selesai' : 'End'} value={item.end_date} onChange={(event) => setOrganisationalInfo({ organizations: updateAtIndex(draftForm.organisational_info.organizations, index, { ...item, end_date: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input type="month" label={isId ? 'Mulai' : 'Start'} value={item.start_date} onChange={(event) => setOrganisationalInfo({ organizations: updateAtIndex(draftForm.organisational_info.organizations, index, { ...item, start_date: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input type="month" label={isId ? 'Selesai' : 'End'} value={item.end_date} onChange={(event) => setOrganisationalInfo({ organizations: updateAtIndex(draftForm.organisational_info.organizations, index, { ...item, end_date: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
 
                       <TextareaField
@@ -1692,15 +1692,15 @@ export function CVBuilder() {
                       onRemove={() => setEducationInfo({ educations: removeAtIndex(draftForm.education_info.educations, index) })}
                     >
                       <FieldGroup columns="two">
-                        <Input label={isId ? 'Institusi' : 'Institution'} value={item.institution} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, institution: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label={isId ? 'Gelar' : 'Degree'} value={item.degree} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, degree: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input label={isId ? 'Institusi' : 'Institution'} value={item.institution} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, institution: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label={isId ? 'Gelar' : 'Degree'} value={item.degree} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, degree: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
 
                       <FieldGroup columns="four">
-                        <Select label={isId ? 'Jurusan' : 'Major'} value={item.major} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, major: event.target.value }) })} options={buildMajorOptions([item.major])} placeholder={isId ? 'Pilih jurusan IPB' : 'Choose an IPB major'} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input type="month" label={isId ? 'Mulai' : 'Start'} value={item.start_date} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, start_date: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input type="month" label={isId ? 'Selesai' : 'End'} value={item.end_date} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, end_date: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label="GPA" value={item.gpa} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, gpa: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Select label={isId ? 'Jurusan' : 'Major'} value={item.major} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, major: event.target.value }) })} options={buildMajorOptions([item.major])} placeholder={isId ? 'Pilih jurusan IPB' : 'Choose an IPB major'} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input type="month" label={isId ? 'Mulai' : 'Start'} value={item.start_date} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, start_date: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input type="month" label={isId ? 'Selesai' : 'End'} value={item.end_date} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, end_date: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label="GPA" value={item.gpa} onChange={(event) => setEducationInfo({ educations: updateAtIndex(draftForm.education_info.educations, index, { ...item, gpa: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
 
                       <TextareaField
@@ -1742,10 +1742,10 @@ export function CVBuilder() {
                   className="min-h-[150px]"
                 />
 
-                <div className="space-y-4 border-t border-slate-200 pt-7">
+                <div className="space-y-4 border-t border-[#E6ECF5] pt-7">
                   <div className="space-y-1">
-                    <h3 className="text-lg font-semibold text-slate-900">{isId ? 'Bahasa' : 'Languages'}</h3>
-                    <p className="text-sm text-slate-500">
+                    <h3 className="text-lg font-semibold text-[#0A1D3D]">{isId ? 'Bahasa' : 'Languages'}</h3>
+                    <p className="text-sm text-[#0A1D3D]/50">
                       {isId ? 'Tambahkan bahasa beserta tingkat penguasaan.' : 'Add language proficiency for international or client-facing roles.'}
                     </p>
                   </div>
@@ -1757,8 +1757,8 @@ export function CVBuilder() {
                       onRemove={() => setOtherInfo({ ...draftForm.other_info, languages: removeAtIndex(draftForm.other_info.languages, index) })}
                     >
                       <FieldGroup columns="two">
-                        <Input label={isId ? 'Bahasa' : 'Language'} value={item.name} onChange={(event) => setOtherInfo({ ...draftForm.other_info, languages: updateAtIndex(draftForm.other_info.languages, index, { ...item, name: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label={isId ? 'Tingkat' : 'Proficiency'} value={item.proficiency} onChange={(event) => setOtherInfo({ ...draftForm.other_info, languages: updateAtIndex(draftForm.other_info.languages, index, { ...item, proficiency: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input label={isId ? 'Bahasa' : 'Language'} value={item.name} onChange={(event) => setOtherInfo({ ...draftForm.other_info, languages: updateAtIndex(draftForm.other_info.languages, index, { ...item, name: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label={isId ? 'Tingkat' : 'Proficiency'} value={item.proficiency} onChange={(event) => setOtherInfo({ ...draftForm.other_info, languages: updateAtIndex(draftForm.other_info.languages, index, { ...item, proficiency: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
                     </EntryCard>
                   ))}
@@ -1792,11 +1792,11 @@ export function CVBuilder() {
                       onRemove={() => setProfessionalField('projects', removeAtIndex(draftForm.professional_info.projects, index))}
                     >
                       <FieldGroup columns="two">
-                        <Input label={isId ? 'Nama Proyek' : 'Project Name'} value={item.name} onChange={(event) => setProfessionalField('projects', updateAtIndex(draftForm.professional_info.projects, index, { ...item, name: event.target.value }))} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label={isId ? 'Peran' : 'Role'} value={item.role} onChange={(event) => setProfessionalField('projects', updateAtIndex(draftForm.professional_info.projects, index, { ...item, role: event.target.value }))} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input label={isId ? 'Nama Proyek' : 'Project Name'} value={item.name} onChange={(event) => setProfessionalField('projects', updateAtIndex(draftForm.professional_info.projects, index, { ...item, name: event.target.value }))} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label={isId ? 'Peran' : 'Role'} value={item.role} onChange={(event) => setProfessionalField('projects', updateAtIndex(draftForm.professional_info.projects, index, { ...item, role: event.target.value }))} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
 
-                      <Input label="Link" value={item.link} onChange={(event) => setProfessionalField('projects', updateAtIndex(draftForm.professional_info.projects, index, { ...item, link: event.target.value }))} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                      <Input label="Link" value={item.link} onChange={(event) => setProfessionalField('projects', updateAtIndex(draftForm.professional_info.projects, index, { ...item, link: event.target.value }))} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
 
                       <TextareaField
                         label={isId ? 'Deskripsi Proyek' : 'Project Description'}
@@ -1835,13 +1835,13 @@ export function CVBuilder() {
                       onRemove={() => setOtherInfo({ ...draftForm.other_info, certifications: removeAtIndex(draftForm.other_info.certifications, index) })}
                     >
                       <FieldGroup columns="two">
-                        <Input label={isId ? 'Nama Sertifikat' : 'Certificate Name'} value={item.name} onChange={(event) => setOtherInfo({ ...draftForm.other_info, certifications: updateAtIndex(draftForm.other_info.certifications, index, { ...item, name: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label={isId ? 'Penerbit' : 'Issuer'} value={item.issuer} onChange={(event) => setOtherInfo({ ...draftForm.other_info, certifications: updateAtIndex(draftForm.other_info.certifications, index, { ...item, issuer: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input label={isId ? 'Nama Sertifikat' : 'Certificate Name'} value={item.name} onChange={(event) => setOtherInfo({ ...draftForm.other_info, certifications: updateAtIndex(draftForm.other_info.certifications, index, { ...item, name: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label={isId ? 'Penerbit' : 'Issuer'} value={item.issuer} onChange={(event) => setOtherInfo({ ...draftForm.other_info, certifications: updateAtIndex(draftForm.other_info.certifications, index, { ...item, issuer: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
 
                       <FieldGroup columns="two">
-                        <Input label={isId ? 'Tahun' : 'Year'} value={item.year} onChange={(event) => setOtherInfo({ ...draftForm.other_info, certifications: updateAtIndex(draftForm.other_info.certifications, index, { ...item, year: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label="Link" value={item.link} onChange={(event) => setOtherInfo({ ...draftForm.other_info, certifications: updateAtIndex(draftForm.other_info.certifications, index, { ...item, link: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input label={isId ? 'Tahun' : 'Year'} value={item.year} onChange={(event) => setOtherInfo({ ...draftForm.other_info, certifications: updateAtIndex(draftForm.other_info.certifications, index, { ...item, year: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label="Link" value={item.link} onChange={(event) => setOtherInfo({ ...draftForm.other_info, certifications: updateAtIndex(draftForm.other_info.certifications, index, { ...item, link: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
                     </EntryCard>
                   ))}
@@ -1855,10 +1855,10 @@ export function CVBuilder() {
                   />
                 </div>
 
-                <div className="space-y-4 border-t border-slate-200 pt-7">
+                <div className="space-y-4 border-t border-[#E6ECF5] pt-7">
                   <div className="space-y-1">
-                    <h3 className="text-lg font-semibold text-slate-900">{isId ? 'Penghargaan' : 'Awards'}</h3>
-                    <p className="text-sm text-slate-500">
+                    <h3 className="text-lg font-semibold text-[#0A1D3D]">{isId ? 'Penghargaan' : 'Awards'}</h3>
+                    <p className="text-sm text-[#0A1D3D]/50">
                       {isId ? 'Opsional, tapi berguna untuk membedakan pencapaian Anda.' : 'Optional, but useful to differentiate your achievements.'}
                     </p>
                   </div>
@@ -1870,9 +1870,9 @@ export function CVBuilder() {
                       onRemove={() => setOtherInfo({ ...draftForm.other_info, awards: removeAtIndex(draftForm.other_info.awards, index) })}
                     >
                       <FieldGroup columns="three">
-                        <Input label={isId ? 'Nama' : 'Name'} value={item.name} onChange={(event) => setOtherInfo({ ...draftForm.other_info, awards: updateAtIndex(draftForm.other_info.awards, index, { ...item, name: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label={isId ? 'Pemberi' : 'Issuer'} value={item.issuer} onChange={(event) => setOtherInfo({ ...draftForm.other_info, awards: updateAtIndex(draftForm.other_info.awards, index, { ...item, issuer: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
-                        <Input label={isId ? 'Tahun' : 'Year'} value={item.year} onChange={(event) => setOtherInfo({ ...draftForm.other_info, awards: updateAtIndex(draftForm.other_info.awards, index, { ...item, year: event.target.value }) })} className="rounded-xl border border-slate-200 px-4 py-2.5" />
+                        <Input label={isId ? 'Nama' : 'Name'} value={item.name} onChange={(event) => setOtherInfo({ ...draftForm.other_info, awards: updateAtIndex(draftForm.other_info.awards, index, { ...item, name: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label={isId ? 'Pemberi' : 'Issuer'} value={item.issuer} onChange={(event) => setOtherInfo({ ...draftForm.other_info, awards: updateAtIndex(draftForm.other_info.awards, index, { ...item, issuer: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
+                        <Input label={isId ? 'Tahun' : 'Year'} value={item.year} onChange={(event) => setOtherInfo({ ...draftForm.other_info, awards: updateAtIndex(draftForm.other_info.awards, index, { ...item, year: event.target.value }) })} className="rounded-xl border border-[#E6ECF5] px-4 py-2.5" />
                       </FieldGroup>
 
                       <TextareaField
@@ -1892,7 +1892,7 @@ export function CVBuilder() {
                   />
                 </div>
 
-                <div className="border-t border-slate-200 pt-7">
+                <div className="border-t border-[#E6ECF5] pt-7">
                   <TextareaField
                     label={isId ? 'Minat / Topik Lainnya' : 'Interests / Other Topics'}
                     helper={isId ? 'Pisahkan dengan koma untuk menampilkan daftar singkat di CV.' : 'Separate items with commas for a concise list in the CV.'}
@@ -1916,17 +1916,17 @@ export function CVBuilder() {
                   description={isId ? 'Periksa kualitas isi, lalu tentukan tindakan akhir untuk draft klasik ini.' : 'Review content quality, then choose the final action for this classic draft.'}
                 />
 
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900">
+                <div className="rounded-xl border border-[#E6ECF5] bg-[#E6ECF5] p-5">
+                  <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#0A1D3D]">
                     <Eye size={16} />
                     {isId ? 'Checklist Isi' : 'Content Checklist'}
                   </div>
                   {warnings.length === 0 ? (
-                    <div className="rounded-xl border border-[#d8eee2] bg-[#f4fbf7] px-4 py-4 text-sm text-[#1a8754]">
+                    <div className="rounded-xl border border-[#E6ECF5] bg-[#E6ECF5] px-4 py-4 text-sm text-[#1E3A8A]">
                       {isId ? 'Draft ini sudah cukup lengkap untuk diekspor atau diunggah sebagai CV akun.' : 'This draft is complete enough to export or upload as the account CV.'}
                     </div>
                   ) : (
-                    <div className="space-y-2 text-sm text-slate-600">
+                    <div className="space-y-2 text-sm text-[#0A1D3D]/60">
                       {warnings.map((warning) => (
                         <p key={warning}>{warning}</p>
                       ))}
@@ -1939,15 +1939,15 @@ export function CVBuilder() {
                     type="button"
                     onClick={handleDownloadPdf}
                     disabled={downloading}
-                    className="rounded-xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-colors hover:border-slate-300"
+                    className="rounded-xl border border-[#E6ECF5] bg-white p-5 text-left shadow-sm transition-colors hover:border-[#E6ECF5]"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E6ECF5] text-[#0A1D3D]/80">
                         <FileDown size={18} />
                       </div>
                       <div>
-                        <h3 className="text-base font-semibold text-slate-900">{isId ? 'Unduh PDF' : 'Download PDF'}</h3>
-                        <p className="mt-1 text-sm text-slate-500">
+                        <h3 className="text-base font-semibold text-[#0A1D3D]">{isId ? 'Unduh PDF' : 'Download PDF'}</h3>
+                        <p className="mt-1 text-sm text-[#0A1D3D]/50">
                           {isId ? 'Generate file PDF saat dibutuhkan, tanpa menyimpan file permanen baru.' : 'Generate the PDF on demand without storing a permanent extra file.'}
                         </p>
                       </div>
@@ -1958,17 +1958,17 @@ export function CVBuilder() {
                     type="button"
                     onClick={handlePublishAccountCv}
                     disabled={publishing}
-                    className="rounded-xl border border-[#d8eee2] bg-[#f4fbf7] p-5 text-left shadow-sm transition-colors hover:border-[#bddfc8]"
+                    className="rounded-xl border border-[#E6ECF5] bg-[#E6ECF5] p-5 text-left shadow-sm transition-colors hover:border-[#bddfc8]"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-[#1a8754]">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-[#1E3A8A]">
                         <FileUp size={18} />
                       </div>
                       <div>
-                        <h3 className="text-base font-semibold text-slate-900">
+                        <h3 className="text-base font-semibold text-[#0A1D3D]">
                           {publishing ? (isId ? 'Memperbarui CV akun...' : 'Updating account CV...') : (isId ? 'Update CV Akun' : 'Update Account CV')}
                         </h3>
-                        <p className="mt-1 text-sm text-slate-500">
+                        <p className="mt-1 text-sm text-[#0A1D3D]/50">
                           {isId ? 'Gunakan draft ini sebagai PDF aktif di akun Anda, tetapi hanya jika Anda benar-benar memilihnya.' : 'Use this draft as the active PDF on your account, but only when you explicitly choose it.'}
                         </p>
                       </div>
@@ -1976,7 +1976,7 @@ export function CVBuilder() {
                   </button>
                 </div>
 
-                <div className="rounded-xl border border-slate-200 bg-white px-4 py-4 text-sm text-slate-600">
+                <div className="rounded-xl border border-[#E6ECF5] bg-white px-4 py-4 text-sm text-[#0A1D3D]/60">
                   {user?.has_cv
                     ? (isId ? `CV aktif Anda saat ini tetap aman sampai Anda menekan "Update CV Akun".` : 'Your current active CV remains unchanged until you press "Update Account CV".')
                     : (isId ? 'Anda belum memiliki CV akun aktif, jadi langkah berikutnya biasanya unduh PDF atau update CV akun saat siap.' : 'You do not have an active account CV yet, so the next step is usually to download the PDF or update the account CV when ready.')}
@@ -1987,21 +1987,21 @@ export function CVBuilder() {
         </div>
 
         <div className="space-y-4 xl:sticky xl:top-24 xl:self-start">
-          <div className="rounded-xl border border-slate-200 bg-[#f8faf8] shadow-sm">
+          <div className="rounded-xl border border-[#E6ECF5] bg-[#f8faf8] shadow-sm">
             <div className="max-h-[70vh] overflow-y-auto p-3 md:max-h-[calc(100dvh-9rem)] md:p-4">
               <div ref={previewViewportRef} className="w-full">
                 <div className="mx-auto flex flex-col gap-4" style={{ width: `${scaledPreviewWidth}px` }}>
                   {Array.from({ length: previewPageCount }).map((_, index) => (
                     <div
                       key={index}
-                      className="relative overflow-hidden border border-slate-200 bg-white shadow-[0_18px_38px_-24px_rgba(15,23,42,0.32)]"
+                      className="relative overflow-hidden border border-[#E6ECF5] bg-white shadow-[0_18px_38px_-24px_rgba(15,23,42,0.32)]"
                       style={{
                         width: `${scaledPreviewWidth}px`,
                         height: `${scaledPreviewHeight}px`,
                       }}
                     >
                       {previewPageCount > 1 && (
-                        <span className="pointer-events-none absolute left-3 top-3 z-10 rounded-md bg-white/92 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400 shadow-sm">
+                        <span className="pointer-events-none absolute left-3 top-3 z-10 rounded-md bg-white/92 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#0A1D3D]/40 shadow-sm">
                           {isId ? `Halaman ${index + 1}` : `Page ${index + 1}`}
                         </span>
                       )}

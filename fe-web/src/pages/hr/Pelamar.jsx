@@ -146,7 +146,7 @@ export function Pelamar() {
       animate="visible"
       className="space-y-6"
     >
-      <MotionH1 variants={itemVariants} className="text-2xl font-bold text-gray-900">Daftar Pelamar</MotionH1>
+      <MotionH1 variants={itemVariants} className="text-2xl font-bold text-[#0A1D3D]">Daftar Pelamar</MotionH1>
 
       <MotionDiv variants={itemVariants} className="flex items-center gap-4">
         <div className="w-64">
@@ -168,7 +168,7 @@ export function Pelamar() {
         <Card>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
+              <thead className="text-xs text-[#0A1D3D]/80 uppercase bg-[#E6ECF5] border-b border-[#E6ECF5]">
                 <tr>
                   <th className="px-6 py-3">Nama Pelamar</th>
                   <th className="px-6 py-3">Posisi Dilamar</th>
@@ -185,9 +185,9 @@ export function Pelamar() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     layout
-                    className="bg-white border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                    className="bg-white border-b border-[#E6ECF5] hover:bg-[#E6ECF5] transition-colors"
                   >
-                    <td className="px-6 py-4 font-medium text-gray-900">
+                    <td className="px-6 py-4 font-medium text-[#0A1D3D]">
                       <button
                         onClick={() => setSelectedApp(app)}
                         className="text-primary hover:underline text-left"
@@ -232,7 +232,7 @@ export function Pelamar() {
                   <tr>
                     <td
                       colSpan="5"
-                      className="px-6 py-4 text-center text-gray-500"
+                      className="px-6 py-4 text-center text-[#0A1D3D]/50"
                     >
                       Belum ada pelamar.
                     </td>
@@ -257,10 +257,10 @@ export function Pelamar() {
               <img
                 src={resolveUploadUrl(student.avatar) || `https://ui-avatars.com/api/?name=${encodeURIComponent(`${student.first_name} ${student.last_name}`)}&background=0f2854&color=fff`}
                 alt={`${student.first_name} ${student.last_name}`}
-                className="w-16 h-16 rounded-full bg-gray-200"
+                className="w-16 h-16 rounded-full bg-[#E6ECF5]"
               />
               <div>
-                <h3 className="text-lg font-bold text-gray-900">
+                <h3 className="text-lg font-bold text-[#0A1D3D]">
                   {student.first_name} {student.last_name}
                 </h3>
                 <p className="text-sm text-secondary">{student.email}</p>
@@ -289,7 +289,7 @@ export function Pelamar() {
             {student.bio && (
               <div>
                 <span className="text-sm text-secondary">Bio</span>
-                <p className="text-sm mt-1 text-gray-700">{student.bio}</p>
+                <p className="text-sm mt-1 text-[#0A1D3D]/80">{student.bio}</p>
               </div>
             )}
 
@@ -316,12 +316,12 @@ export function Pelamar() {
 
             {selectedApp?.history && selectedApp.history.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Riwayat Status</h4>
-                <div className="space-y-3 border-l-2 border-gray-200 pl-4">
+                <h4 className="text-sm font-semibold text-[#0A1D3D]/80 mb-3">Riwayat Status</h4>
+                <div className="space-y-3 border-l-2 border-[#E6ECF5] pl-4">
                   {selectedApp.history.map((h, idx) => (
                     <div key={idx} className="relative">
                       <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-primary border-2 border-white" />
-                      <p className="text-sm font-medium text-gray-900">{h.status}</p>
+                      <p className="text-sm font-medium text-[#0A1D3D]">{h.status}</p>
                       <p className="text-xs text-secondary">
                         {new Date(h.date).toLocaleDateString('id-ID', {
                           day: 'numeric', month: 'long', year: 'numeric'
@@ -334,7 +334,7 @@ export function Pelamar() {
             )}
 
             <div className="pt-2">
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Ubah Status</label>
+              <label className="text-sm font-medium text-[#0A1D3D]/80 mb-1 block">Ubah Status</label>
               <Select
                 value={selectedApp?.status}
                 onChange={(e) => handleStatusUpdate(selectedApp.id, e.target.value)}

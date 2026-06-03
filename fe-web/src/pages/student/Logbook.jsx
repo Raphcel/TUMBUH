@@ -41,7 +41,7 @@ const itemVariants = {
 
 const statStyles = {
   hours: 'bg-emerald-50 text-brand',
-  progress: 'bg-blue-50 text-blue-600',
+  progress: 'bg-[#E6ECF5] text-blue-600',
   entries: 'bg-amber-50 text-amber-600',
   files: 'bg-green-50 text-green-600',
 };
@@ -175,7 +175,7 @@ function ProgressLine({ percent }) {
         <span className="font-semibold text-brand">{percent}%</span>
         <span className="text-text-light">100%</span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-gray-200">
+      <div className="h-1.5 overflow-hidden rounded-full bg-[#E6ECF5]">
         <div className="h-full rounded-full bg-brand transition-all" style={{ width: `${percent}%` }} />
       </div>
     </div>
@@ -667,12 +667,12 @@ export function Logbook() {
             <Input type="number" min="0.5" step="0.5" label={t('logbook_field_target')} value={form.target_hours} onChange={(e) => updateForm('target_hours', e.target.value)} />
           </div>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-gray-700">{t('logbook_field_notes')}</span>
+            <span className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">{t('logbook_field_notes')}</span>
             <textarea
               rows={4}
               value={form.notes}
               onChange={(e) => updateForm('notes', e.target.value)}
-              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/20"
+              className="w-full rounded-lg border border-[#E6ECF5] px-3 py-2 text-sm shadow-sm outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/20"
             />
           </label>
         </form>

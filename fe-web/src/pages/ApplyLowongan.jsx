@@ -69,7 +69,7 @@ function serializeAnswers(value) {
 
 function StatusPill({ children, tone = 'slate', icon: Icon }) {
   const tones = {
-    slate: 'border-slate-200 bg-slate-50 text-slate-600',
+    slate: 'border-[#E6ECF5] bg-[#E6ECF5] text-[#0A1D3D]/60',
     brand: 'border-brand/15 bg-brand/10 text-brand',
     amber: 'border-amber-200 bg-amber-50 text-amber-700',
     red: 'border-red-200 bg-red-50 text-red-700',
@@ -391,8 +391,8 @@ export function ApplyLowongan() {
   if (loadError || !job) {
     return (
       <div className="grid min-h-[420px] place-items-center">
-        <div className="max-w-md rounded-2xl border border-dashed border-gray-200 bg-white p-6 text-center">
-          <FileText size={34} className="mx-auto mb-3 text-gray-300" />
+        <div className="max-w-md rounded-2xl border border-dashed border-[#E6ECF5] bg-white p-6 text-center">
+          <FileText size={34} className="mx-auto mb-3 text-[#0A1D3D]/30" />
           <p className="font-semibold text-text">{loadError || copy.notFound}</p>
           <Link to="/lowongan" className="mt-4 inline-flex text-sm font-semibold text-brand hover:text-brand-dark">
             {copy.back}
@@ -418,7 +418,7 @@ export function ApplyLowongan() {
           <div className="flex min-w-0 items-center gap-3">
             <CompanyLogo
               company={company}
-              className="h-11 w-11 rounded-xl border border-gray-200 bg-white p-1.5 shadow-sm"
+              className="h-11 w-11 rounded-xl border border-[#E6ECF5] bg-white p-1.5 shadow-sm"
               fallbackClassName="text-sm font-black uppercase text-brand"
             />
             <div className="min-w-0">
@@ -439,8 +439,8 @@ export function ApplyLowongan() {
       </MotionDiv>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
-        <MotionDiv variants={itemVariants} className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-          <div className="border-b border-gray-100 px-5 py-4 sm:px-6">
+        <MotionDiv variants={itemVariants} className="overflow-hidden rounded-2xl border border-[#E6ECF5] bg-white shadow-sm">
+          <div className="border-b border-[#E6ECF5] px-5 py-4 sm:px-6">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="min-w-0">
                 <div className="flex flex-wrap gap-x-5 gap-y-2">
@@ -455,7 +455,7 @@ export function ApplyLowongan() {
             </div>
           </div>
 
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-[#E6ECF5]">
             <section className="px-5 py-5 sm:px-6">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
@@ -491,7 +491,7 @@ export function ApplyLowongan() {
                     type="button"
                     onClick={handleViewCV}
                     disabled={openingCV}
-                    className="inline-flex h-10 items-center justify-center rounded-lg border border-gray-200 px-4 text-sm font-semibold text-brand transition hover:border-brand/30 hover:bg-brand/5 disabled:opacity-60"
+                    className="inline-flex h-10 items-center justify-center rounded-lg border border-[#E6ECF5] px-4 text-sm font-semibold text-brand transition hover:border-brand/30 hover:bg-brand/5 disabled:opacity-60"
                   >
                     {openingCV ? copy.openingCv : copy.openCv}
                   </button>
@@ -526,7 +526,7 @@ export function ApplyLowongan() {
                               setQuestionAnswers((current) => ({ ...current, [question.id]: nextValue }));
                             }}
                             disabled={!canEdit}
-                            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-text shadow-sm outline-none transition focus:border-brand/40 focus:ring-2 focus:ring-brand/20 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-text-muted"
+                            className="w-full rounded-xl border border-[#E6ECF5] bg-white px-3 py-2.5 text-sm text-text shadow-sm outline-none transition focus:border-brand/40 focus:ring-2 focus:ring-brand/20 disabled:cursor-not-allowed disabled:bg-[#E6ECF5] disabled:text-text-muted"
                           >
                             <option value="">{isId ? 'Pilih jawaban' : 'Choose an answer'}</option>
                             {(question.options || []).map((option) => (
@@ -542,7 +542,7 @@ export function ApplyLowongan() {
                             }}
                             disabled={!canEdit}
                             rows={question.type === 'long_text' ? 4 : 2}
-                            className="w-full resize-y rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm leading-6 text-text shadow-sm outline-none transition focus:border-brand/40 focus:ring-2 focus:ring-brand/20 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-text-muted"
+                            className="w-full resize-y rounded-xl border border-[#E6ECF5] bg-white px-3 py-2.5 text-sm leading-6 text-text shadow-sm outline-none transition focus:border-brand/40 focus:ring-2 focus:ring-brand/20 disabled:cursor-not-allowed disabled:bg-[#E6ECF5] disabled:text-text-muted"
                           />
                         )}
                       </label>
@@ -568,21 +568,21 @@ export function ApplyLowongan() {
                 onChange={(event) => setCoverLetter(event.target.value)}
                 disabled={!canEdit}
                 placeholder={copy.letterPlaceholder}
-                className="mt-3 min-h-[300px] w-full resize-y border-0 bg-transparent p-0 text-sm leading-7 text-text outline-none placeholder:text-gray-400 disabled:cursor-not-allowed disabled:text-text-muted"
+                className="mt-3 min-h-[300px] w-full resize-y border-0 bg-transparent p-0 text-sm leading-7 text-text outline-none placeholder:text-[#0A1D3D]/40 disabled:cursor-not-allowed disabled:text-text-muted"
               />
             </section>
           </div>
         </MotionDiv>
 
         <MotionDiv variants={itemVariants} className="xl:sticky xl:top-24 xl:self-start">
-          <aside className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-            <div className="border-b border-gray-100 pb-4">
+          <aside className="rounded-2xl border border-[#E6ECF5] bg-white p-5 shadow-sm">
+            <div className="border-b border-[#E6ECF5] pb-4">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-text-light">{copy.candidate}</p>
               <p className="mt-2 font-semibold text-text">{userName}</p>
               <p className="text-sm text-text-muted">{user?.email || '-'}</p>
             </div>
 
-            <div className="space-y-3 border-b border-gray-100 py-4 text-sm">
+            <div className="space-y-3 border-b border-[#E6ECF5] py-4 text-sm">
               <div className="flex items-center justify-between gap-3">
                 <span className="text-text-muted">{copy.deadline}</span>
                 <span className="font-semibold text-text">{formatDate(job.deadline, locale)}</span>
@@ -598,7 +598,7 @@ export function ApplyLowongan() {
             </div>
 
             {!canEdit && (
-              <p className="border-b border-gray-100 py-4 text-sm leading-6 text-red-600">
+              <p className="border-b border-[#E6ECF5] py-4 text-sm leading-6 text-red-600">
                 {copy.lockedHint}
               </p>
             )}
@@ -609,7 +609,7 @@ export function ApplyLowongan() {
                   type="button"
                   onClick={saveDraftNow}
                   disabled={!isDirty || saveState === 'saving'}
-                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 text-sm font-semibold text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-[#E6ECF5] bg-white px-4 text-sm font-semibold text-text-muted transition hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Save size={16} />
                   {copy.saveDraft}

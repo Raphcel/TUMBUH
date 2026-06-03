@@ -61,7 +61,7 @@ function StatCard({ icon: Icon, label, value, color }) {
   return (
     <MotionDiv
       variants={itemVariants}
-      className="flex min-w-[150px] flex-1 items-center gap-4 rounded-2xl border border-gray-100 bg-white px-5 py-4 shadow-sm"
+      className="flex min-w-[150px] flex-1 items-center gap-4 rounded-2xl border border-[#E6ECF5] bg-white px-5 py-4 shadow-sm"
     >
       <div className={`rounded-xl p-2.5 ${color}`}>
         {React.createElement(Icon, { size: 20, className: 'text-white' })}
@@ -85,7 +85,7 @@ function OpportunityCard({ job, onOpen, onEdit, onClose, onDelete }) {
         onClick={onOpen}
         className="group w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/30"
       >
-        <Card className="rounded-2xl border-gray-100 p-5 transition-all duration-200 group-hover:border-brand/20 group-hover:shadow-md">
+        <Card className="rounded-2xl border-[#E6ECF5] p-5 transition-all duration-200 group-hover:border-brand/20 group-hover:shadow-md">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex min-w-0 flex-1 gap-4">
               <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-brand/10 bg-brand/10 text-brand">
@@ -118,7 +118,7 @@ function OpportunityCard({ job, onOpen, onEdit, onClose, onDelete }) {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center lg:flex-shrink-0">
-              <div className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-2 text-sm">
+              <div className="rounded-xl border border-[#E6ECF5] bg-[#E6ECF5] px-4 py-2 text-sm">
                 <p className="text-xs text-text-muted">Pelamar</p>
                 <p className="font-semibold text-text tabular-nums">{applicantsCount}</p>
               </div>
@@ -275,7 +275,7 @@ export function KelolaLowongan() {
   if (onboardingRequired || !companyId) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Card className="max-w-lg rounded-2xl border-gray-100">
+        <Card className="max-w-lg rounded-2xl border-[#E6ECF5]">
           <div className="space-y-4 p-6 text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
               <Building2 size={24} />
@@ -338,7 +338,7 @@ export function KelolaLowongan() {
               placeholder="Cari posisi, tipe, atau lokasi..."
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-9 pr-10 text-sm shadow-sm transition focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+              className="w-full rounded-xl border border-[#E6ECF5] bg-white py-2.5 pl-9 pr-10 text-sm shadow-sm transition focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
             />
             {search && (
               <button
@@ -362,7 +362,7 @@ export function KelolaLowongan() {
               <ChevronDown size={14} className={`transition-transform ${showSortMenu ? 'rotate-180' : ''}`} />
             </Button>
             {showSortMenu && (
-              <div className="absolute right-0 z-20 mt-2 min-w-[220px] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+              <div className="absolute right-0 z-20 mt-2 min-w-[220px] overflow-hidden rounded-xl border border-[#E6ECF5] bg-white shadow-lg">
                 {SORT_OPTIONS.map((option) => (
                   <button
                     key={option}
@@ -374,7 +374,7 @@ export function KelolaLowongan() {
                     className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${
                       sortBy === option
                         ? 'bg-brand/5 font-semibold text-brand'
-                        : 'text-text-muted hover:bg-gray-50 hover:text-text'
+                        : 'text-text-muted hover:bg-[#E6ECF5] hover:text-text'
                     }`}
                   >
                     {sortLabels[option]}
@@ -394,7 +394,7 @@ export function KelolaLowongan() {
               className={`rounded-xl border px-3 py-2 text-xs font-semibold transition-all ${
                 statusFilter === status
                   ? 'border-brand bg-brand text-white shadow-sm'
-                  : 'border-gray-200 bg-white text-text-muted hover:border-brand/30 hover:text-brand'
+                  : 'border-[#E6ECF5] bg-white text-text-muted hover:border-brand/30 hover:text-brand'
               }`}
             >
               {status === 'All' ? 'Semua' : status === 'Active' ? 'Aktif' : 'Ditutup'}
@@ -427,11 +427,11 @@ export function KelolaLowongan() {
           <MotionDiv
             key="empty"
             variants={itemVariants}
-            className="rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50/50 py-24 text-center"
+            className="rounded-2xl border-2 border-dashed border-[#E6ECF5] bg-[#E6ECF5]/50 py-24 text-center"
           >
-            <Briefcase size={40} className="mx-auto mb-4 text-gray-300" />
+            <Briefcase size={40} className="mx-auto mb-4 text-[#0A1D3D]/30" />
             <p className="font-semibold text-text-muted">Belum ada lowongan</p>
-            <p className="mx-auto mt-1 max-w-xs text-sm text-gray-400">
+            <p className="mx-auto mt-1 max-w-xs text-sm text-[#0A1D3D]/40">
               Buat lowongan pertama untuk mulai menerima dan mengelola pelamar.
             </p>
             <Button
@@ -447,9 +447,9 @@ export function KelolaLowongan() {
           <MotionDiv
             key="no-results"
             variants={itemVariants}
-            className="rounded-2xl border border-dashed border-gray-200 bg-gray-50/50 py-16 text-center"
+            className="rounded-2xl border border-dashed border-[#E6ECF5] bg-[#E6ECF5]/50 py-16 text-center"
           >
-            <Filter size={32} className="mx-auto mb-3 text-gray-300" />
+            <Filter size={32} className="mx-auto mb-3 text-[#0A1D3D]/30" />
             <p className="font-medium text-text-muted">Tidak ada lowongan yang cocok.</p>
             <Button
               variant="ghost"

@@ -127,26 +127,26 @@ export function Perusahaan() {
   });
 
   return (
-    <div className="min-h-screen bg-[#f5f6f8]">
+    <div className="min-h-screen bg-[#E6ECF5]">
       <main className="mx-auto w-full max-w-[1480px] px-4 py-4 sm:px-6">
         <section className="mb-4">
-          <div className="rounded-md border border-gray-200 bg-white p-3 shadow-sm">
+          <div className="rounded-md border border-[#E6ECF5] bg-white p-3 shadow-sm">
             <div className="grid grid-cols-1 gap-2 lg:grid-cols-[minmax(260px,1fr)_220px_220px_auto]">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#0A1D3D]/40" />
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder={t('comp_search_ph', 'Search company or industry')}
-                  className="h-10 w-full rounded-md border border-gray-300 bg-white pl-9 pr-3 text-sm text-gray-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
+                  className="h-10 w-full rounded-md border border-[#E6ECF5] bg-white pl-9 pr-3 text-sm text-[#0A1D3D] outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
                 />
               </div>
 
               <select
                 value={filterIndustry}
                 onChange={(e) => setFilterIndustry(e.target.value)}
-                className="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
+                className="h-10 rounded-md border border-[#E6ECF5] bg-white px-3 text-sm text-[#0A1D3D] outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
               >
                 {industries.map((industry) => (
                   <option key={industry.value} value={industry.value}>{industry.label}</option>
@@ -156,7 +156,7 @@ export function Perusahaan() {
               <select
                 value={filterLocation}
                 onChange={(e) => setFilterLocation(e.target.value)}
-                className="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
+                className="h-10 rounded-md border border-[#E6ECF5] bg-white px-3 text-sm text-[#0A1D3D] outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
               >
                 {locations.map((location) => (
                   <option key={location.value} value={location.value}>{location.label}</option>
@@ -166,16 +166,16 @@ export function Perusahaan() {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-md px-3 text-sm font-semibold text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-900"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-md px-3 text-sm font-semibold text-[#0A1D3D]/50 transition-colors hover:bg-[#E6ECF5] hover:text-[#0A1D3D]"
               >
                 <X className="h-4 w-4" />
                 {t('reset')}
               </button>
             </div>
 
-            <div className="mt-3 flex flex-col gap-2 border-t border-gray-100 pt-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="mt-3 flex flex-col gap-2 border-t border-[#E6ECF5] pt-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-2 pr-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                <span className="inline-flex items-center gap-2 pr-1 text-xs font-semibold uppercase tracking-wide text-[#0A1D3D]/50">
                   <SlidersHorizontal className="h-4 w-4" />
                   {t('comp_filter')}
                 </span>
@@ -186,8 +186,8 @@ export function Perusahaan() {
                     onClick={() => setFilterIndustry(industry.value)}
                     className={`h-8 rounded-md border px-3 text-xs font-semibold transition-colors ${
                       filterIndustry === industry.value
-                        ? 'border-[#357963] bg-[#effaf6] text-[#357963]'
-                        : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
+                        ? 'border-[#357963] bg-[#E6ECF5] text-[#357963]'
+                        : 'border-[#E6ECF5] bg-white text-[#0A1D3D]/60 hover:bg-[#E6ECF5]'
                     }`}
                   >
                     {industry.label}
@@ -195,12 +195,12 @@ export function Perusahaan() {
                 ))}
               </div>
 
-              <label className="flex items-center gap-2 text-xs text-gray-500">
+              <label className="flex items-center gap-2 text-xs text-[#0A1D3D]/50">
                 <span className="font-semibold uppercase tracking-wide">{t('sort', 'Sort')}</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="h-8 rounded-md border border-gray-300 bg-white px-2 text-xs font-medium text-gray-700 outline-none"
+                  className="h-8 rounded-md border border-[#E6ECF5] bg-white px-2 text-xs font-medium text-[#0A1D3D]/80 outline-none"
                 >
                   <option>A - Z</option>
                   <option>Z - A</option>
@@ -211,9 +211,9 @@ export function Perusahaan() {
           </div>
         </section>
 
-        <section className="overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-            <h1 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <section className="overflow-hidden rounded-md border border-[#E6ECF5] bg-white shadow-sm">
+          <div className="flex items-center justify-between border-b border-[#E6ECF5] px-4 py-3">
+            <h1 className="text-xs font-semibold uppercase tracking-wide text-[#0A1D3D]/50">
               {t('comp_found')} {sortedCompanies.length} {t('comp_companies')}
             </h1>
           </div>
@@ -228,24 +228,24 @@ export function Perusahaan() {
                 <Link
                   key={company.id}
                   to={`/perusahaan/${company.id}`}
-                  className={`group flex items-center justify-between px-4 py-3 transition-colors hover:bg-gray-50 ${
-                    index < sortedCompanies.length - 1 ? 'border-b border-gray-100/80' : ''
+                  className={`group flex items-center justify-between px-4 py-3 transition-colors hover:bg-[#E6ECF5] ${
+                    index < sortedCompanies.length - 1 ? 'border-b border-[#E6ECF5]/80' : ''
                   }`}
                 >
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border border-gray-200 bg-white p-1.5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border border-[#E6ECF5] bg-white p-1.5">
                       {company.logo
                         ? <img src={company.logo} alt={company.name} className="h-full w-full object-contain" />
-                        : <span className="text-sm font-bold text-gray-400">{company.name?.[0]}</span>
+                        : <span className="text-sm font-bold text-[#0A1D3D]/40">{company.name?.[0]}</span>
                       }
                     </div>
 
                     <div className="min-w-0">
-                      <h2 className="truncate text-sm font-semibold text-gray-950 transition-colors group-hover:text-[#357963]">
+                      <h2 className="truncate text-sm font-semibold text-[#0A1D3D] transition-colors group-hover:text-[#357963]">
                         {company.name}
                       </h2>
-                      <p className="mt-0.5 truncate text-[11px] text-gray-500">{company.industry || t('comp_others')}</p>
-                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px] text-gray-500">
+                      <p className="mt-0.5 truncate text-[11px] text-[#0A1D3D]/50">{company.industry || t('comp_others')}</p>
+                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px] text-[#0A1D3D]/50">
                         {company.location && (
                           <span className="flex items-center gap-1">
                             <MapPin className="h-3 w-3" /> {company.location}
@@ -253,7 +253,7 @@ export function Perusahaan() {
                         )}
                         {company.employee_count && (
                           <>
-                            <span className="h-1 w-1 rounded-full bg-gray-300" />
+                            <span className="h-1 w-1 rounded-full bg-[#E6ECF5]" />
                             <span className="flex items-center gap-1">
                               <Users className="h-3 w-3" /> {Number(company.employee_count).toLocaleString('en-US')}
                             </span>
@@ -272,7 +272,7 @@ export function Perusahaan() {
                     <button
                       type="button"
                       onClick={(e) => { e.preventDefault(); toggleSaveCompany(company.id); }}
-                      className={`transition-colors ${savedCompanies.includes(company.id) ? 'text-[#357963]' : 'text-gray-400 hover:text-gray-600'}`}
+                      className={`transition-colors ${savedCompanies.includes(company.id) ? 'text-[#357963]' : 'text-[#0A1D3D]/40 hover:text-[#0A1D3D]/60'}`}
                       aria-label="Follow company"
                     >
                       <Bookmark className="h-4 w-4" fill={savedCompanies.includes(company.id) ? 'currentColor' : 'none'} />
@@ -282,7 +282,7 @@ export function Perusahaan() {
               ))}
             </div>
           ) : (
-            <div className="py-20 text-center text-gray-500">
+            <div className="py-20 text-center text-[#0A1D3D]/50">
               <p>{t('comp_no_results')}</p>
               <button
                 onClick={clearFilters}

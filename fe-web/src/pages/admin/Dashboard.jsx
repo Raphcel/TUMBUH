@@ -27,11 +27,11 @@ export function AdminDashboard() {
   }
 
   if (!stats) {
-    return <div className="py-20 text-center text-gray-500">{t('no_data')}</div>;
+    return <div className="py-20 text-center text-[#0A1D3D]/50">{t('no_data')}</div>;
   }
 
   const cards = [
-    { label: t('admin_total_users'), value: stats.total_users, icon: Users, color: 'bg-blue-500', lightColor: 'bg-blue-50', textColor: 'text-blue-600' },
+    { label: t('admin_total_users'), value: stats.total_users, icon: Users, color: 'bg-[#E6ECF5]0', lightColor: 'bg-[#E6ECF5]', textColor: 'text-blue-600' },
     { label: t('admin_students'), value: stats.total_students, icon: UserCheck, color: 'bg-emerald-500', lightColor: 'bg-emerald-50', textColor: 'text-emerald-600' },
     { label: t('admin_hr_staff'), value: stats.total_hr, icon: Shield, color: 'bg-violet-500', lightColor: 'bg-violet-50', textColor: 'text-violet-600' },
     { label: t('admin_active_users'), value: stats.active_users, icon: TrendingUp, color: 'bg-cyan-500', lightColor: 'bg-cyan-50', textColor: 'text-cyan-600' },
@@ -54,8 +54,8 @@ export function AdminDashboard() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">{t('admin_dashboard')}</h1>
-        <p className="text-gray-500 mt-1">{t('admin_subtitle')}</p>
+        <h1 className="text-2xl font-bold text-[#0A1D3D]">{t('admin_dashboard')}</h1>
+        <p className="text-[#0A1D3D]/50 mt-1">{t('admin_subtitle')}</p>
       </div>
 
       {/* Stats grid */}
@@ -65,29 +65,29 @@ export function AdminDashboard() {
           return (
             <div
               key={card.label}
-              className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow"
+              className="bg-white border border-[#E6ECF5] rounded-xl p-5 hover:shadow-md transition-shadow"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className={`w-10 h-10 rounded-lg ${card.lightColor} flex items-center justify-center`}>
                   <Icon className={card.textColor} size={20} />
                 </div>
               </div>
-              <p className="text-2xl font-bold text-gray-900">{card.value}</p>
-              <p className="text-sm text-gray-500 mt-1">{card.label}</p>
+              <p className="text-2xl font-bold text-[#0A1D3D]">{card.value}</p>
+              <p className="text-sm text-[#0A1D3D]/50 mt-1">{card.label}</p>
             </div>
           );
         })}
       </div>
 
       {/* Application status breakdown */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">{t('admin_app_status')}</h2>
+      <div className="bg-white border border-[#E6ECF5] rounded-xl p-6">
+        <h2 className="text-lg font-bold text-[#0A1D3D] mb-4">{t('admin_app_status')}</h2>
         {Object.keys(statusBreakdown).length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {Object.entries(statusBreakdown).map(([status, count]) => (
               <div
                 key={status}
-                className={`rounded-lg p-4 text-center ${statusColors[status] || 'bg-gray-100 text-gray-800'}`}
+                className={`rounded-lg p-4 text-center ${statusColors[status] || 'bg-[#E6ECF5] text-[#0A1D3D]'}`}
               >
                 <p className="text-2xl font-bold">{count}</p>
                 <p className="text-sm font-medium mt-1">{status}</p>
@@ -95,7 +95,7 @@ export function AdminDashboard() {
             ))}
           </div>
         ) : (
-          <p className="text-gray-500 text-sm">{t('admin_no_app_data')}</p>
+          <p className="text-[#0A1D3D]/50 text-sm">{t('admin_no_app_data')}</p>
         )}
       </div>
     </div>

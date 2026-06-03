@@ -208,7 +208,7 @@ export function DetailPerusahaan() {
   }
 
   if (!company) {
-    return <div className="py-20 text-center text-gray-500">{t('dcomp_not_found')}</div>;
+    return <div className="py-20 text-center text-[#0A1D3D]/50">{t('dcomp_not_found')}</div>;
   }
 
   const facts = [
@@ -263,7 +263,7 @@ export function DetailPerusahaan() {
             return (
               <Star
                 key={index}
-                className={`${starSize} ${isDarkBg ? 'text-white/20' : 'text-gray-300'}`}
+                className={`${starSize} ${isDarkBg ? 'text-white/20' : 'text-[#0A1D3D]/30'}`}
                 fill="none"
               />
             );
@@ -274,25 +274,25 @@ export function DetailPerusahaan() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f6f8] pb-10 pt-16">
+    <div className="min-h-screen bg-[#E6ECF5] pb-10 pt-16">
       <main className="mx-auto w-full max-w-[1180px] px-4 py-4 sm:px-6">
         <Link
           to="/perusahaan"
-          className="mb-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-gray-500 hover:text-[#357963]"
+          className="mb-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#0A1D3D]/50 hover:text-[#357963]"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           {t('navbar_companies')}
         </Link>
 
-        <section className="overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-md border border-[#E6ECF5] bg-white shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px]">
             <div className="flex flex-col justify-between h-full">
               <div className="px-6 pt-6 pb-4">
                 <div className="flex flex-col md:flex-row gap-6 items-start">
-                  <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white p-2.5 shadow-sm">
+                  <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-md border border-[#E6ECF5] bg-white p-2.5 shadow-sm">
                     {company.logo
                       ? <img src={company.logo} alt={company.name} className="h-full w-full object-contain" />
-                      : <span className="text-3xl font-bold text-gray-400">{company.name?.[0]}</span>
+                      : <span className="text-3xl font-bold text-[#0A1D3D]/40">{company.name?.[0]}</span>
                     }
                   </div>
                   <div className="flex-1 min-w-0 w-full">
@@ -301,7 +301,7 @@ export function DetailPerusahaan() {
                         <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#357963]">
                           {company.industry || t('comp_others')}
                         </p>
-                        <h1 className="text-3xl font-semibold tracking-tight text-gray-950 leading-tight">{company.name}</h1>
+                        <h1 className="text-3xl font-semibold tracking-tight text-[#0A1D3D] leading-tight">{company.name}</h1>
                       </div>
                       <div className="shrink-0 pt-1">
                         <button
@@ -310,7 +310,7 @@ export function DetailPerusahaan() {
                           className={`inline-flex items-center gap-1.5 h-9 border px-4 text-xs font-semibold rounded-full transition-all duration-200 disabled:opacity-60 shadow-sm ${
                             isFollowing
                               ? 'border-[#357963] bg-[#357963] text-white hover:bg-[#295f4d]'
-                              : 'border-gray-300 bg-white text-gray-800 hover:border-[#357963] hover:text-[#357963]'
+                              : 'border-[#E6ECF5] bg-white text-[#0A1D3D] hover:border-[#357963] hover:text-[#357963]'
                           }`}
                         >
                           {isFollowing ? (
@@ -327,14 +327,14 @@ export function DetailPerusahaan() {
                         </button>
                       </div>
                     </div>
-                    <p className="max-w-3xl text-sm leading-6 text-gray-650">
+                    <p className="max-w-3xl text-sm leading-6 text-[#0A1D3D]/60">
                       {company.description}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 border-t border-gray-200 sm:grid-cols-3">
+              <div className="grid grid-cols-1 border-t border-[#E6ECF5] sm:grid-cols-3">
                 {facts.map((fact, index) => <Fact key={fact.label} fact={fact} bordered={index > 0} />)}
               </div>
             </div>
@@ -372,11 +372,11 @@ export function DetailPerusahaan() {
         </section>
 
         {company.why_join && Array.isArray(company.why_join) && (
-          <section className="mt-4 overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm">
+          <section className="mt-4 overflow-hidden rounded-md border border-[#E6ECF5] bg-white shadow-sm">
             <SectionTitle eyebrow="Culture" title={`Mengapa Bergabung dengan ${company.name}?`} />
-            <div className="grid grid-cols-1 border-t border-gray-200 md:grid-cols-2">
+            <div className="grid grid-cols-1 border-t border-[#E6ECF5] md:grid-cols-2">
               {company.why_join.map((reason, idx) => (
-                <div key={idx} className="border-b border-gray-100 px-5 py-4 text-sm leading-6 text-gray-600 md:border-r">
+                <div key={idx} className="border-b border-[#E6ECF5] px-5 py-4 text-sm leading-6 text-[#0A1D3D]/60 md:border-r">
                   <span className="mb-2 block h-0.5 w-8 bg-[#357963]" />
                   {reason}
                 </div>
@@ -385,45 +385,45 @@ export function DetailPerusahaan() {
           </section>
         )}
 
-        <section className="mt-4 overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm">
+        <section className="mt-4 overflow-hidden rounded-md border border-[#E6ECF5] bg-white shadow-sm">
           <SectionTitle
             eyebrow="Recruitment"
             title={t('dcomp_open_positions')}
             action={<span className="text-sm font-semibold text-[#357963]">{companyJobs.length} active</span>}
           />
           {companyJobs.length > 0 ? (
-            <div className="border-t border-gray-200 p-5 bg-gray-50/10">
+            <div className="border-t border-[#E6ECF5] p-5 bg-[#E6ECF5]/10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {companyJobs.slice(0, 3).map((job) => (
                   <div
                     key={job.id}
-                    className="group flex flex-col justify-between rounded-md border border-gray-200 bg-white p-5 shadow-sm hover:border-[#357963]/30 hover:shadow-md transition-all duration-200"
+                    className="group flex flex-col justify-between rounded-md border border-[#E6ECF5] bg-white p-5 shadow-sm hover:border-[#357963]/30 hover:shadow-md transition-all duration-200"
                   >
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="inline-block rounded-sm bg-[#effaf6] border border-[#357963]/15 px-2 py-0.5 text-[10px] font-semibold text-[#357963]">
+                        <span className="inline-block rounded-sm bg-[#E6ECF5] border border-[#357963]/15 px-2 py-0.5 text-[10px] font-semibold text-[#357963]">
                           {job.type}
                         </span>
                         {job.work_mode && (
-                          <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
+                          <span className="text-[10px] font-semibold text-[#0A1D3D]/40 uppercase tracking-wider">
                             {job.work_mode}
                           </span>
                         )}
                       </div>
-                      <h3 className="mt-3 text-[15px] font-semibold text-gray-950 group-hover:text-[#357963] transition-colors line-clamp-2 leading-snug">
+                      <h3 className="mt-3 text-[15px] font-semibold text-[#0A1D3D] group-hover:text-[#357963] transition-colors line-clamp-2 leading-snug">
                         {job.title}
                       </h3>
-                      <div className="mt-4 flex items-center gap-1.5 text-xs text-gray-550">
-                        <MapPin className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <div className="mt-4 flex items-center gap-1.5 text-xs text-[#0A1D3D]/50">
+                        <MapPin className="h-3.5 w-3.5 text-[#0A1D3D]/40 shrink-0" />
                         <span className="truncate">{job.location}</span>
                       </div>
                       {job.salary && (
-                        <p className="mt-3.5 text-xs font-semibold text-[#357963] bg-[#effaf6]/50 px-2 py-1 rounded w-fit">
+                        <p className="mt-3.5 text-xs font-semibold text-[#357963] bg-[#E6ECF5]/50 px-2 py-1 rounded w-fit">
                           {job.salary}
                         </p>
                       )}
                     </div>
-                    <div className="mt-5 pt-4 border-t border-gray-150 flex items-center justify-between">
+                    <div className="mt-5 pt-4 border-t border-[#E6ECF5] flex items-center justify-between">
                       <Link
                         to={`/lowongan/${job.id}`}
                         className="text-xs font-semibold text-[#357963] hover:text-[#295f4d] inline-flex items-center gap-1 transition-colors"
@@ -438,7 +438,7 @@ export function DetailPerusahaan() {
                 <div className="mt-5 text-center">
                   <Link
                     to={`/lowongan?companyId=${company.id}&companyName=${encodeURIComponent(company.name)}`}
-                    className="inline-flex items-center justify-center h-9 border border-gray-300 px-5 text-xs font-semibold rounded-md bg-white text-gray-705 hover:border-[#357963] hover:text-[#357963] transition-colors"
+                    className="inline-flex items-center justify-center h-9 border border-[#E6ECF5] px-5 text-xs font-semibold rounded-md bg-white text-[#0A1D3D]/70 hover:border-[#357963] hover:text-[#357963] transition-colors"
                   >
                     Lihat Semua
                   </Link>
@@ -446,30 +446,30 @@ export function DetailPerusahaan() {
               )}
             </div>
           ) : (
-            <div className="border-t border-gray-200 py-12 text-center text-sm italic text-gray-400">{t('dcomp_no_positions')}</div>
+            <div className="border-t border-[#E6ECF5] py-12 text-center text-sm italic text-[#0A1D3D]/40">{t('dcomp_no_positions')}</div>
           )}
         </section>
 
-        <section id="reviews-section" className="mt-4 overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm">
+        <section id="reviews-section" className="mt-4 overflow-hidden rounded-md border border-[#E6ECF5] bg-white shadow-sm">
           <SectionTitle
             eyebrow="Reviews"
             title={t('dcomp_reviews')}
             action={
               <button
                 onClick={handleOpenReviewModal}
-                className="rounded-md border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 transition-colors hover:border-[#357963] hover:text-[#357963]"
+                className="rounded-md border border-[#E6ECF5] px-3 py-1.5 text-xs font-semibold text-[#0A1D3D]/80 transition-colors hover:border-[#357963] hover:text-[#357963]"
               >
                 Tulis Ulasan
               </button>
             }
           />
-          <div className="grid grid-cols-1 border-t border-gray-200 lg:grid-cols-[240px_1fr]">
-            <div className="border-b border-gray-200 px-5 py-4 lg:border-b-0 lg:border-r bg-gray-50/20">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400">Average Rating</p>
+          <div className="grid grid-cols-1 border-t border-[#E6ECF5] lg:grid-cols-[240px_1fr]">
+            <div className="border-b border-[#E6ECF5] px-5 py-4 lg:border-b-0 lg:border-r bg-[#E6ECF5]/20">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0A1D3D]/40">Average Rating</p>
               <div className="mt-2 flex flex-col gap-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-semibold leading-none text-gray-950">{company.rating || '-'}</span>
-                  {company.rating && <span className="text-sm text-gray-400">/ 5.0</span>}
+                  <span className="text-4xl font-semibold leading-none text-[#0A1D3D]">{company.rating || '-'}</span>
+                  {company.rating && <span className="text-sm text-[#0A1D3D]/40">/ 5.0</span>}
                 </div>
                 {company.rating && (
                   <div className="mt-1">
@@ -477,9 +477,9 @@ export function DetailPerusahaan() {
                   </div>
                 )}
               </div>
-              <p className="mt-2 text-xs text-gray-500">Berdasarkan ulasan mahasiswa dan karyawan.</p>
+              <p className="mt-2 text-xs text-[#0A1D3D]/50">Berdasarkan ulasan mahasiswa dan karyawan.</p>
             </div>
-            <div className="divide-y divide-gray-100 px-5">
+            <div className="divide-y divide-[#E6ECF5] px-5">
               {reviewsLoading ? (
                 <div className="flex justify-center py-8">
                   <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-brand" />
@@ -488,7 +488,7 @@ export function DetailPerusahaan() {
                 reviews.map((rev) => (
                   <div key={rev.id} className="py-5">
                     <div className="flex items-start gap-3">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#effaf6] text-xs font-bold text-[#357963] overflow-hidden border border-[#357963]/15">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#E6ECF5] text-xs font-bold text-[#357963] overflow-hidden border border-[#357963]/15">
                         {rev.user?.avatar ? (
                           <img src={rev.user.avatar} alt={`${rev.user.first_name} ${rev.user.last_name}`} className="h-full w-full object-cover" />
                         ) : (
@@ -498,10 +498,10 @@ export function DetailPerusahaan() {
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
                           <div>
-                            <p className="text-sm font-semibold text-gray-950">
+                            <p className="text-sm font-semibold text-[#0A1D3D]">
                               {rev.user?.first_name} {rev.user?.last_name}
                             </p>
-                            <div className="mt-1 flex items-center gap-1.5 text-[11px] text-gray-400">
+                            <div className="mt-1 flex items-center gap-1.5 text-[11px] text-[#0A1D3D]/40">
                               <span>
                                 {new Date(rev.created_at).toLocaleDateString('id-ID', {
                                   day: 'numeric',
@@ -540,15 +540,15 @@ export function DetailPerusahaan() {
                         </div>
                       </div>
                     </div>
-                    <p className="mt-2.5 text-sm leading-6 text-gray-650 whitespace-pre-line pl-12">
+                    <p className="mt-2.5 text-sm leading-6 text-[#0A1D3D]/60 whitespace-pre-line pl-12">
                       {rev.content}
                     </p>
                   </div>
                 ))
               ) : (
                 <div className="py-8 text-center">
-                  <p className="text-sm font-semibold text-gray-950">Belum ada ulasan tertulis.</p>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="text-sm font-semibold text-[#0A1D3D]">Belum ada ulasan tertulis.</p>
+                  <p className="mt-1 text-sm text-[#0A1D3D]/50">
                     Jadilah mahasiswa pertama yang menulis ulasan untuk perusahaan ini!
                   </p>
                 </div>
@@ -567,7 +567,7 @@ export function DetailPerusahaan() {
       >
         <form onSubmit={handleSubmitReview} className="space-y-5">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Rating Anda</label>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#0A1D3D]/50 mb-2">Rating Anda</label>
             <div className="flex items-center gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
@@ -577,37 +577,37 @@ export function DetailPerusahaan() {
                   className="transition-transform active:scale-90 focus:outline-none"
                 >
                   <Star
-                    className={`h-8 w-8 cursor-pointer ${star <= reviewRating ? 'text-amber-400' : 'text-gray-300 hover:text-amber-300'}`}
+                    className={`h-8 w-8 cursor-pointer ${star <= reviewRating ? 'text-amber-400' : 'text-[#0A1D3D]/30 hover:text-amber-300'}`}
                     fill={star <= reviewRating ? 'currentColor' : 'none'}
                   />
                 </button>
               ))}
             </div>
-            <p className="text-[11px] text-gray-400 mt-1.5">
+            <p className="text-[11px] text-[#0A1D3D]/40 mt-1.5">
               Pilih peringkat dari 1 sampai 5 bintang.
             </p>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Ulasan Tertulis</label>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#0A1D3D]/50 mb-2">Ulasan Tertulis</label>
             <textarea
               required
               rows={4}
               value={reviewContent}
               onChange={(e) => setReviewContent(e.target.value)}
               placeholder="Ceritakan pengalaman Anda magang atau bekerja di perusahaan ini. Bagaimana budaya kerjanya, mentor, atau tugas-tugasnya?"
-              className="w-full rounded-md border border-gray-300 p-3 text-sm text-gray-900 focus:border-[#357963] focus:ring-1 focus:ring-[#357963] outline-none transition-all duration-200"
+              className="w-full rounded-md border border-[#E6ECF5] p-3 text-sm text-[#0A1D3D] focus:border-[#357963] focus:ring-1 focus:ring-[#357963] outline-none transition-all duration-200"
             />
-            <p className="text-[11px] text-gray-400 mt-1.5">
+            <p className="text-[11px] text-[#0A1D3D]/40 mt-1.5">
               Minimum 5 karakter. Ulasan Anda akan dibaca oleh mahasiswa lain yang ingin mendaftar.
             </p>
           </div>
 
-          <div className="flex justify-end gap-3 border-t border-gray-100 pt-4 mt-6">
+          <div className="flex justify-end gap-3 border-t border-[#E6ECF5] pt-4 mt-6">
             <button
               type="button"
               onClick={() => setIsReviewModalOpen(false)}
-              className="rounded-md border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+              className="rounded-md border border-[#E6ECF5] px-4 py-2 text-xs font-semibold text-[#0A1D3D]/80 hover:bg-[#E6ECF5] transition-colors"
             >
               Batal
             </button>
@@ -630,7 +630,7 @@ function SectionTitle({ eyebrow, title, action }) {
     <div className="flex items-end justify-between gap-4 px-5 py-4">
       <div>
         {eyebrow && <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#357963]">{eyebrow}</p>}
-        <h2 className="text-lg font-semibold text-gray-950">{title}</h2>
+        <h2 className="text-lg font-semibold text-[#0A1D3D]">{title}</h2>
       </div>
       {action}
     </div>
@@ -640,31 +640,31 @@ function SectionTitle({ eyebrow, title, action }) {
 function Fact({ fact, bordered }) {
   const Icon = fact.icon;
   return (
-    <div className={`px-5 py-3 ${bordered ? 'border-l border-gray-200' : ''}`}>
-      <p className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-400">
+    <div className={`px-5 py-3 ${bordered ? 'border-l border-[#E6ECF5]' : ''}`}>
+      <p className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-[#0A1D3D]/40">
         <Icon className="h-3.5 w-3.5" />
         {fact.label}
       </p>
-      <p className="truncate text-sm font-semibold text-gray-950">{fact.value}</p>
+      <p className="truncate text-sm font-semibold text-[#0A1D3D]">{fact.value}</p>
     </div>
   );
 }
 
 function JobRow({ job }) {
   return (
-    <Link to={`/lowongan/${job.id}`} className="group block px-5 py-4 transition-colors hover:bg-gray-50">
+    <Link to={`/lowongan/${job.id}`} className="group block px-5 py-4 transition-colors hover:bg-[#E6ECF5]">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-[1fr_180px_32px] md:items-center">
         <div className="min-w-0">
-          <h3 className="truncate text-sm font-semibold text-gray-950 group-hover:text-[#357963]">{job.title}</h3>
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-500">
+          <h3 className="truncate text-sm font-semibold text-[#0A1D3D] group-hover:text-[#357963]">{job.title}</h3>
+          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[#0A1D3D]/50">
             {job.location && <span>{job.location}</span>}
-            {job.work_mode && <><span className="text-gray-300">|</span><span>{job.work_mode}</span></>}
+            {job.work_mode && <><span className="text-[#0A1D3D]/30">|</span><span>{job.work_mode}</span></>}
           </div>
         </div>
-        <span className="w-fit rounded-sm border border-gray-200 px-2 py-1 text-xs font-semibold text-gray-600">
+        <span className="w-fit rounded-sm border border-[#E6ECF5] px-2 py-1 text-xs font-semibold text-[#0A1D3D]/60">
           {job.type}
         </span>
-        <Bookmark className="hidden h-4 w-4 text-gray-300 group-hover:text-gray-500 md:block" />
+        <Bookmark className="hidden h-4 w-4 text-[#0A1D3D]/30 group-hover:text-[#0A1D3D]/50 md:block" />
       </div>
     </Link>
   );

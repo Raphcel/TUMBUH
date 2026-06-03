@@ -53,7 +53,7 @@ export function ProfileSection({ company, canEdit, addToast, onSaved }) {
         <div className="flex items-start gap-4">
           <CompanyLogo
             company={{ ...company, logo: form.logo }}
-            className="h-20 w-20 rounded-lg border border-gray-200 bg-white p-2 ring-1 ring-gray-200"
+            className="h-20 w-20 rounded-lg border border-[#E6ECF5] bg-white p-2 ring-1 ring-[#E6ECF5]"
             fallbackClassName="text-xl font-bold text-brand"
           />
           <div className="min-w-0 flex-1">
@@ -66,21 +66,21 @@ export function ProfileSection({ company, canEdit, addToast, onSaved }) {
           </div>
         </div>
         <div className="mt-5 grid grid-cols-2 gap-3">
-          <div className="rounded-lg bg-gray-50 p-3">
+          <div className="rounded-lg bg-[#E6ECF5] p-3">
             <p className="text-xs text-text-light">Industry</p>
             <p className="mt-1 truncate text-sm font-semibold text-text">{company?.industry || '-'}</p>
           </div>
-          <div className="rounded-lg bg-gray-50 p-3">
+          <div className="rounded-lg bg-[#E6ECF5] p-3">
             <p className="text-xs text-text-light">Status</p>
             <div className="mt-1"><StatusPill tone="green">Approved</StatusPill></div>
           </div>
         </div>
-        <div className="mt-5 rounded-lg border border-gray-100 bg-white p-4">
+        <div className="mt-5 rounded-lg border border-[#E6ECF5] bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-text-light">Preview card</p>
           <div className="mt-3 flex items-center gap-3">
             <CompanyLogo
               company={{ ...company, logo: form.logo }}
-              className="h-10 w-10 rounded-lg border border-gray-100 bg-white p-1.5"
+              className="h-10 w-10 rounded-lg border border-[#E6ECF5] bg-white p-1.5"
               fallbackClassName="text-sm font-bold text-brand"
             />
             <div className="min-w-0">
@@ -115,13 +115,13 @@ export function ProfileSection({ company, canEdit, addToast, onSaved }) {
             <Input label="Logo URL" value={form.logo} onChange={handleChange('logo')} disabled={!canEdit} />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Description</label>
+            <label className="mb-1 block text-sm font-medium text-[#0A1D3D]/80">Description</label>
             <textarea
               rows={7}
               value={form.description}
               onChange={handleChange('description')}
               disabled={!canEdit}
-              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm disabled:bg-gray-50 disabled:text-gray-500 focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+              className="w-full rounded-lg border border-[#E6ECF5] px-3 py-2 text-sm shadow-sm disabled:bg-[#E6ECF5] disabled:text-[#0A1D3D]/50 focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
             />
           </div>
           <div className="flex justify-end">

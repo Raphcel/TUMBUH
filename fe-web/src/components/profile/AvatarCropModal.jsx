@@ -128,7 +128,7 @@ export function AvatarCropModal({ file, isOpen, onCancel, onConfirm, isId = fals
         </div>
 
         <div className="space-y-4">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-[#0A1D3D]/80">
             {isId ? 'Zoom' : 'Zoom'}
             <div className="mt-2 flex items-center gap-3">
               <Minus size={16} className="text-text-muted" />
@@ -146,7 +146,7 @@ export function AvatarCropModal({ file, isOpen, onCancel, onConfirm, isId = fals
           </label>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-[#0A1D3D]/80">
               {isId ? 'Geser horizontal' : 'Horizontal position'}
               <input
                 type="range"
@@ -158,7 +158,7 @@ export function AvatarCropModal({ file, isOpen, onCancel, onConfirm, isId = fals
                 className="mt-2 w-full accent-brand"
               />
             </label>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-[#0A1D3D]/80">
               {isId ? 'Geser vertikal' : 'Vertical position'}
               <input
                 type="range"
