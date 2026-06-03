@@ -21,8 +21,8 @@ import { applicationsApi } from '../../api/applications';
 import { externshipsApi } from '../../api/externships';
 import { opportunitiesApi } from '../../api/opportunities';
 import { companyFollowsApi } from '../../api/companyFollows';
-import { resolveUploadUrl } from '../../api/client';
 import { CalendarWidget } from '../../components/dashboard/CalendarWidget';
+import { CompanyLogo } from '../../components/ui/CompanyLogo';
 
 import { motion } from 'framer-motion';
 import { useTranslation } from '../../context/LanguageContext';
@@ -279,9 +279,11 @@ export function StudentDashboard() {
                       className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 transition-colors gap-4"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-surface-muted border border-surface-border flex items-center justify-center flex-shrink-0 text-brand font-bold text-sm">
-                          {job?.company?.name?.charAt(0) || 'C'}
-                        </div>
+                        <CompanyLogo
+                          company={job?.company}
+                          className="h-10 w-10 rounded-lg border border-surface-border bg-surface-muted p-1.5"
+                          fallbackClassName="text-sm font-bold text-brand"
+                        />
                         <div>
                           <h3 className="font-semibold text-text group-hover:text-brand transition-colors text-base">{job?.title}</h3>
                           <p className="text-sm text-text-muted mt-0.5 flex items-center gap-1.5">
@@ -405,13 +407,13 @@ export function StudentDashboard() {
                   to={`/perusahaan/${company.id}`}
                   className="flex items-center gap-3 rounded-lg border border-surface-border bg-surface-muted/40 p-3 transition-colors hover:border-brand/30 hover:bg-brand-muted/30"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-surface-border bg-white p-1">
-                    {company.logo ? (
-                      <img src={resolveUploadUrl(company.logo)} alt="" className="h-full w-full object-contain" />
-                    ) : (
-                      <Building size={18} className="text-text-muted" />
-                    )}
-                  </div>
+                  <CompanyLogo
+                    company={company}
+                    className="h-10 w-10 rounded-lg border border-surface-border bg-white p-1"
+                    fallbackClassName="text-text-muted"
+                    fallbackIcon={Building}
+                    useIconFallback
+                  />
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-text">{company.name}</p>
                     <p className="truncate text-xs text-text-muted">{company.industry || '-'}</p>
@@ -549,13 +551,13 @@ export function StudentDashboard() {
               onClick={() => setShowFollowingModal(false)}
               className="flex items-center gap-4 rounded-lg border border-surface-border bg-white p-4 transition-colors hover:border-brand/30 hover:bg-brand-muted/30"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-surface-border bg-white p-1.5">
-                {company.logo ? (
-                  <img src={resolveUploadUrl(company.logo)} alt="" className="h-full w-full object-contain" />
-                ) : (
-                  <Building size={20} className="text-text-muted" />
-                )}
-              </div>
+              <CompanyLogo
+                company={company}
+                className="h-12 w-12 rounded-lg border border-surface-border bg-white p-1.5"
+                fallbackClassName="text-text-muted"
+                fallbackIcon={Building}
+                useIconFallback
+              />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold text-text">{company.name}</p>
                 <p className="truncate text-xs text-text-muted">{company.industry || '-'}</p>

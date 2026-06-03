@@ -6,6 +6,7 @@ import { MapPin, Users, Star, ChevronDown, Bookmark } from 'lucide-react';
 import { useTranslation } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { CompanyLogo } from '../components/ui/CompanyLogo';
 
 export function Perusahaan() {
   const navigate = useNavigate();
@@ -215,12 +216,11 @@ export function Perusahaan() {
                   >
                     <div className="flex items-center gap-4">
                       {/* Logo */}
-                      <div className="w-12 h-12 rounded-lg border border-gray-200 flex items-center justify-center p-2 bg-white shrink-0">
-                        {company.logo
-                          ? <img src={company.logo} alt={company.name} className="w-full h-full object-contain" />
-                          : <span className="text-lg font-bold text-gray-400">{company.name?.[0]}</span>
-                        }
-                      </div>
+                      <CompanyLogo
+                        company={company}
+                        className="h-12 w-12 rounded-lg border border-gray-200 bg-white p-2"
+                        fallbackClassName="text-lg font-bold text-gray-400"
+                      />
 
                       <div>
                         <h3 className="font-semibold text-gray-900 group-hover:text-brand transition-colors">

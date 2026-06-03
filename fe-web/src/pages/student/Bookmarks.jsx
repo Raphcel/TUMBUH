@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { bookmarksApi } from '../../api/bookmarks';
 import { useTranslation } from '../../context/LanguageContext';
+import { CompanyLogo } from '../../components/ui/CompanyLogo';
 
 export function Bookmarks() {
     const { lang } = useTranslation();
@@ -148,11 +149,11 @@ export function Bookmarks() {
                                     <CardBody className="p-6">
                                         <div className="flex flex-col md:flex-row gap-6">
                                             {/* Logo */}
-                                            <div className="w-16 h-16 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
-                                                <span className="text-xl font-bold text-gray-400">
-                                                    {job.company.name[0]}
-                                                </span>
-                                            </div>
+                                            <CompanyLogo
+                                                company={job.company}
+                                                className="h-16 w-16 rounded-lg border border-gray-100 bg-gray-50 p-2"
+                                                fallbackClassName="text-xl font-bold text-gray-400"
+                                            />
 
                                             {/* Content */}
                                             <div className="flex-1 min-w-0">
