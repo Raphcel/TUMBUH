@@ -89,7 +89,7 @@ export function Login() {
           setErrors({});
           setGoogleLoading(true);
           try {
-            const user = await googleSignIn({ credential });
+            const user = await googleSignIn({ credential, login_only: true });
             navigate(redirectTo || (user.role === 'hr' ? '/hr/dashboard' : '/student/dashboard'), { replace: Boolean(redirectTo) });
             addToast({ title: copy.successTitle, message: `${copy.successMessage}, ${user.first_name}!`, type: 'success' });
           } catch (err) {

@@ -84,6 +84,7 @@ class GoogleAuthRequest(BaseModel):
     first_name: str | None = Field(None, max_length=100)
     last_name: str | None = Field(None, max_length=100)
     company_id: int | None = None
+    login_only: bool = False
 
 
 class VerifyEmailRequest(BaseModel):

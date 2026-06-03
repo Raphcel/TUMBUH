@@ -251,8 +251,6 @@ class AuthService:
         if not payload.get("email_verified"):
             raise HTTPException(status_code=400, detail="Google email is not verified")
 
-        self._validate_registration_identity(email, data.role)
-
         user = self._user_repo.get_by_google_sub(google_sub) or self._user_repo.get_by_email(email)
         if user:
             if user.google_sub != google_sub:
@@ -262,6 +260,11 @@ class AuthService:
                     "is_email_verified": True,
                 })
             return self._issue_tokens(user)
+
+        if data.login_only:
+            raise HTTPException(status_code=404, detail="No account found for this Google account. Please register first.")
+
+        self._validate_registration_identity(email, data.role)
 
         first_name, last_name = self._resolve_google_names(data, payload)
         user = self._user_repo.create({
