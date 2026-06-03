@@ -13,6 +13,8 @@ from app.config.settings import get_settings
 from app.domain.models.user import User
 from app.domain.models.user import UserRole
 from app.repositories.notification_repository import NotificationRepository
+from app.repositories.company_repository import CompanyRepository
+from app.repositories.organization_repository import OrganizationMemberRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import GoogleAuthRequest, RegistrationResponse, UserCreate, UserResponse, TokenResponse
 from app.services.audit_service import audit_log
@@ -22,6 +24,7 @@ from app.services.user_asset_service import (
     is_managed_avatar_url,
     is_managed_cv_url,
 )
+from app.services.organization_service import OrganizationService
 
 logger = logging.getLogger(__name__)
 
@@ -36,10 +39,14 @@ class AuthService:
         user_repo: UserRepository,
         notification_repo: NotificationRepository | None = None,
         email_service: EmailService | None = None,
+        organization_member_repo: OrganizationMemberRepository | None = None,
+        company_repo: CompanyRepository | None = None,
     ):
         self._user_repo = user_repo
         self._notification_repo = notification_repo
         self._email_service = email_service
+        self._organization_member_repo = organization_member_repo
+        self._company_repo = company_repo
 
     # ── Password Utilities ───────────────────────────────────
 
@@ -344,7 +351,20 @@ class AuthService:
         if updates:
             user = self._user_repo.update(user, updates)
 
-        return UserResponse.model_validate(user)
+        response = UserResponse.model_validate(user)
+        if self._organization_member_repo and self._company_repo:
+            org_service = OrganizationService(
+                self._company_repo,
+                self._organization_member_repo,
+                invite_repo=None,
+                company_request_repo=None,
+                user_repo=self._user_repo,
+            )
+            membership = org_service.active_membership_response(user)
+            response.organization_membership = membership
+            if membership:
+                response.company_id = membership.company_id
+        return response
 
     def _create_onboarding_notification(self, user: User) -> None:
         if not self._notification_repo or user.role != UserRole.STUDENT:

@@ -14,6 +14,7 @@ import {
   FileBadge2,
   ShieldCheck,
   BookOpen,
+  Network,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from '../../context/LanguageContext';
@@ -37,8 +38,8 @@ export function Sidebar({ role = 'student', isCollapsed, isMobileOpen, toggleSid
   const hrLinks = [
     { name: t('nav_dashboard'), path: '/hr/dashboard', icon: Home },
     { name: t('nav_calendar'), path: '/calendar', icon: Calendar },
+    { name: t('nav_organization'), path: '/hr/organization', icon: Network },
     { name: t('nav_opportunities'), path: '/hr/opportunities', icon: Briefcase },
-    { name: t('nav_company_profile'), path: '/hr/company', icon: Building },
   ];
   const adminLinks = [
     { name: t('nav_dashboard'), path: '/admin/dashboard', icon: Home },

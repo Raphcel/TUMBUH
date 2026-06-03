@@ -10,6 +10,7 @@ export const id = {
   nav_bookmarks:        'Bookmark',
   nav_logbook:          'Logbook',
   nav_applicants:       'Pelamar',
+  nav_organization:     'Organisasi',
   nav_company_profile:  'Profil Perusahaan',
   nav_settings:         'Pengaturan',
   nav_logout:           'Keluar',

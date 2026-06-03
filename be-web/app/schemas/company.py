@@ -1,6 +1,8 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
 
+from app.domain.models.company import CompanyStatus
+
 
 # ── Request Schemas ──────────────────────────────────────────
 
@@ -17,6 +19,7 @@ class CompanyCreate(BaseModel):
     linkedin_url: str | None = None
     instagram_url: str | None = None
     tagline: str | None = None
+    status: CompanyStatus = CompanyStatus.APPROVED
 
 
 class CompanyUpdate(BaseModel):
@@ -51,6 +54,7 @@ class CompanyResponse(BaseModel):
     linkedin_url: str | None = None
     instagram_url: str | None = None
     tagline: str | None = None
+    status: CompanyStatus = CompanyStatus.APPROVED
     created_at: datetime
 
     class Config:

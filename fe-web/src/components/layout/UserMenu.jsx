@@ -12,7 +12,7 @@ import {
     FileText,
     User,
     Briefcase,
-    Building,
+    Network,
     Settings,
     Languages,
     Check,
@@ -49,7 +49,7 @@ export function UserMenu({ isTransparent = false, isMobile = false }) {
     const hrLinks = [
         { name: t('nav_dashboard'),        path: '/hr/dashboard',    icon: <LayoutDashboard size={16} /> },
         { name: t('nav_opportunities'),    path: '/hr/opportunities', icon: <Briefcase size={16} /> },
-        { name: t('nav_company_profile'),  path: '/hr/company',      icon: <Building size={16} /> },
+        { name: t('nav_organization'),     path: '/hr/organization', icon: <Network size={16} /> },
     ];
 
     const currentLinks = user?.role === 'hr' ? hrLinks : studentLinks;
@@ -176,7 +176,7 @@ export function UserMenu({ isTransparent = false, isMobile = false }) {
                             {/* ── Settings & Logout ── */}
                             <div className="border-t border-surface-border py-1 mt-1">
                                 <Link
-                                    to={user?.role === 'hr' ? '/hr/company' : '/student/settings'}
+                                    to={user?.role === 'hr' ? '/hr/organization?section=profile' : '/student/settings'}
                                     onClick={() => setDropdownOpen(false)}
                                     className="w-full flex items-center gap-3 px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-text transition-colors text-left"
                                 >

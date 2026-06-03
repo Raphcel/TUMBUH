@@ -12,11 +12,12 @@ from app.repositories import (
     UserRepository, CompanyRepository, OpportunityRepository, ApplicationRepository,
     BookmarkRepository, CompanyFollowRepository, ExternshipRepository, NotificationRepository, ResumeRepository,
     LogbookRepository,
+    CompanyRequestRepository, OrganizationInviteRepository, OrganizationMemberRepository,
 )
 from app.services import (
     AuthService, UserService, CompanyService, OpportunityService, ApplicationService,
     BookmarkService, CompanyFollowService, ExternshipService, NotificationService, AdminService, ResumeService,
-    EmailService, LogbookService,
+    EmailService, LogbookService, OrganizationService,
 )
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
@@ -68,18 +69,36 @@ def get_email_service() -> EmailService:
     return EmailService()
 
 
+def get_organization_member_repo(db: Session = Depends(get_db)) -> OrganizationMemberRepository:
+    return OrganizationMemberRepository(db)
+
+
+def get_organization_invite_repo(db: Session = Depends(get_db)) -> OrganizationInviteRepository:
+    return OrganizationInviteRepository(db)
+
+
+def get_company_request_repo(db: Session = Depends(get_db)) -> CompanyRequestRepository:
+    return CompanyRequestRepository(db)
+
+
 # ── Service Factories ────────────────────────────────────────
 
 def get_auth_service(
     user_repo: UserRepository = Depends(get_user_repo),
     notification_repo: NotificationRepository = Depends(get_notification_repo),
     email_service: EmailService = Depends(get_email_service),
+    organization_member_repo: OrganizationMemberRepository = Depends(get_organization_member_repo),
+    company_repo: CompanyRepository = Depends(get_company_repo),
 ) -> AuthService:
-    return AuthService(user_repo, notification_repo, email_service)
+    return AuthService(user_repo, notification_repo, email_service, organization_member_repo, company_repo)
 
 
-def get_user_service(user_repo: UserRepository = Depends(get_user_repo)) -> UserService:
-    return UserService(user_repo)
+def get_user_service(
+    user_repo: UserRepository = Depends(get_user_repo),
+    organization_member_repo: OrganizationMemberRepository = Depends(get_organization_member_repo),
+    company_repo: CompanyRepository = Depends(get_company_repo),
+) -> UserService:
+    return UserService(user_repo, organization_member_repo, company_repo)
 
 
 def get_company_service(company_repo: CompanyRepository = Depends(get_company_repo)) -> CompanyService:
@@ -159,6 +178,24 @@ def get_admin_service(
     application_repo: ApplicationRepository = Depends(get_application_repo),
 ) -> AdminService:
     return AdminService(user_repo, company_repo, opportunity_repo, application_repo)
+
+
+def get_organization_service(
+    company_repo: CompanyRepository = Depends(get_company_repo),
+    member_repo: OrganizationMemberRepository = Depends(get_organization_member_repo),
+    invite_repo: OrganizationInviteRepository = Depends(get_organization_invite_repo),
+    company_request_repo: CompanyRequestRepository = Depends(get_company_request_repo),
+    user_repo: UserRepository = Depends(get_user_repo),
+    email_service: EmailService = Depends(get_email_service),
+) -> OrganizationService:
+    return OrganizationService(
+        company_repo,
+        member_repo,
+        invite_repo,
+        company_request_repo,
+        user_repo,
+        email_service,
+    )
 
 
 # ── Auth Dependencies ────────────────────────────────────────
