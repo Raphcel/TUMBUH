@@ -546,13 +546,16 @@ class ApplicationService:
         })
         if self._user_repo:
             student = self._user_repo.get_by_id(application.student_id)
-            self._send_notification_email(
-                student,
-                "Application status updated",
-                message,
-                action_label,
-                action_url,
-            )
+            if self._email_service and student:
+                absolute_view_url = self._frontend_url(action_url or "/student/applications")
+                self._email_service.send_application_status_email(
+                    student.email,
+                    student.full_name,
+                    opportunity_title=title,
+                    company_name=company_name,
+                    new_status=new_status.value,
+                    view_url=absolute_view_url,
+                )
 
         audit_log(
             "NOTIFICATION_CREATE",
@@ -580,6 +583,11 @@ class ApplicationService:
             action_label=action_label,
             action_url=action_url,
         )
+
+    @staticmethod
+    def _frontend_url(path: str) -> str:
+        from app.config.settings import get_settings
+        return f"{get_settings().FRONTEND_URL.rstrip('/')}{path if path.startswith('/') else '/' + path}"
 
     @staticmethod
     def _extract_notification_count(message: str) -> int:
