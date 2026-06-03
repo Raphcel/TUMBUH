@@ -28,8 +28,18 @@ export const adminApi = {
   listCompanies: (skip = 0, limit = 50) =>
     api.get(`/admin/companies?skip=${skip}&limit=${limit}`),
 
+  listCompanyRequests: (skip = 0, limit = 50) =>
+    api.get(`/admin/company-requests?skip=${skip}&limit=${limit}`),
+
+  approveCompanyRequest: (companyId) =>
+    api.patch(`/admin/company-requests/${companyId}/approve`),
+
   /** Delete a company */
   deleteCompany: (companyId) => api.delete(`/admin/companies/${companyId}`),
+
+  /** Update a company's profile (admin) */
+  updateCompany: (companyId, payload) =>
+    api.put(`/admin/companies/${companyId}`, payload),
 
   /** List opportunities */
   listOpportunities: (skip = 0, limit = 50) =>

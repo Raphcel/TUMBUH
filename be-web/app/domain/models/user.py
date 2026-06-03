@@ -63,6 +63,13 @@ class User(Base):
     externships = relationship("Externship", back_populates="student", cascade="all, delete-orphan")
     resume_profiles = relationship("ResumeProfile", back_populates="user", cascade="all, delete-orphan")
     reviews = relationship("CompanyReview", back_populates="user", cascade="all, delete-orphan")
+    logbooks = relationship("InternshipLogbook", back_populates="student", cascade="all, delete-orphan")
+    organization_memberships = relationship(
+        "OrganizationMember",
+        foreign_keys="OrganizationMember.user_id",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
 
     @property
     def full_name(self) -> str:

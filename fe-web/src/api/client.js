@@ -3,7 +3,7 @@
  * 401 auto-logout, and AbortController support.
  */
 
-const API_BASE = import.meta.env.DEV
+export const API_BASE = import.meta.env.DEV
   ? '/api/v1'
   : import.meta.env.VITE_API_URL || '/api/v1';
 

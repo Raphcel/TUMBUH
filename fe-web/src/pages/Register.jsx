@@ -27,6 +27,7 @@ export function Register() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [shake, setShake] = useState(false);
   const googleButtonRef = useRef(null);
+  const formRef = useRef(form);
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const set = (key) => (e) => {
@@ -57,6 +58,8 @@ export function Register() {
     return Object.keys(newErrors).length === 0;
   };
 
+  useEffect(() => { formRef.current = form; }, [form]);
+
   useEffect(() => {
     if (!googleClientId || !googleButtonRef.current) return;
 
@@ -69,10 +72,11 @@ export function Register() {
           setErrors({});
           setSuccess('');
 
+          const { role, first_name, last_name } = formRef.current;
           const nameErrors = {};
-          if (form.role === 'hr') {
-            if (!form.first_name.trim()) nameErrors.first_name = isId ? 'Nama depan wajib diisi untuk HR' : 'First name is required for HR';
-            if (!form.last_name.trim()) nameErrors.last_name = isId ? 'Nama belakang wajib diisi untuk HR' : 'Last name is required for HR';
+          if (role === 'hr') {
+            if (!first_name.trim()) nameErrors.first_name = isId ? 'Nama depan wajib diisi untuk HR' : 'First name is required for HR';
+            if (!last_name.trim()) nameErrors.last_name = isId ? 'Nama belakang wajib diisi untuk HR' : 'Last name is required for HR';
           }
           if (Object.keys(nameErrors).length > 0) {
             setErrors(nameErrors);
@@ -85,9 +89,9 @@ export function Register() {
           try {
             const user = await googleSignIn({
               credential,
-              role: form.role,
-              first_name: form.first_name.trim() || null,
-              last_name: form.last_name.trim() || null,
+              role,
+              first_name: first_name.trim() || null,
+              last_name: last_name.trim() || null,
             });
             navigate(user.role === 'hr' ? '/hr/dashboard' : '/student/dashboard');
           } catch (err) {
@@ -124,7 +128,7 @@ export function Register() {
     script.defer = true;
     script.onload = renderButton;
     document.head.appendChild(script);
-  }, [form.first_name, form.last_name, form.role, googleClientId, googleSignIn, isId, navigate]);
+  }, [googleClientId, googleSignIn, isId, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

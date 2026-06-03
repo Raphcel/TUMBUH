@@ -12,12 +12,14 @@ LEGACY_UPLOADS_DIR = BACKEND_ROOT / "app" / "uploads"
 
 AVATAR_DIR = PUBLIC_UPLOADS_DIR / "avatars"
 PRIVATE_CV_DIR = PRIVATE_UPLOADS_DIR / "cvs"
+LOGBOOK_EVIDENCE_DIR = PRIVATE_UPLOADS_DIR / "logbook_evidence"
 
 
 def ensure_upload_dirs() -> None:
     """Create managed upload directories used by the application."""
     AVATAR_DIR.mkdir(parents=True, exist_ok=True)
     PRIVATE_CV_DIR.mkdir(parents=True, exist_ok=True)
+    LOGBOOK_EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def build_avatar_url(filename: str) -> str:
@@ -30,6 +32,10 @@ def build_cv_storage_url(filename: str) -> str:
     return f"/uploads/cvs/{filename}"
 
 
+def build_logbook_evidence_storage_url(filename: str) -> str:
+    return f"/uploads/logbook_evidence/{filename}"
+
+
 def is_managed_avatar_url(value: str | None) -> bool:
     return bool(value and value.startswith("/uploads/avatars/"))
 
@@ -38,11 +44,17 @@ def is_managed_cv_url(value: str | None) -> bool:
     return bool(value and value.startswith("/uploads/cvs/"))
 
 
+def is_managed_logbook_evidence_url(value: str | None) -> bool:
+    return bool(value and value.startswith("/uploads/logbook_evidence/"))
+
+
 def is_managed_url(value: str | None, asset_type: str) -> bool:
     if asset_type == "avatar":
         return is_managed_avatar_url(value)
     if asset_type == "cv":
         return is_managed_cv_url(value)
+    if asset_type == "logbook_evidence":
+        return is_managed_logbook_evidence_url(value)
     raise ValueError(f"Unsupported asset type: {asset_type}")
 
 
@@ -58,6 +70,8 @@ def _current_path(asset_type: str, filename: str) -> Path:
         return AVATAR_DIR / filename
     if asset_type == "cv":
         return PRIVATE_CV_DIR / filename
+    if asset_type == "logbook_evidence":
+        return LOGBOOK_EVIDENCE_DIR / filename
     raise ValueError(f"Unsupported asset type: {asset_type}")
 
 
@@ -68,6 +82,11 @@ def _legacy_candidates(asset_type: str, filename: str) -> list[Path]:
         return [
             LEGACY_UPLOADS_DIR / "cvs" / filename,
             PUBLIC_UPLOADS_DIR / "cvs" / filename,
+        ]
+    if asset_type == "logbook_evidence":
+        return [
+            LEGACY_UPLOADS_DIR / "logbook_evidence" / filename,
+            PUBLIC_UPLOADS_DIR / "logbook_evidence" / filename,
         ]
     raise ValueError(f"Unsupported asset type: {asset_type}")
 

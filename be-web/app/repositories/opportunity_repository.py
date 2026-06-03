@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import asc, desc, nullslast
 
+from app.domain.models.company import Company, CompanyStatus
 from app.domain.models.opportunity import Opportunity, OpportunityType
 from app.repositories.base import BaseRepository
 
@@ -24,8 +25,12 @@ class OpportunityRepository(BaseRepository[Opportunity]):
         """Retrieve all opportunities posted by a specific company."""
         return (
             self._db.query(Opportunity)
+            .join(Company, Company.id == Opportunity.company_id)
             .options(joinedload(Opportunity.applications))
-            .filter(Opportunity.company_id == company_id)
+            .filter(
+                Opportunity.company_id == company_id,
+                Company.status == CompanyStatus.APPROVED,
+            )
             .offset(skip)
             .limit(limit)
             .all()
@@ -42,10 +47,10 @@ class OpportunityRepository(BaseRepository[Opportunity]):
         limit: int = 100,
     ) -> list[Opportunity]:
         """Search and filter opportunities."""
-        q = self._db.query(Opportunity).options(
+        q = self._db.query(Opportunity).join(Company, Company.id == Opportunity.company_id).options(
             joinedload(Opportunity.company),
             joinedload(Opportunity.applications),
-        )
+        ).filter(Company.status == CompanyStatus.APPROVED)
 
         if query:
             search_term = f"%{query}%"
@@ -73,7 +78,11 @@ class OpportunityRepository(BaseRepository[Opportunity]):
         """Count opportunities for a given company."""
         return (
             self._db.query(Opportunity)
-            .filter(Opportunity.company_id == company_id)
+            .join(Company, Company.id == Opportunity.company_id)
+            .filter(
+                Opportunity.company_id == company_id,
+                Company.status == CompanyStatus.APPROVED,
+            )
             .count()
         )
 
@@ -85,7 +94,9 @@ class OpportunityRepository(BaseRepository[Opportunity]):
         company_id: int | None = None,
     ) -> int:
         """Count opportunities matching the given filters."""
-        q = self._db.query(Opportunity)
+        q = self._db.query(Opportunity).join(Company, Company.id == Opportunity.company_id).filter(
+            Company.status == CompanyStatus.APPROVED
+        )
         if query:
             q = q.filter(Opportunity.title.ilike(f"%{query}%"))
         if type_filter:

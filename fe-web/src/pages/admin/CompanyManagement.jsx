@@ -1,24 +1,49 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { adminApi } from '../../api/admin';
 import { useTranslation } from '../../context/LanguageContext';
-import { Trash2, Building2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Trash2, Building2, ChevronLeft, ChevronRight, CheckCircle2, Clock3, Pencil, X, Save } from 'lucide-react';
+import { CompanyLogo } from '../../components/ui/CompanyLogo';
 
 const PAGE_SIZE = 20;
+
+const EMPTY_FORM = {
+  name: '',
+  industry: '',
+  location: '',
+  logo: '',
+  description: '',
+  website: '',
+  employee_count: '',
+  founded_year: '',
+  linkedin_url: '',
+  instagram_url: '',
+  tagline: '',
+};
 
 export function CompanyManagement() {
   const { t } = useTranslation();
   const [companies, setCompanies] = useState([]);
   const [total, setTotal] = useState(0);
+  const [requests, setRequests] = useState([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [approvingId, setApprovingId] = useState(null);
+
+  // Edit modal state
+  const [editingCompany, setEditingCompany] = useState(null);
+  const [editForm, setEditForm] = useState(EMPTY_FORM);
+  const [savingEdit, setSavingEdit] = useState(false);
 
   const fetchCompanies = useCallback(() => {
     setLoading(true);
-    adminApi
-      .listCompanies(page * PAGE_SIZE, PAGE_SIZE)
-      .then((data) => {
-        setCompanies(data.items || []);
-        setTotal(data.total || 0);
+    Promise.all([
+      adminApi.listCompanies(page * PAGE_SIZE, PAGE_SIZE),
+      adminApi.listCompanyRequests(0, 50),
+    ])
+      .then(([companyData, requestData]) => {
+        setCompanies(companyData.items || []);
+        setTotal(companyData.total || 0);
+        setRequests(requestData.items || []);
       })
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -36,17 +61,114 @@ export function CompanyManagement() {
     }
   };
 
+  const approveCompany = async (companyId) => {
+    setApprovingId(companyId);
+    try {
+      await adminApi.approveCompanyRequest(companyId);
+      fetchCompanies();
+    } catch (err) {
+      console.error('Approval failed', err);
+    } finally {
+      setApprovingId(null);
+    }
+  };
+
+  // ── Edit modal handlers ──────────────────────────────────
+  const openEditModal = (company) => {
+    setEditingCompany(company);
+    setEditForm({
+      name: company.name || '',
+      industry: company.industry || '',
+      location: company.location || '',
+      logo: company.logo || '',
+      description: company.description || '',
+      website: company.website || '',
+      employee_count: company.employee_count ?? '',
+      founded_year: company.founded_year ?? '',
+      linkedin_url: company.linkedin_url || '',
+      instagram_url: company.instagram_url || '',
+      tagline: company.tagline || '',
+    });
+  };
+
+  const closeEditModal = () => {
+    setEditingCompany(null);
+    setEditForm(EMPTY_FORM);
+  };
+
+  const handleEditChange = (field) => (e) => {
+    setEditForm((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleEditSave = async (e) => {
+    e.preventDefault();
+    if (!editingCompany) return;
+    setSavingEdit(true);
+    try {
+      // Convert number fields — send null if empty
+      const payload = {
+        ...editForm,
+        employee_count: editForm.employee_count === '' ? null : Number(editForm.employee_count),
+        founded_year: editForm.founded_year === '' ? null : Number(editForm.founded_year),
+      };
+      await adminApi.updateCompany(editingCompany.id, payload);
+      closeEditModal();
+      fetchCompanies();
+    } catch (err) {
+      console.error('Update failed', err);
+    } finally {
+      setSavingEdit(false);
+    }
+  };
+
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">{t('admin_manage_comp')}</h1>
         <p className="text-gray-500 mt-1">{t('admin_manage_comp_sub')}</p>
       </div>
 
-      {/* Table */}
+      <div className="mb-6 rounded-xl border border-amber-100 bg-amber-50/60 p-4">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Clock3 size={18} className="text-amber-600" />
+            <h2 className="font-semibold text-gray-900">Pending company requests</h2>
+          </div>
+          <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-amber-700">
+            {requests.length}
+          </span>
+        </div>
+        {requests.length === 0 ? (
+          <p className="text-sm text-gray-500">No pending requests.</p>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2">
+            {requests.map((company) => (
+              <div key={company.id} className="rounded-xl border border-amber-100 bg-white p-4 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{company.name}</h3>
+                    <p className="mt-1 text-sm text-gray-500">
+                      {company.industry} · {company.location}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => approveCompany(company.id)}
+                    disabled={approvingId === company.id}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-light disabled:opacity-60"
+                  >
+                    <CheckCircle2 size={15} />
+                    Approve
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -55,6 +177,7 @@ export function CompanyManagement() {
                 <th className="text-left px-5 py-3 font-semibold text-gray-600">{t('admin_comp_name')}</th>
                 <th className="text-left px-5 py-3 font-semibold text-gray-600">{t('admin_comp_industry')}</th>
                 <th className="text-left px-5 py-3 font-semibold text-gray-600">{t('admin_comp_location')}</th>
+                <th className="text-left px-5 py-3 font-semibold text-gray-600">Status</th>
                 <th className="text-left px-5 py-3 font-semibold text-gray-600">{t('admin_comp_employees')}</th>
                 <th className="text-left px-5 py-3 font-semibold text-gray-600">{t('admin_comp_rating')}</th>
                 <th className="text-right px-5 py-3 font-semibold text-gray-600">{t('admin_actions')}</th>
@@ -63,13 +186,13 @@ export function CompanyManagement() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-5 py-12 text-center text-gray-400">
+                  <td colSpan={7} className="px-5 py-12 text-center text-gray-400">
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-brand mx-auto" />
                   </td>
                 </tr>
               ) : companies.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-5 py-12 text-center text-gray-400">
+                  <td colSpan={7} className="px-5 py-12 text-center text-gray-400">
                     {t('admin_no_companies')}
                   </td>
                 </tr>
@@ -78,19 +201,24 @@ export function CompanyManagement() {
                   <tr key={c.id} className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center p-1 bg-white shrink-0">
-                          {c.logo ? (
-                            <img src={c.logo} alt={c.name} className="w-full h-full object-contain" />
-                          ) : (
-                            <Building2 size={16} className="text-gray-400" />
-                          )}
-                        </div>
+                        <CompanyLogo
+                          company={c}
+                          className="h-9 w-9 rounded-lg border border-gray-200 bg-white p-1"
+                          fallbackClassName="text-gray-400"
+                          fallbackIcon={Building2}
+                          useIconFallback
+                        />
                         <span className="font-medium text-gray-900">{c.name}</span>
                       </div>
                     </td>
                     <td className="px-5 py-3.5 text-gray-500">{c.industry}</td>
                     <td className="px-5 py-3.5 text-gray-500">{c.location}</td>
-                    <td className="px-5 py-3.5 text-gray-500">{c.employee_count?.toLocaleString('en-US') || '—'}</td>
+                    <td className="px-5 py-3.5">
+                      <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${c.status === 'approved' ? 'bg-emerald-50 text-emerald-700' : c.status === 'pending' ? 'bg-amber-50 text-amber-700' : 'bg-red-50 text-red-700'}`}>
+                        {c.status || 'approved'}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 text-gray-500">{c.employee_count?.toLocaleString() || '—'}</td>
                     <td className="px-5 py-3.5">
                       {c.rating ? (
                         <span className="inline-flex items-center gap-1 text-amber-600 font-medium">
@@ -101,7 +229,14 @@ export function CompanyManagement() {
                       )}
                     </td>
                     <td className="px-5 py-3.5">
-                      <div className="flex items-center justify-end">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => openEditModal(c)}
+                          title="Edit"
+                          className="p-1.5 rounded-lg text-blue-500 hover:bg-blue-50 transition-colors"
+                        >
+                          <Pencil size={16} />
+                        </button>
                         <button
                           onClick={() => deleteCompany(c.id)}
                           title={t('delete_btn')}
@@ -143,6 +278,164 @@ export function CompanyManagement() {
           </div>
         )}
       </div>
+
+      {/* ── Edit Company Modal ──────────────────────────────── */}
+      {editingCompany && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="relative mx-4 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-gray-200 bg-white shadow-2xl">
+            {/* Header */}
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-100 bg-white px-6 py-4 rounded-t-2xl">
+              <div className="flex items-center gap-3">
+                <CompanyLogo
+                  company={{ ...editingCompany, logo: editForm.logo }}
+                  className="h-10 w-10 rounded-lg border border-gray-200 bg-white p-1"
+                  fallbackClassName="text-gray-400"
+                  fallbackIcon={Building2}
+                  useIconFallback
+                />
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Edit Company</h2>
+                  <p className="text-sm text-gray-500">{editingCompany.name}</p>
+                </div>
+              </div>
+              <button
+                onClick={closeEditModal}
+                className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleEditSave} className="p-6 space-y-5">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Company Name</label>
+                  <input
+                    type="text"
+                    value={editForm.name}
+                    onChange={handleEditChange('name')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Industry</label>
+                  <input
+                    type="text"
+                    value={editForm.industry}
+                    onChange={handleEditChange('industry')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Location</label>
+                  <input
+                    type="text"
+                    value={editForm.location}
+                    onChange={handleEditChange('location')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Website</label>
+                  <input
+                    type="text"
+                    value={editForm.website}
+                    onChange={handleEditChange('website')}
+                    placeholder="https://..."
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Logo URL</label>
+                  <input
+                    type="text"
+                    value={editForm.logo}
+                    onChange={handleEditChange('logo')}
+                    placeholder="https://..."
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Tagline</label>
+                  <input
+                    type="text"
+                    value={editForm.tagline}
+                    onChange={handleEditChange('tagline')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Employee Count</label>
+                  <input
+                    type="number"
+                    value={editForm.employee_count}
+                    onChange={handleEditChange('employee_count')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Founded Year</label>
+                  <input
+                    type="number"
+                    value={editForm.founded_year}
+                    onChange={handleEditChange('founded_year')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">LinkedIn URL</label>
+                  <input
+                    type="text"
+                    value={editForm.linkedin_url}
+                    onChange={handleEditChange('linkedin_url')}
+                    placeholder="https://linkedin.com/company/..."
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Instagram URL</label>
+                  <input
+                    type="text"
+                    value={editForm.instagram_url}
+                    onChange={handleEditChange('instagram_url')}
+                    placeholder="https://instagram.com/..."
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Description</label>
+                <textarea
+                  rows={4}
+                  value={editForm.description}
+                  onChange={handleEditChange('description')}
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                />
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-end gap-3 border-t border-gray-100 pt-4">
+                <button
+                  type="button"
+                  onClick={closeEditModal}
+                  className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingEdit}
+                  className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-light disabled:opacity-60"
+                >
+                  <Save size={16} />
+                  {savingEdit ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

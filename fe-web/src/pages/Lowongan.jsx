@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { MapPin, Bookmark, Search, ChevronLeft, ChevronRight, SlidersHorizontal, X } from 'lucide-react';
 import { DetailLowongan } from './DetailLowongan';
 import { useTranslation } from '../context/LanguageContext';
+import { CompanyLogo } from '../components/ui/CompanyLogo';
 
 const PAGE_SIZE = 12;
 const JOB_TYPES = ['All', 'Internship', 'Full-time', 'Scholarship'];
@@ -350,13 +351,11 @@ export function Lowongan() {
                     }`}
                   >
                     <div className="flex items-start gap-2.5">
-                      <div className="w-9 h-9 rounded-sm border border-gray-200 flex items-center justify-center p-1.5 bg-white shrink-0">
-                        {job.company?.logo ? (
-                          <img alt={job.company?.name} className="w-full h-full object-contain" src={job.company.logo} />
-                        ) : (
-                          <span className="text-sm font-bold text-gray-400">{job.company?.name?.[0]}</span>
-                        )}
-                      </div>
+                      <CompanyLogo
+                        company={job.company}
+                        className="h-9 w-9 rounded-sm border border-gray-200 bg-white p-1.5"
+                        fallbackClassName="text-sm font-bold text-gray-400"
+                      />
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start gap-2">
                           <h3 className={`text-[13px] font-semibold truncate pr-2 transition-colors ${

@@ -5,6 +5,7 @@ import { applicationsApi } from '../../api/applications';
 import { useTranslation } from '../../context/LanguageContext';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
+import { CompanyLogo } from '../../components/ui/CompanyLogo';
 import { useCloseOnScroll } from '../../hooks/useCloseOnScroll';
 import {
   Search,
@@ -138,14 +139,6 @@ function ApplicationStepper({ app, t, copy }) {
   );
 }
 
-function CompanyLogo({ name }) {
-  return (
-    <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand/10 to-brand/5 border border-brand/10 flex items-center justify-center flex-shrink-0">
-      <span className="text-sm font-bold text-brand uppercase">{name?.[0] ?? '?'}</span>
-    </div>
-  );
-}
-
 function ApplicationCard({ app, t, locale, highlighted, copy }) {
   const job = app.opportunity;
   const company = job?.company;
@@ -165,7 +158,11 @@ function ApplicationCard({ app, t, locale, highlighted, copy }) {
       }`}>
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex gap-3 flex-1 min-w-0">
-            <CompanyLogo name={company?.name} />
+            <CompanyLogo
+              company={company}
+              className="h-11 w-11 rounded-xl border border-brand/10 bg-gradient-to-br from-brand/10 to-brand/5 p-2"
+              fallbackClassName="text-sm font-bold text-brand uppercase"
+            />
             <div className="min-w-0 flex-1">
               <Link
                 to={href}

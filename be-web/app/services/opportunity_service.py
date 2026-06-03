@@ -44,6 +44,12 @@ class OpportunityService:
         if opp.company_id != company_id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only manage your own company's opportunities")
 
+    def get_company_and_creator(self, opportunity_id: int) -> tuple[int, int | None]:
+        opp = self._opportunity_repo.get_by_id(opportunity_id)
+        if not opp:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Opportunity not found")
+        return opp.company_id, opp.created_by_user_id
+
     def get_opportunity(self, opportunity_id: int) -> OpportunityResponse:
         """Get a single opportunity by ID (with company)."""
         opp = self._opportunity_repo.get_by_id_with_company(opportunity_id)

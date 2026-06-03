@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -11,7 +11,7 @@ import { useTranslation } from '../context/LanguageContext';
 export function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, googleSignIn } = useAuth();
   const { lang } = useTranslation();
   const copy = lang === 'id'
     ? {
@@ -33,6 +33,9 @@ export function Login() {
         noAccount: 'Belum punya akun?',
         register: 'Daftar sekarang',
         demoFailed: 'Login demo gagal',
+        or: 'atau',
+        googleSignIn: 'Masuk dengan Google',
+        googleFailed: 'Login Google gagal.',
       }
     : {
         emailRequired: 'Email is required',
@@ -53,7 +56,14 @@ export function Login() {
         noAccount: "Don't have an account?",
         register: 'Register now',
         demoFailed: 'Demo login failed',
+        or: 'or',
+        googleSignIn: 'Sign in with Google',
+        googleFailed: 'Google sign-in failed.',
       };
+
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const googleButtonRef = useRef(null);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -67,6 +77,49 @@ export function Login() {
   const [shake, setShake] = useState(false);
 
   const { addToast } = useToast();
+
+  useEffect(() => {
+    if (!googleClientId || !googleButtonRef.current) return;
+    const renderButton = () => {
+      if (!window.google?.accounts?.id || !googleButtonRef.current) return;
+      googleButtonRef.current.innerHTML = '';
+      window.google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: async ({ credential }) => {
+          setErrors({});
+          setGoogleLoading(true);
+          try {
+            const user = await googleSignIn({ credential, login_only: true });
+            navigate(redirectTo || (user.role === 'hr' ? '/hr/dashboard' : '/student/dashboard'), { replace: Boolean(redirectTo) });
+            addToast({ title: copy.successTitle, message: `${copy.successMessage}, ${user.first_name}!`, type: 'success' });
+          } catch (err) {
+            const msg = err.message || copy.googleFailed;
+            setErrors({ global: msg });
+            setShake(true);
+            setTimeout(() => setShake(false), 500);
+            addToast({ title: copy.failedTitle, message: msg, type: 'error' });
+          } finally {
+            setGoogleLoading(false);
+          }
+        },
+      });
+      window.google.accounts.id.renderButton(googleButtonRef.current, {
+        theme: 'outline',
+        size: 'large',
+        width: googleButtonRef.current.offsetWidth || 360,
+        text: 'signin_with',
+      });
+    };
+    if (window.google?.accounts?.id) { renderButton(); return; }
+    const existing = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+    if (existing) { existing.addEventListener('load', renderButton, { once: true }); return () => existing.removeEventListener('load', renderButton); }
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = renderButton;
+    document.head.appendChild(script);
+  }, [googleClientId, googleSignIn, navigate, redirectTo, copy.successTitle, copy.successMessage, copy.googleFailed, copy.failedTitle, addToast]);
 
   const validate = () => {
     const newErrors = {};
@@ -229,6 +282,17 @@ export function Login() {
               <Button type="submit" variant="primary" className="text-white w-full" disabled={loading}>
                 {loading ? copy.processing : copy.submit}
               </Button>
+
+              {googleClientId && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="h-px flex-1 bg-gray-200" />
+                    <span className="text-xs uppercase tracking-wide text-gray-400">{copy.or}</span>
+                    <div className="h-px flex-1 bg-gray-200" />
+                  </div>
+                  <div className={googleLoading ? 'pointer-events-none opacity-60' : ''} ref={googleButtonRef} />
+                </div>
+              )}
             </motion.form>
 
             <div className="mt-6 text-center text-sm">

@@ -6,6 +6,7 @@ import { MapPin, Users, Star, Bookmark, Search, SlidersHorizontal, X } from 'luc
 import { useTranslation } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { CompanyLogo } from '../components/ui/CompanyLogo';
 
 export function Perusahaan() {
   const navigate = useNavigate();

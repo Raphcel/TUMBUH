@@ -1,6 +1,7 @@
+import enum
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, Integer, String, Float, Text, DateTime
+from sqlalchemy import Column, Integer, String, Float, Text, DateTime, Enum
 from sqlalchemy.orm import relationship
 
 from app.config.database import Base
@@ -8,6 +9,12 @@ from app.config.database import Base
 
 def _utcnow():
     return datetime.now(timezone.utc)
+
+
+class CompanyStatus(str, enum.Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
 
 
 class Company(Base):
@@ -30,6 +37,7 @@ class Company(Base):
     linkedin_url: str = Column(String(500), nullable=True)
     instagram_url: str = Column(String(500), nullable=True)
     tagline: str = Column(String(300), nullable=True)
+    status: CompanyStatus = Column(Enum(CompanyStatus), nullable=False, default=CompanyStatus.APPROVED, index=True)
 
     created_at: datetime = Column(DateTime, default=_utcnow)
     updated_at: datetime = Column(DateTime, default=_utcnow, onupdate=_utcnow)
@@ -39,6 +47,8 @@ class Company(Base):
     opportunities = relationship("Opportunity", back_populates="company", cascade="all, delete-orphan")
     followers = relationship("CompanyFollow", back_populates="company", cascade="all, delete-orphan")
     reviews = relationship("CompanyReview", back_populates="company", cascade="all, delete-orphan")
+    organization_members = relationship("OrganizationMember", back_populates="company", cascade="all, delete-orphan")
+    organization_invites = relationship("OrganizationInvite", back_populates="company", cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
         return f"<Company(id={self.id}, name='{self.name}')>"

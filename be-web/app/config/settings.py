@@ -77,6 +77,7 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5176",
         "http://localhost:3000",
     ]
+    CORS_ORIGIN_REGEX: str | None = r"^https?://(localhost|127\.0\.0\.1):\d+$"
 
     @classmethod
     def settings_customise_sources(

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
-import { useAuth } from '../../context/AuthContext';
 import { opportunitiesApi } from '../../api/opportunities';
 import { applicationsApi } from '../../api/applications';
 import { usersApi } from '../../api/users';
@@ -11,11 +10,16 @@ import { Button } from '../../components/ui/Button';
 import { motion } from 'framer-motion';
 import { resolveUploadUrl } from '../../api/client';
 import { useToast } from '../../context/ToastContext';
+import { useOrganization } from '../../hooks/useOrganization';
+
+const MotionDiv = motion.div;
+const MotionH1 = motion.h1;
+const MotionTr = motion.tr;
 
 export function Pelamar() {
-  const { user } = useAuth();
   const { addToast } = useToast();
-  const companyId = user?.company_id;
+  const { company, loading: organizationLoading } = useOrganization();
+  const companyId = company?.status === 'approved' ? company.id : null;
   const [applicants, setApplicants] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +29,7 @@ export function Pelamar() {
   const [downloadingCV, setDownloadingCV] = useState(false);
 
   useEffect(() => {
+    if (organizationLoading) return;
     if (!companyId) {
       setLoading(false);
       return;
@@ -50,7 +55,9 @@ export function Pelamar() {
                     : `Student #${app.student_id}`,
                 });
               });
-            } catch { }
+            } catch (err) {
+              console.debug('Failed to load applicants for job', err);
+            }
           })
         );
         setApplicants(allApps);
@@ -61,7 +68,7 @@ export function Pelamar() {
       }
     }
     fetchApplicants();
-  }, [companyId]);
+  }, [companyId, organizationLoading]);
 
   const handleStatusUpdate = async (appId, newStatus) => {
     try {
@@ -133,15 +140,15 @@ export function Pelamar() {
   const student = selectedApp?.student;
 
   return (
-    <motion.div
+    <MotionDiv
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       className="space-y-6"
     >
-      <motion.h1 variants={itemVariants} className="text-2xl font-bold text-gray-900">Daftar Pelamar</motion.h1>
+      <MotionH1 variants={itemVariants} className="text-2xl font-bold text-gray-900">Daftar Pelamar</MotionH1>
 
-      <motion.div variants={itemVariants} className="flex items-center gap-4">
+      <MotionDiv variants={itemVariants} className="flex items-center gap-4">
         <div className="w-64">
           <Select
             value={selectedJobId}
@@ -155,9 +162,9 @@ export function Pelamar() {
         <span className="text-sm text-secondary">
           {filteredApplicants.length} pelamar
         </span>
-      </motion.div>
+      </MotionDiv>
 
-      <motion.div variants={itemVariants}>
+      <MotionDiv variants={itemVariants}>
         <Card>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
@@ -172,7 +179,7 @@ export function Pelamar() {
               </thead>
               <tbody>
                 {filteredApplicants.map((app) => (
-                  <motion.tr
+                  <MotionTr
                     key={app.id}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -219,7 +226,7 @@ export function Pelamar() {
                         className="text-sm w-36"
                       />
                     </td>
-                  </motion.tr>
+                  </MotionTr>
                 ))}
                 {filteredApplicants.length === 0 && (
                   <tr>
@@ -235,7 +242,7 @@ export function Pelamar() {
             </table>
           </div>
         </Card>
-      </motion.div>
+      </MotionDiv>
 
       {/* Applicant Detail Modal */}
       <Modal
@@ -347,6 +354,6 @@ export function Pelamar() {
           <p className="text-secondary text-sm">Data pelamar tidak tersedia.</p>
         )}
       </Modal>
-    </motion.div>
+    </MotionDiv>
   );
 }

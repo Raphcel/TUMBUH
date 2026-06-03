@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody } from '../../components/ui/Card';
-import { Users, Briefcase, FileText, BarChart3 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+import { Button } from '../../components/ui/Button';
+import { Users, Briefcase, FileText, BarChart3, Building2 } from 'lucide-react';
 import { opportunitiesApi } from '../../api/opportunities';
 import { applicationsApi } from '../../api/applications';
 import { CalendarWidget } from '../../components/dashboard/CalendarWidget';
+import { useOrganization } from '../../hooks/useOrganization';
 
 import { motion } from 'framer-motion';
 
+const MotionDiv = motion.div;
+
 export function HRDashboard() {
-  const { user } = useAuth();
-  const companyId = user?.company_id;
-  // ... (keep state)
+  const { company, onboardingRequired, loading: organizationLoading } = useOrganization();
+  const companyId = company?.status === 'approved' ? company.id : null;
   const [myJobs, setMyJobs] = useState([]);
   const [totalApplicants, setTotalApplicants] = useState(0);
   const [pendingReview, setPendingReview] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // ... (keep useEffect)
   useEffect(() => {
+    if (organizationLoading) return;
     if (!companyId) {
       setLoading(false);
       return;
     }
     async function fetchData() {
-      // ... (keep logic)
       try {
         const jobsData = await opportunitiesApi.listByCompany(companyId);
         const jobs = Array.isArray(jobsData) ? jobsData : jobsData.items || [];
@@ -40,7 +41,9 @@ export function HRDashboard() {
               const apps = appsData.items || [];
               total += apps.length;
               pending += apps.filter((a) => a.status === 'Applied').length;
-            } catch { }
+            } catch (err) {
+              console.debug('Failed to load applicants for dashboard job', err);
+            }
           })
         );
         setTotalApplicants(total);
@@ -52,12 +55,35 @@ export function HRDashboard() {
       }
     }
     fetchData();
-  }, [companyId]);
+  }, [companyId, organizationLoading]);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (onboardingRequired || !companyId) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Card className="max-w-lg rounded-2xl border-gray-100">
+          <CardBody className="space-y-4 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
+              <Building2 size={24} />
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-text">Set up your organization</h1>
+              <p className="mt-2 text-sm text-text-muted">
+                Create a company request or join an existing company before managing recruitment.
+              </p>
+            </div>
+            <Button to="/hr/onboarding" className="w-full">
+              Continue
+            </Button>
+          </CardBody>
+        </Card>
       </div>
     );
   }
@@ -104,28 +130,25 @@ export function HRDashboard() {
   };
 
   return (
-    <motion.div
+    <MotionDiv
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       className="space-y-8 pb-20"
     >
-      <motion.div variants={itemVariants}>
+      <MotionDiv variants={itemVariants}>
         <h1 className="text-3xl font-semibold text-primary tracking-tight">
           Recruitment Dashboard
         </h1>
         <p className="text-secondary mt-2">Overview of your hiring pipeline.</p>
-      </motion.div>
+      </MotionDiv>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {stats.map((stat, index) => (
-          <motion.div
+          <MotionDiv
             key={index}
             variants={itemVariants}
             whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
-          // className inside Card won't accept motion directly unless Card forwards ref/props mostly. 
-          // Better to wrap Card or use motion.div if Card is simple.
-          // Assuming Card accepts className and style or we wrap it.
           >
             <Card className="border-gray-100 shadow-sm transition-all h-full">
               <CardBody className="flex items-center gap-4 p-6">
@@ -142,13 +165,13 @@ export function HRDashboard() {
                 </div>
               </CardBody>
             </Card>
-          </motion.div>
+          </MotionDiv>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-          <motion.div variants={itemVariants} className="space-y-4">
+          <MotionDiv variants={itemVariants} className="space-y-4">
             <h2 className="text-xl font-bold text-primary flex items-center gap-2">
               <BarChart3 size={20} /> Recruitment Stats
             </h2>
@@ -158,15 +181,15 @@ export function HRDashboard() {
                 Chart visualization would appear here
               </span>
             </Card>
-          </motion.div>
+          </MotionDiv>
 
-          <motion.div variants={itemVariants} className="space-y-4">
+          <MotionDiv variants={itemVariants} className="space-y-4">
             <h2 className="text-xl font-bold text-primary flex items-center gap-2">
               <Briefcase size={20} /> Recent Jobs
             </h2>
             <div className="space-y-3">
               {myJobs.slice(0, 3).map((job) => (
-                <motion.div
+                <MotionDiv
                   key={job.id}
                   whileHover={{ scale: 1.01 }}
                   className="group"
@@ -184,16 +207,16 @@ export function HRDashboard() {
                       </span>
                     </CardBody>
                   </Card>
-                </motion.div>
+                </MotionDiv>
               ))}
             </div>
-          </motion.div>
+          </MotionDiv>
         </div>
 
-        <motion.div variants={itemVariants} className="space-y-6">
+        <MotionDiv variants={itemVariants} className="space-y-6">
           <CalendarWidget opportunities={myJobs} />
-        </motion.div>
+        </MotionDiv>
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 }

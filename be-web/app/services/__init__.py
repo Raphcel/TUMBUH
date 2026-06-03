@@ -11,6 +11,8 @@ from app.services.admin_service import AdminService
 from app.services.resume_service import ResumeService
 from app.services.email_service import EmailService
 from app.services.company_review_service import CompanyReviewService
+from app.services.logbook_service import LogbookService
+from app.services.organization_service import OrganizationService
 
 __all__ = [
     "AuthService",
@@ -26,4 +28,6 @@ __all__ = [
     "ResumeService",
     "EmailService",
     "CompanyReviewService",
+    "LogbookService",
+    "OrganizationService",
 ]
