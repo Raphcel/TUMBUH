@@ -133,6 +133,16 @@ class AdminService:
             raise HTTPException(status_code=404, detail="Company not found")
         return {"deleted": True}
 
+    def update_company(self, company_id: int, data) -> dict:
+        """Update a company's profile (admin override, no ownership check)."""
+        from app.schemas.company import CompanyResponse
+
+        company = self._company_repo.get_by_id(company_id)
+        if not company:
+            raise HTTPException(status_code=404, detail="Company not found")
+        updated = self._company_repo.update(company, data.model_dump(exclude_unset=True))
+        return CompanyResponse.model_validate(updated)
+
     # ── Opportunity Management ───────────────────────────────
 
     def list_opportunities(self, skip: int = 0, limit: int = 50) -> dict:

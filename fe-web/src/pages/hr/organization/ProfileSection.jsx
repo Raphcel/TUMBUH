@@ -1,18 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Building2, ExternalLink, LockKeyhole, MapPin, Save } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
+import { CompanyLogo } from '../../../components/ui/CompanyLogo';
 import { Input } from '../../../components/ui/Input';
 import { companiesApi } from '../../../api/companies';
 import { WorkspaceCard, StatusPill } from './WorkspaceCard';
-
-function companyInitials(name) {
-  return (name || 'Company')
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join('')
-    .toUpperCase();
-}
 
 export function ProfileSection({ company, canEdit, addToast, onSaved }) {
   const [form, setForm] = useState({
@@ -20,6 +12,7 @@ export function ProfileSection({ company, canEdit, addToast, onSaved }) {
     industry: '',
     location: '',
     website: '',
+    logo: '',
     description: '',
   });
   const [saving, setSaving] = useState(false);
@@ -30,14 +23,9 @@ export function ProfileSection({ company, canEdit, addToast, onSaved }) {
       industry: company?.industry || '',
       location: company?.location || '',
       website: company?.website || '',
+      logo: company?.logo || '',
       description: company?.description || '',
     });
-  }, [company]);
-
-  const logoUrl = useMemo(() => {
-    if (company?.logo) return company.logo;
-    const name = encodeURIComponent(company?.name || 'Company');
-    return `https://ui-avatars.com/api/?name=${name}&background=1a8754&color=fff&size=128`;
   }, [company]);
 
   const handleChange = (field) => (event) => {
@@ -63,7 +51,11 @@ export function ProfileSection({ company, canEdit, addToast, onSaved }) {
     <div className="grid gap-5 xl:grid-cols-[340px_1fr]">
       <WorkspaceCard title="Public identity" icon={Building2}>
         <div className="flex items-start gap-4">
-          <img src={logoUrl} alt={company?.name || 'Company'} className="h-20 w-20 rounded-lg object-cover ring-1 ring-gray-200" />
+          <CompanyLogo
+            company={{ ...company, logo: form.logo }}
+            className="h-20 w-20 rounded-lg border border-gray-200 bg-white p-2 ring-1 ring-gray-200"
+            fallbackClassName="text-xl font-bold text-brand"
+          />
           <div className="min-w-0 flex-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-text-light">Company page</p>
             <h3 className="mt-1 truncate text-xl font-bold text-text">{company?.name || 'Company'}</h3>
@@ -86,9 +78,11 @@ export function ProfileSection({ company, canEdit, addToast, onSaved }) {
         <div className="mt-5 rounded-lg border border-gray-100 bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-text-light">Preview card</p>
           <div className="mt-3 flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-lg bg-brand text-sm font-bold text-white">
-              {companyInitials(company?.name)}
-            </div>
+            <CompanyLogo
+              company={{ ...company, logo: form.logo }}
+              className="h-10 w-10 rounded-lg border border-gray-100 bg-white p-1.5"
+              fallbackClassName="text-sm font-bold text-brand"
+            />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-text">{company?.name || 'Company'}</p>
               <p className="truncate text-xs text-text-muted">{company?.tagline || company?.industry || 'No tagline yet'}</p>
@@ -118,6 +112,7 @@ export function ProfileSection({ company, canEdit, addToast, onSaved }) {
             <Input label="Industry" value={form.industry} onChange={handleChange('industry')} disabled={!canEdit} />
             <Input label="Location" value={form.location} onChange={handleChange('location')} disabled={!canEdit} />
             <Input label="Website" value={form.website} onChange={handleChange('website')} disabled={!canEdit} />
+            <Input label="Logo URL" value={form.logo} onChange={handleChange('logo')} disabled={!canEdit} />
           </div>
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">Description</label>

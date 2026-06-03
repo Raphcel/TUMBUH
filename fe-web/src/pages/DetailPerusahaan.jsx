@@ -7,6 +7,7 @@ import { MapPin, Globe, Users, Star, Bookmark, ChevronRight, Building2 } from 'l
 import { useTranslation } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { CompanyLogo } from '../components/ui/CompanyLogo';
 
 const TAB_KEYS = ['about', 'positions', 'reviews'];
 
@@ -114,12 +115,11 @@ export function DetailPerusahaan() {
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
           <div className="flex flex-col sm:flex-row items-start gap-6">
             {/* Logo */}
-            <div className="w-24 h-24 rounded-xl border border-gray-200 flex items-center justify-center p-3 bg-white shadow-sm shrink-0">
-              {company.logo
-                ? <img src={company.logo} alt={company.name} className="w-full h-full object-contain" />
-                : <span className="text-3xl font-bold text-gray-400">{company.name?.[0]}</span>
-              }
-            </div>
+            <CompanyLogo
+              company={company}
+              className="h-24 w-24 rounded-xl border border-gray-200 bg-white p-3 shadow-sm"
+              fallbackClassName="text-3xl font-bold text-gray-400"
+            />
 
             <div className="flex-1">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">

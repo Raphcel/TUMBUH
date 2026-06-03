@@ -5,6 +5,7 @@ import { companiesApi } from '../api/companies';
 import { MapPin, Search, ArrowRight, Briefcase, Globe, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from '../context/LanguageContext';
+import { CompanyLogo } from '../components/ui/CompanyLogo';
 
 const POPULAR_TAGS = ['Internship', 'Full-time', 'Remote', 'Data Analyst', 'UI/UX Designer'];
 
@@ -193,36 +194,41 @@ export function Beranda() {
           </div>
         </div>
 
-        {/* ── Trusted Brands ── */}
-        <div className="relative z-10 py-16 bottom-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-sm text-gray-400 mb-6 font-medium">{t('hero_trusted')}</p>
-            {companies.length > 0 ? (
-              <div className="flex overflow-hidden">
-                <div className="flex space-x-16 animate-scroll">
-                  {scrollCompanies.map((company, idx) => (
-                    <Link
-                      key={`${company.id}-${idx}`}
-                      to={`/perusahaan/${company.id}`}
-                      className="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity min-w-max"
-                    >
-                      {company.logo ? (
-                        <img src={company.logo} alt={company.name} className="h-8 w-auto object-contain brightness-0 invert" />
-                      ) : (
-                        <span className="text-xl font-bold text-gray-300">{company.name}</span>
-                      )}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60">
-                {['gojek', 'tokopedia', 'DANA', 'BCA', 'Ruangguru', 'Telkomsel'].map((name) => (
-                  <span key={name} className="text-xl font-bold text-gray-300">{name}</span>
+      </section>
+
+      {/* ── Trusted Brands ── */}
+      <section className="py-12 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-sm text-gray-500 mb-8 font-medium">{t('hero_trusted')}</p>
+          {companies.length > 0 ? (
+            <div className="flex overflow-hidden">
+              <div className="flex space-x-16 animate-scroll">
+                {scrollCompanies.map((company, idx) => (
+                  <Link
+                    key={`${company.id}-${idx}`}
+                    to={`/perusahaan/${company.id}`}
+                    className="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity min-w-max"
+                  >
+                    <CompanyLogo
+                      company={company}
+                      className="h-8 w-28 border-0 bg-transparent p-0"
+                      imageClassName="h-8 w-auto max-w-28 object-contain"
+                      fallbackClassName="text-xl font-bold text-gray-400"
+                    />
+                  </Link>
                 ))}
               </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-80">
+              <img src="/logos/gojek.svg" alt="Gojek" className="h-7 md:h-8 w-auto object-contain" />
+              <img src="/logos/tokopedia.svg" alt="Tokopedia" className="h-5 md:h-6 w-auto object-contain" />
+              <img src="/logos/dana.svg" alt="DANA" className="h-6 md:h-7 w-auto object-contain" />
+              <img src="/logos/bca.svg" alt="BCA" className="h-7 md:h-8 w-auto object-contain" />
+              <img src="/logos/ruangguru.svg" alt="Ruangguru" className="h-7 md:h-8 w-auto object-contain" />
+              <img src="/logos/telkomsel.svg" alt="Telkomsel" className="h-6 md:h-7 w-auto object-contain" />
+            </div>
+          )}
         </div>
       </section>
 

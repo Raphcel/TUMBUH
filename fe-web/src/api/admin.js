@@ -37,6 +37,10 @@ export const adminApi = {
   /** Delete a company */
   deleteCompany: (companyId) => api.delete(`/admin/companies/${companyId}`),
 
+  /** Update a company's profile (admin) */
+  updateCompany: (companyId, payload) =>
+    api.put(`/admin/companies/${companyId}`, payload),
+
   /** List opportunities */
   listOpportunities: (skip = 0, limit = 50) =>
     api.get(`/admin/opportunities?skip=${skip}&limit=${limit}`),

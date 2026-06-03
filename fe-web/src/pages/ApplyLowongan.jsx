@@ -21,6 +21,7 @@ import {
 import { applicationsApi } from '../api/applications';
 import { opportunitiesApi } from '../api/opportunities';
 import { usersApi } from '../api/users';
+import { CompanyLogo } from '../components/ui/CompanyLogo';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from '../context/LanguageContext';
@@ -88,18 +89,6 @@ function InlineMeta({ icon: Icon, label, value }) {
       {React.createElement(Icon, { size: 15, className: 'flex-shrink-0 text-brand' })}
       <span className="text-text-light">{label}</span>
       <span className="min-w-0 truncate font-medium text-text">{value || '-'}</span>
-    </div>
-  );
-}
-
-function CompanyMark({ company }) {
-  return (
-    <div className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-xl border border-gray-200 bg-white shadow-sm">
-      {company?.logo ? (
-        <img src={company.logo} alt={company?.name || 'Company'} className="h-full w-full object-contain p-1.5" />
-      ) : (
-        <span className="text-sm font-black uppercase text-brand">{company?.name?.[0] || 'T'}</span>
-      )}
     </div>
   );
 }
@@ -427,7 +416,11 @@ export function ApplyLowongan() {
             {copy.back}
           </Link>
           <div className="flex min-w-0 items-center gap-3">
-            <CompanyMark company={company} />
+            <CompanyLogo
+              company={company}
+              className="h-11 w-11 rounded-xl border border-gray-200 bg-white p-1.5 shadow-sm"
+              fallbackClassName="text-sm font-black uppercase text-brand"
+            />
             <div className="min-w-0">
               <p className="text-sm font-medium text-text-muted">{company.name || '-'}</p>
               <h1 className="line-clamp-2 text-2xl font-bold tracking-tight text-text sm:text-3xl">

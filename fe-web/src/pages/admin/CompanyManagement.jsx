@@ -1,9 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { adminApi } from '../../api/admin';
 import { useTranslation } from '../../context/LanguageContext';
-import { Trash2, Building2, ChevronLeft, ChevronRight, CheckCircle2, Clock3 } from 'lucide-react';
+import { Trash2, Building2, ChevronLeft, ChevronRight, CheckCircle2, Clock3, Pencil, X, Save } from 'lucide-react';
+import { CompanyLogo } from '../../components/ui/CompanyLogo';
 
 const PAGE_SIZE = 20;
+
+const EMPTY_FORM = {
+  name: '',
+  industry: '',
+  location: '',
+  logo: '',
+  description: '',
+  website: '',
+  employee_count: '',
+  founded_year: '',
+  linkedin_url: '',
+  instagram_url: '',
+  tagline: '',
+};
 
 export function CompanyManagement() {
   const { t } = useTranslation();
@@ -13,6 +28,11 @@ export function CompanyManagement() {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [approvingId, setApprovingId] = useState(null);
+
+  // Edit modal state
+  const [editingCompany, setEditingCompany] = useState(null);
+  const [editForm, setEditForm] = useState(EMPTY_FORM);
+  const [savingEdit, setSavingEdit] = useState(false);
 
   const fetchCompanies = useCallback(() => {
     setLoading(true);
@@ -50,6 +70,54 @@ export function CompanyManagement() {
       console.error('Approval failed', err);
     } finally {
       setApprovingId(null);
+    }
+  };
+
+  // ── Edit modal handlers ──────────────────────────────────
+  const openEditModal = (company) => {
+    setEditingCompany(company);
+    setEditForm({
+      name: company.name || '',
+      industry: company.industry || '',
+      location: company.location || '',
+      logo: company.logo || '',
+      description: company.description || '',
+      website: company.website || '',
+      employee_count: company.employee_count ?? '',
+      founded_year: company.founded_year ?? '',
+      linkedin_url: company.linkedin_url || '',
+      instagram_url: company.instagram_url || '',
+      tagline: company.tagline || '',
+    });
+  };
+
+  const closeEditModal = () => {
+    setEditingCompany(null);
+    setEditForm(EMPTY_FORM);
+  };
+
+  const handleEditChange = (field) => (e) => {
+    setEditForm((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleEditSave = async (e) => {
+    e.preventDefault();
+    if (!editingCompany) return;
+    setSavingEdit(true);
+    try {
+      // Convert number fields — send null if empty
+      const payload = {
+        ...editForm,
+        employee_count: editForm.employee_count === '' ? null : Number(editForm.employee_count),
+        founded_year: editForm.founded_year === '' ? null : Number(editForm.founded_year),
+      };
+      await adminApi.updateCompany(editingCompany.id, payload);
+      closeEditModal();
+      fetchCompanies();
+    } catch (err) {
+      console.error('Update failed', err);
+    } finally {
+      setSavingEdit(false);
     }
   };
 
@@ -133,13 +201,13 @@ export function CompanyManagement() {
                   <tr key={c.id} className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center p-1 bg-white shrink-0">
-                          {c.logo ? (
-                            <img src={c.logo} alt={c.name} className="w-full h-full object-contain" />
-                          ) : (
-                            <Building2 size={16} className="text-gray-400" />
-                          )}
-                        </div>
+                        <CompanyLogo
+                          company={c}
+                          className="h-9 w-9 rounded-lg border border-gray-200 bg-white p-1"
+                          fallbackClassName="text-gray-400"
+                          fallbackIcon={Building2}
+                          useIconFallback
+                        />
                         <span className="font-medium text-gray-900">{c.name}</span>
                       </div>
                     </td>
@@ -161,7 +229,14 @@ export function CompanyManagement() {
                       )}
                     </td>
                     <td className="px-5 py-3.5">
-                      <div className="flex items-center justify-end">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => openEditModal(c)}
+                          title="Edit"
+                          className="p-1.5 rounded-lg text-blue-500 hover:bg-blue-50 transition-colors"
+                        >
+                          <Pencil size={16} />
+                        </button>
                         <button
                           onClick={() => deleteCompany(c.id)}
                           title={t('delete_btn')}
@@ -203,6 +278,164 @@ export function CompanyManagement() {
           </div>
         )}
       </div>
+
+      {/* ── Edit Company Modal ──────────────────────────────── */}
+      {editingCompany && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="relative mx-4 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-gray-200 bg-white shadow-2xl">
+            {/* Header */}
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-100 bg-white px-6 py-4 rounded-t-2xl">
+              <div className="flex items-center gap-3">
+                <CompanyLogo
+                  company={{ ...editingCompany, logo: editForm.logo }}
+                  className="h-10 w-10 rounded-lg border border-gray-200 bg-white p-1"
+                  fallbackClassName="text-gray-400"
+                  fallbackIcon={Building2}
+                  useIconFallback
+                />
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Edit Company</h2>
+                  <p className="text-sm text-gray-500">{editingCompany.name}</p>
+                </div>
+              </div>
+              <button
+                onClick={closeEditModal}
+                className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleEditSave} className="p-6 space-y-5">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Company Name</label>
+                  <input
+                    type="text"
+                    value={editForm.name}
+                    onChange={handleEditChange('name')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Industry</label>
+                  <input
+                    type="text"
+                    value={editForm.industry}
+                    onChange={handleEditChange('industry')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Location</label>
+                  <input
+                    type="text"
+                    value={editForm.location}
+                    onChange={handleEditChange('location')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Website</label>
+                  <input
+                    type="text"
+                    value={editForm.website}
+                    onChange={handleEditChange('website')}
+                    placeholder="https://..."
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Logo URL</label>
+                  <input
+                    type="text"
+                    value={editForm.logo}
+                    onChange={handleEditChange('logo')}
+                    placeholder="https://..."
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Tagline</label>
+                  <input
+                    type="text"
+                    value={editForm.tagline}
+                    onChange={handleEditChange('tagline')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Employee Count</label>
+                  <input
+                    type="number"
+                    value={editForm.employee_count}
+                    onChange={handleEditChange('employee_count')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Founded Year</label>
+                  <input
+                    type="number"
+                    value={editForm.founded_year}
+                    onChange={handleEditChange('founded_year')}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">LinkedIn URL</label>
+                  <input
+                    type="text"
+                    value={editForm.linkedin_url}
+                    onChange={handleEditChange('linkedin_url')}
+                    placeholder="https://linkedin.com/company/..."
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Instagram URL</label>
+                  <input
+                    type="text"
+                    value={editForm.instagram_url}
+                    onChange={handleEditChange('instagram_url')}
+                    placeholder="https://instagram.com/..."
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Description</label>
+                <textarea
+                  rows={4}
+                  value={editForm.description}
+                  onChange={handleEditChange('description')}
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                />
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-end gap-3 border-t border-gray-100 pt-4">
+                <button
+                  type="button"
+                  onClick={closeEditModal}
+                  className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingEdit}
+                  className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-light disabled:opacity-60"
+                >
+                  <Save size={16} />
+                  {savingEdit ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

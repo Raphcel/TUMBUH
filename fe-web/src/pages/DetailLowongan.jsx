@@ -8,6 +8,7 @@ import { ArrowLeft, MapPin, Bookmark, Briefcase, Building2, Clock, Tag, Lock, Ch
 import { useToast } from '../context/ToastContext';
 import { Modal } from '../components/ui/Modal';
 import { Button } from '../components/ui/Button';
+import { CompanyLogo } from '../components/ui/CompanyLogo';
 import { useTranslation } from '../context/LanguageContext';
 
 const TAB_KEYS = ['desc', 'qualif', 'benefits', 'company'];
@@ -173,12 +174,12 @@ export function DetailLowongan({ jobId, isEmbedded }) {
         <section className={isEmbedded ? panelClass : `${panelClass} mb-6 xl:p-6`}>
           <div className={isEmbedded ? "flex items-start gap-4" : "flex flex-col items-start gap-5 sm:flex-row sm:items-center"}>
             {/* Company logo */}
-            <div className={isEmbedded ? "flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white p-1.5" : "flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-surface-border bg-white p-2 shadow-sm xl:h-20 xl:w-20"}>
-              {company.logo
-                ? <img alt={company.name} className="w-full h-auto object-contain" src={company.logo} />
-                : <span className="text-2xl font-bold text-gray-400">{company.name?.[0]}</span>
-              }
-            </div>
+            <CompanyLogo
+              company={company}
+              className={isEmbedded ? "h-12 w-12 rounded-md border border-gray-200 bg-white p-1.5" : "h-16 w-16 rounded-xl border border-surface-border bg-white p-2 shadow-sm xl:h-20 xl:w-20"}
+              imageClassName="h-full w-full object-contain"
+              fallbackClassName="text-2xl font-bold text-gray-400"
+            />
 
             <div className="min-w-0 flex-1">
               <div className={isEmbedded ? "relative min-h-[92px] pr-40" : "flex justify-between items-start"}>
@@ -397,12 +398,12 @@ export function DetailLowongan({ jobId, isEmbedded }) {
             {/* Company profile card */}
             <div className={isEmbedded ? "bg-white p-5" : "rounded-2xl border border-surface-border bg-white p-5 shadow-sm"}>
               <div className={isEmbedded ? "mb-3 flex items-center gap-3" : "flex items-center gap-4 mb-4"}>
-                <div className={isEmbedded ? "w-10 h-10 rounded-md border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0" : "w-12 h-12 rounded-lg border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0"}>
-                  {company.logo
-                    ? <img alt={company.name} className="w-full h-auto object-contain" src={company.logo} />
-                    : <span className="font-bold text-gray-400">{company.name?.[0]}</span>
-                  }
-                </div>
+                <CompanyLogo
+                  company={company}
+                  className={isEmbedded ? "h-10 w-10 rounded-md border border-gray-100 bg-white p-1" : "h-12 w-12 rounded-lg border border-gray-100 bg-white p-1"}
+                  imageClassName="h-full w-full object-contain"
+                  fallbackClassName="font-bold text-gray-400"
+                />
                 <h3 className={isEmbedded ? "truncate text-sm font-semibold text-gray-950" : "text-base font-bold text-gray-900"}>{company.name}</h3>
               </div>
               <p className={isEmbedded ? "mb-3 line-clamp-3 text-sm leading-6 text-gray-600" : "text-sm text-gray-600 mb-4 line-clamp-4"}>{company.description}</p>

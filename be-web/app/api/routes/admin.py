@@ -11,7 +11,7 @@ from app.domain.models.user import User
 from app.services.admin_service import AdminService
 from app.services.organization_service import OrganizationService
 from app.schemas.user import UserResponse
-from app.schemas.company import CompanyResponse
+from app.schemas.company import CompanyResponse, CompanyUpdate
 from app.schemas.opportunity import OpportunityResponse
 from app.schemas.organization import CompanyRequestListResponse, CompanyRequestResponse
 from app.api.dependencies import require_role, get_admin_service, get_organization_service
@@ -104,6 +104,17 @@ def approve_company_request(
     organization_service: OrganizationService = Depends(get_organization_service),
 ):
     return organization_service.approve_company_request(company_id, admin_user)
+
+
+@router.put("/companies/{company_id}")
+def update_company(
+    company_id: int,
+    data: CompanyUpdate,
+    _: User = Depends(require_role("admin")),
+    service: AdminService = Depends(get_admin_service),
+):
+    """Update a company's profile (admin override, no ownership check)."""
+    return service.update_company(company_id, data)
 
 
 @router.delete("/companies/{company_id}")
