@@ -8,14 +8,6 @@ import { useTranslation } from '../context/LanguageContext';
 import { CompanyLogo } from '../components/ui/CompanyLogo';
 
 const POPULAR_TAGS = ['Internship', 'Full-time', 'Remote', 'Data Analyst', 'UI/UX Designer'];
-const TRUSTED_LOGOS = [
-  { src: '/logos/gojek.svg', alt: 'Gojek', className: 'h-7 md:h-8' },
-  { src: '/logos/tokopedia.svg', alt: 'Tokopedia', className: 'h-5 md:h-6' },
-  { src: '/logos/dana.svg', alt: 'DANA', className: 'h-6 md:h-7' },
-  { src: '/logos/bca.svg', alt: 'BCA', className: 'h-7 md:h-8' },
-  { src: '/logos/ruangguru.svg', alt: 'Ruangguru', className: 'h-7 md:h-8' },
-  { src: '/logos/telkomsel.svg', alt: 'Telkomsel', className: 'h-6 md:h-7' },
-];
 
 export function Beranda() {
   const navigate = useNavigate();
@@ -111,6 +103,9 @@ export function Beranda() {
     { value: '98%', label: t('stat_satisfied') },
   ];
 
+  // Duplicate for seamless scroll
+  const scrollCompanies = [...companies, ...companies];
+
   return (
     <>
       {/* ── Hero ── */}
@@ -200,37 +195,36 @@ export function Beranda() {
         </div>
 
         {/* ── Trusted Brands ── */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 text-center">
-          <p className="text-sm text-gray-300 mb-8 font-medium">{t('hero_trusted')}</p>
-          {companies.length > 0 ? (
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-                {companies.slice(0, 8).map((company) => (
-                  <Link
-                    key={company.id}
-                    to={`/perusahaan/${company.id}`}
-                    className="flex h-12 min-w-24 items-center justify-center opacity-75 transition-opacity hover:opacity-100"
-                  >
-                    <CompanyLogo
-                      company={company}
-                      className="h-8 w-28 border-0 bg-transparent p-0"
-                      imageClassName="h-8 w-auto max-w-28 object-contain"
-                      fallbackClassName="text-xl font-bold text-gray-300"
-                    />
-                  </Link>
-                ))}
-            </div>
-          ) : (
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-              {TRUSTED_LOGOS.map((logo) => (
-                <div
-                  key={logo.alt}
-                  className="flex h-12 min-w-24 items-center justify-center opacity-75 transition-opacity hover:opacity-100"
-                >
-                  <img src={logo.src} alt={logo.alt} className={`${logo.className} w-auto object-contain`} />
+        <div className="relative z-10 py-16 bottom-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-sm text-gray-400 mb-6 font-medium">{t('hero_trusted')}</p>
+            {companies.length > 0 ? (
+              <div className="flex overflow-hidden">
+                <div className="flex space-x-16 animate-scroll">
+                  {scrollCompanies.map((company, idx) => (
+                    <Link
+                      key={`${company.id}-${idx}`}
+                      to={`/perusahaan/${company.id}`}
+                      className="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity min-w-max"
+                    >
+                      <CompanyLogo
+                        company={company}
+                        className="h-8 w-28 border-0 bg-transparent p-0 brightness-0 invert"
+                        imageClassName="h-8 w-auto max-w-28 object-contain"
+                        fallbackClassName="text-xl font-bold text-gray-300"
+                      />
+                    </Link>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ) : (
+              <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60">
+                {['gojek', 'tokopedia', 'DANA', 'BCA', 'Ruangguru', 'Telkomsel'].map((name) => (
+                  <span key={name} className="text-xl font-bold text-gray-300">{name}</span>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
