@@ -8,10 +8,15 @@ import urllib.parse
 import urllib.request
 
 from fastapi import HTTPException, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.config.audit import AUDIT_LOG_TIMEOUT, AUDIT_LOG_URL
 from app.config.settings import get_settings
+from app.domain.models.application import ApplicationDraft
+from app.domain.models.notification import Notification
+from app.domain.models.organization import OrganizationInvite, OrganizationMember
+from app.domain.models.opportunity import Opportunity
 from app.repositories.user_repository import UserRepository
 from app.repositories.company_repository import CompanyRepository
 from app.repositories.opportunity_repository import OpportunityRepository
@@ -109,10 +114,44 @@ class AdminService:
         return {"id": user.id, "is_active": user.is_active}
 
     def delete_user(self, user_id: int) -> dict:
-        """Delete a user permanently."""
-        deleted = self._user_repo.delete(user_id)
-        if not deleted:
+        """Delete a user permanently, cleaning up rows that bypass ORM cascades.
+
+        The User model declares `cascade="all, delete-orphan"` on
+        applications / bookmarks / company_follows / externships /
+        resume_profiles / logbooks / organization_memberships, so the ORM
+        takes care of those. The remaining FKs (opportunities.created_by_user_id,
+        notifications.user_id, application_drafts.student_id,
+        organization_invites.{accepted,created}_by_user_id) are NOT cascaded
+        and use ON DELETE NO ACTION, so we must clean them up explicitly
+        before the user row can go.
+        """
+        db = self._user_repo._db
+        user = self._user_repo.get_by_id(user_id)
+        if not user:
             raise HTTPException(status_code=404, detail="User not found")
+
+        db.query(Opportunity).filter(Opportunity.created_by_user_id == user_id).update(
+            {Opportunity.created_by_user_id: None}, synchronize_session=False
+        )
+        db.query(Notification).filter(Notification.user_id == user_id).delete(synchronize_session=False)
+        db.query(ApplicationDraft).filter(ApplicationDraft.student_id == user_id).delete(synchronize_session=False)
+        db.query(OrganizationInvite).filter(OrganizationInvite.accepted_by_user_id == user_id).delete(synchronize_session=False)
+        db.query(OrganizationInvite).filter(OrganizationInvite.created_by_user_id == user_id).delete(synchronize_session=False)
+        db.query(OrganizationMember).filter(OrganizationMember.invited_by_user_id == user_id).delete(synchronize_session=False)
+        db.query(OrganizationMember).filter(OrganizationMember.user_id == user_id).delete(synchronize_session=False)
+
+        try:
+            db.delete(user)
+            db.commit()
+        except IntegrityError as exc:
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=(
+                    "User has related records that could not be removed automatically. "
+                    "Deactivate the user instead, or contact engineering."
+                ),
+            ) from exc
         return {"deleted": True}
 
     # ── Company Management ───────────────────────────────────

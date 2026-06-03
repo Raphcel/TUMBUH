@@ -17,6 +17,9 @@ import {
     Languages,
     Check,
     FileBadge2,
+    Users,
+    Building,
+    ShieldCheck,
 } from 'lucide-react';
 
 const MotionButton = motion.button;
@@ -52,7 +55,18 @@ export function UserMenu({ isTransparent = false, isMobile = false }) {
         { name: t('nav_organization'),     path: '/hr/organization', icon: <Network size={16} /> },
     ];
 
-    const currentLinks = user?.role === 'hr' ? hrLinks : studentLinks;
+    const adminLinks = [
+        { name: t('nav_dashboard'),     path: '/admin/dashboard',   icon: <LayoutDashboard size={16} /> },
+        { name: t('nav_users'),         path: '/admin/users',       icon: <Users size={16} /> },
+        { name: t('nav_companies'),     path: '/admin/companies',   icon: <Building size={16} /> },
+        { name: t('nav_opportunities'), path: '/admin/opportunities', icon: <Briefcase size={16} /> },
+        { name: t('nav_audit'),         path: '/admin/audit',       icon: <ShieldCheck size={16} /> },
+    ];
+
+    const currentLinks =
+        user?.role === 'admin' ? adminLinks :
+        user?.role === 'hr'    ? hrLinks    :
+        studentLinks;
 
     const LANGS = [
         { code: 'en', label: t('lang_en') },
@@ -176,7 +190,11 @@ export function UserMenu({ isTransparent = false, isMobile = false }) {
                             {/* ── Settings & Logout ── */}
                             <div className="border-t border-surface-border py-1 mt-1">
                                 <Link
-                                    to={user?.role === 'hr' ? '/hr/organization?section=profile' : '/student/settings'}
+                                    to={
+                                        user?.role === 'admin' ? '/admin/dashboard' :
+                                        user?.role === 'hr'    ? '/hr/organization?section=profile' :
+                                        '/student/settings'
+                                    }
                                     onClick={() => setDropdownOpen(false)}
                                     className="w-full flex items-center gap-3 px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-text transition-colors text-left"
                                 >
