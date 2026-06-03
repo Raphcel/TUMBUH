@@ -19,6 +19,22 @@ export const companiesApi = {
   update(id, payload) {
     return api.put(`/companies/${id}`, payload);
   },
+
+  listReviews(companyId, skip = 0, limit = 100) {
+    return api.get(`/companies/${companyId}/reviews?skip=${skip}&limit=${limit}`);
+  },
+
+  createReview(companyId, payload) {
+    return api.post(`/companies/${companyId}/reviews`, payload);
+  },
+
+  updateReview(companyId, reviewId, payload) {
+    return api.put(`/companies/${companyId}/reviews/${reviewId}`, payload);
+  },
+
+  deleteReview(companyId, reviewId) {
+    return api.delete(`/companies/${companyId}/reviews/${reviewId}`);
+  },
 };
 
 export default companiesApi;

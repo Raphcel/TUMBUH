@@ -11,13 +11,14 @@ from app.domain.models.user import User
 from app.repositories import (
     UserRepository, CompanyRepository, OpportunityRepository, ApplicationRepository,
     BookmarkRepository, CompanyFollowRepository, ExternshipRepository, NotificationRepository, ResumeRepository,
+    CompanyReviewRepository,
     LogbookRepository,
     CompanyRequestRepository, OrganizationInviteRepository, OrganizationMemberRepository,
 )
 from app.services import (
     AuthService, UserService, CompanyService, OpportunityService, ApplicationService,
     BookmarkService, CompanyFollowService, ExternshipService, NotificationService, AdminService, ResumeService,
-    EmailService, LogbookService, OrganizationService,
+    EmailService, CompanyReviewService, LogbookService, OrganizationService,
 )
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
@@ -59,6 +60,10 @@ def get_notification_repo(db: Session = Depends(get_db)) -> NotificationReposito
 
 def get_resume_repo(db: Session = Depends(get_db)) -> ResumeRepository:
     return ResumeRepository(db)
+
+
+def get_company_review_repo(db: Session = Depends(get_db)) -> CompanyReviewRepository:
+    return CompanyReviewRepository(db)
 
 
 def get_logbook_repo(db: Session = Depends(get_db)) -> LogbookRepository:
@@ -103,6 +108,13 @@ def get_user_service(
 
 def get_company_service(company_repo: CompanyRepository = Depends(get_company_repo)) -> CompanyService:
     return CompanyService(company_repo)
+
+
+def get_company_review_service(
+    review_repo: CompanyReviewRepository = Depends(get_company_review_repo),
+    company_repo: CompanyRepository = Depends(get_company_repo),
+) -> CompanyReviewService:
+    return CompanyReviewService(review_repo, company_repo)
 
 
 def get_opportunity_service(

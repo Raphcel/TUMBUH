@@ -46,6 +46,7 @@ class Company(Base):
     staff = relationship("User", back_populates="company")
     opportunities = relationship("Opportunity", back_populates="company", cascade="all, delete-orphan")
     followers = relationship("CompanyFollow", back_populates="company", cascade="all, delete-orphan")
+    reviews = relationship("CompanyReview", back_populates="company", cascade="all, delete-orphan")
     organization_members = relationship("OrganizationMember", back_populates="company", cascade="all, delete-orphan")
     organization_invites = relationship("OrganizationInvite", back_populates="company", cascade="all, delete-orphan")
 

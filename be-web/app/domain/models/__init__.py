@@ -14,6 +14,7 @@ from app.domain.models.company_follow import CompanyFollow
 from app.domain.models.externship import Externship, ExternshipStatus, ExternshipType
 from app.domain.models.notification import Notification
 from app.domain.models.resume import ResumeProfile
+from app.domain.models.company_review import CompanyReview
 from app.domain.models.logbook import InternshipLogbook, LogbookEntry, LogbookAttachment
 
 __all__ = [
@@ -28,5 +29,6 @@ __all__ = [
     "Externship", "ExternshipStatus", "ExternshipType",
     "Notification",
     "ResumeProfile",
+    "CompanyReview",
     "InternshipLogbook", "LogbookEntry", "LogbookAttachment",
 ]

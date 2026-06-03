@@ -8,6 +8,7 @@ from app.repositories.company_follow_repository import CompanyFollowRepository
 from app.repositories.externship_repository import ExternshipRepository
 from app.repositories.notification_repository import NotificationRepository
 from app.repositories.resume_repository import ResumeRepository
+from app.repositories.company_review_repository import CompanyReviewRepository
 from app.repositories.logbook_repository import LogbookRepository
 from app.repositories.organization_repository import (
     CompanyRequestRepository,
@@ -26,6 +27,7 @@ __all__ = [
     "ExternshipRepository",
     "NotificationRepository",
     "ResumeRepository",
+    "CompanyReviewRepository",
     "LogbookRepository",
     "CompanyRequestRepository",
     "OrganizationInviteRepository",

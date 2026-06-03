@@ -1,0 +1,5 @@
+AUDIT_LOG_URL=http://localhost:3001/log
+base_url=http://localhost:3001
+path=/logs/recent?limit=200
+url=http://localhost:3001/logs/recent?limit=200
+---
