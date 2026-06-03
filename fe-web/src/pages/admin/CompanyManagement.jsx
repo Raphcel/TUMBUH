@@ -90,7 +90,7 @@ export function CompanyManagement() {
                     </td>
                     <td className="px-5 py-3.5 text-gray-500">{c.industry}</td>
                     <td className="px-5 py-3.5 text-gray-500">{c.location}</td>
-                    <td className="px-5 py-3.5 text-gray-500">{c.employee_count?.toLocaleString() || '—'}</td>
+                    <td className="px-5 py-3.5 text-gray-500">{c.employee_count?.toLocaleString('en-US') || '—'}</td>
                     <td className="px-5 py-3.5">
                       {c.rating ? (
                         <span className="inline-flex items-center gap-1 text-amber-600 font-medium">

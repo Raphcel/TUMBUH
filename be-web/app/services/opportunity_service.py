@@ -57,12 +57,13 @@ class OpportunityService:
         type_filter: OpportunityType | None = None,
         location: str | None = None,
         sort: str = "latest",
+        company_id: int | None = None,
         skip: int = 0,
         limit: int = 100,
     ) -> OpportunityListResponse:
         """List and search opportunities with filters."""
-        results = self._opportunity_repo.search(query, type_filter, location, sort, skip, limit)
-        total = self._opportunity_repo.count_search(query, type_filter, location)
+        results = self._opportunity_repo.search(query, type_filter, location, sort, company_id, skip, limit)
+        total = self._opportunity_repo.count_search(query, type_filter, location, company_id)
         return OpportunityListResponse(
             items=[self._to_response(o) for o in results],
             total=total,

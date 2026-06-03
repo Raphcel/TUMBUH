@@ -4,7 +4,7 @@
 import api from './client';
 
 export const opportunitiesApi = {
-  list(skip = 0, limit = 100, { search, type, location, sort } = {}) {
+  list(skip = 0, limit = 100, { search, type, location, sort, company_id } = {}) {
     const params = new URLSearchParams();
     params.set('skip', skip);
     params.set('limit', limit);
@@ -12,6 +12,7 @@ export const opportunitiesApi = {
     if (type && type !== 'All') params.set('type', type);
     if (location && location !== 'All') params.set('location', location);
     if (sort) params.set('sort', sort);
+    if (company_id) params.set('company_id', company_id);
     return api.get(`/opportunities/?${params.toString()}`);
   },
 

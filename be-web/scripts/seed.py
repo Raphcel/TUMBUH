@@ -16,6 +16,24 @@ from datetime import datetime
 # Ensure project root is on the path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+"""
+Seed script — populates the database with realistic mock data
+matching the frontend mockData.js for the IPB Career Tracker platform.
+
+Usage:
+    cd be-web
+    .\\myenv\\Scripts\\activate
+    python -m scripts.seed
+"""
+
+import json
+import sys
+import os
+from datetime import datetime
+
+# Ensure project root is on the path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import bcrypt
 from sqlalchemy import text
 
@@ -31,6 +49,7 @@ from app.domain.models.company_follow import CompanyFollow
 from app.domain.models.externship import Externship, ExternshipStatus, ExternshipType
 from app.domain.models.notification import Notification
 from app.domain.models.resume import ResumeProfile
+from app.domain.models.company_review import CompanyReview
 
 def hash_pw(plain: str) -> str:
     return bcrypt.hashpw(plain.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
@@ -57,6 +76,7 @@ def seed():
         # ── Clear existing data (in dependency order) ────────────
         db.query(Bookmark).delete()
         db.query(CompanyFollow).delete()
+        db.query(CompanyReview).delete()
         db.query(Externship).delete()
         db.query(Notification).delete()
         db.query(ResumeProfile).delete()
@@ -64,7 +84,7 @@ def seed():
         db.query(Opportunity).delete()
         db.query(User).delete()
         db.query(Company).delete()
-        for table_name in ("companies", "users", "opportunities", "applications", "company_follows"):
+        for table_name in ("companies", "users", "opportunities", "applications", "company_follows", "company_reviews"):
             reset_postgres_sequence(db, table_name)
         print("Reset PostgreSQL sequences")
 
@@ -525,6 +545,70 @@ def seed():
         db.add_all(externships)
         db.flush()
         print(f"Seeded {len(externships)} externships")
+
+        # ── Company Reviews ──────────────────────────────────────
+        reviews = [
+            CompanyReview(
+                company_id=101,
+                user_id=1,
+                rating=5,
+                content="Magang di Tokopedia sangat menyenangkan! Lingkungan kerjanya sangat suportif dan mentor-mentornya sangat membimbing dengan baik. Banyak belajar tech stack baru di sini."
+            ),
+            CompanyReview(
+                company_id=101,
+                user_id=4,
+                rating=4,
+                content="Fasilitas kantor Tokopedia lengkap dan keren. Pembagian tugas intern cukup terstruktur, namun terkadang koordinasi antar tim agak lambat. Sangat direkomendasikan!"
+            ),
+            CompanyReview(
+                company_id=102,
+                user_id=1,
+                rating=5,
+                content="Program magang yang sangat well-structured. Menjadi bagian dari tim produk Gojek memberikan banyak insight baru tentang scaling services."
+            ),
+            CompanyReview(
+                company_id=102,
+                user_id=3,
+                rating=4,
+                content="Budaya kerja yang dinamis dan seru di Gojek. Tapi kadang workload-nya cukup tinggi. Over all, sangat bagus untuk perkembangan karir di bidang data analytics."
+            ),
+            CompanyReview(
+                company_id=103,
+                user_id=3,
+                rating=5,
+                content="Pengalaman berharga mendapatkan beasiswa dan mentorship dari Bank Indonesia. Hubungan antar penerima beasiswa terjalin erat dan program pengembangannya sangat mendidik."
+            ),
+            CompanyReview(
+                company_id=103,
+                user_id=4,
+                rating=5,
+                content="Bank Indonesia memberikan lingkungan yang sangat profesional. Fasilitas magang luar biasa dan mentor selalu membimbing dengan sabar."
+            ),
+            CompanyReview(
+                company_id=104,
+                user_id=3,
+                rating=4,
+                content="Sangat menyenangkan bisa magang di Bukalapak. Kultur kerjanya santai tapi produktif, dan diberikan kepercayaan memegang project riil."
+            ),
+            CompanyReview(
+                company_id=105,
+                user_id=4,
+                rating=4,
+                content="Belajar banyak tentang infrastruktur jaringan skala besar di Telkom. Orang-orangnya ramah dan sangat terbuka untuk sharing ilmu."
+            ),
+        ]
+        db.add_all(reviews)
+        db.flush()
+        print(f"Seeded {len(reviews)} company reviews")
+
+        # Recalculate average ratings for companies based on reviews
+        for company in companies:
+            company_reviews = [r for r in reviews if r.company_id == company.id]
+            if company_reviews:
+                avg_rating = sum(r.rating for r in company_reviews) / len(company_reviews)
+                company.rating = round(avg_rating, 1)
+            else:
+                company.rating = 0.0
 
         db.commit()
         print("\nDatabase seeded successfully!")

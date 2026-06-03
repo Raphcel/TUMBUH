@@ -68,11 +68,20 @@ export function Lowongan() {
   const [filterLocation, setFilterLocation] = useState(searchParams.get('location') || 'All');
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'latest');
 
+  const [filterCompanyId, setFilterCompanyId] = useState(() => {
+    const cid = searchParams.get('companyId');
+    return cid ? parseInt(cid, 10) : null;
+  });
+  const [filterCompanyName, setFilterCompanyName] = useState(searchParams.get('companyName') || '');
+
   const [page, setPage] = useState(0);
   const [allOpportunities, setAllOpportunities] = useState([]);
   const [totalOpportunities, setTotalOpportunities] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [selectedJobId, setSelectedJobId] = useState(null);
+  const [selectedJobId, setSelectedJobId] = useState(() => {
+    const jid = searchParams.get('jobId');
+    return jid ? parseInt(jid, 10) : null;
+  });
   const [currentTimeMs] = useState(() => Date.now());
 
   // Debounce search
@@ -87,8 +96,14 @@ export function Lowongan() {
     if (filterType !== 'All') params.type = filterType;
     if (filterLocation !== 'All') params.location = filterLocation;
     if (sortBy !== 'latest') params.sort = sortBy;
+    if (filterCompanyId) {
+      params.companyId = filterCompanyId;
+      if (filterCompanyName) params.companyName = filterCompanyName;
+    }
+    const jobIdFromUrl = searchParams.get('jobId');
+    if (jobIdFromUrl) params.jobId = jobIdFromUrl;
     setSearchParams(params, { replace: true });
-  }, [searchTerm, filterType, filterLocation, sortBy, setSearchParams]);
+  }, [searchTerm, filterType, filterLocation, sortBy, filterCompanyId, filterCompanyName, setSearchParams, searchParams]);
 
   useEffect(() => {
     setLoading(true);
@@ -98,6 +113,7 @@ export function Lowongan() {
         type: filterType !== 'All' ? filterType : undefined,
         location: filterLocation !== 'All' ? filterLocation : undefined,
         sort: sortBy,
+        company_id: filterCompanyId || undefined,
       })
       .then((oppData) => {
         const opps = Array.isArray(oppData) ? oppData : oppData.items || [];
@@ -107,7 +123,7 @@ export function Lowongan() {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [debouncedSearch, filterType, filterLocation, sortBy, page]);
+  }, [debouncedSearch, filterType, filterLocation, sortBy, filterCompanyId, page]);
 
   // Auto-select first job
   useEffect(() => {
@@ -122,7 +138,7 @@ export function Lowongan() {
     });
   }, [allOpportunities]);
 
-  useEffect(() => { setPage(0); }, [debouncedSearch, filterType, filterLocation, sortBy]);
+  useEffect(() => { setPage(0); }, [debouncedSearch, filterType, filterLocation, sortBy, filterCompanyId]);
 
   useEffect(() => {
     if (!user || user.role !== 'student') return;
@@ -177,6 +193,9 @@ export function Lowongan() {
     setFilterType('All');
     setFilterLocation('All');
     setSortBy('latest');
+    setFilterCompanyId(null);
+    setFilterCompanyName('');
+    setSelectedJobId(null);
   };
 
   // Is a listing "new" (posted within 7 days)?
@@ -231,7 +250,7 @@ export function Lowongan() {
               </div>
               <button
                 type="submit"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#174d36] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#0f3d2a]"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#357963] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#295f4d]"
               >
                 <Search className="h-4 w-4" />
                 {t('low_search_btn')}
@@ -251,13 +270,28 @@ export function Lowongan() {
                     onClick={() => setFilterType(type)}
                     className={`h-8 rounded-md border px-3 text-xs font-semibold transition-colors ${
                       filterType === type
-                        ? 'border-[#174d36] bg-[#e8f2ec] text-[#174d36]'
-                        : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
+                        ? 'border-[#357963] bg-[#effaf6] text-[#357963]'
+                        : 'border-gray-200 bg-white text-gray-650 hover:bg-gray-50'
                     }`}
                   >
                     {type === 'All' ? t('low_type_all') : type}
                   </button>
                 ))}
+                {filterCompanyId && (
+                  <div className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#357963]/30 bg-[#effaf6] pl-3 pr-2 text-xs font-semibold text-[#357963]">
+                    <span>{filterCompanyName || t('navbar_companies')}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilterCompanyId(null);
+                        setFilterCompanyName('');
+                      }}
+                      className="rounded-full p-0.5 hover:bg-[#357963]/10 text-[#357963] transition-colors"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                )}
               </div>
 
               <button
@@ -311,7 +345,7 @@ export function Lowongan() {
                       index < allOpportunities.length - 1 ? 'border-b border-gray-100/80' : ''
                     } ${
                       selectedJobId === job.id
-                        ? 'bg-[#f5faf7] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1 before:rounded-r-sm before:bg-[#174d36]'
+                        ? 'bg-[#edf6f1] shadow-[inset_0_1px_0_rgba(255,255,255,0.85),inset_0_-1px_0_rgba(23,77,54,0.06)]'
                         : 'hover:bg-gray-50'
                     }`}
                   >
@@ -325,21 +359,25 @@ export function Lowongan() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start gap-2">
-                          <h3 className="text-[13px] font-semibold text-gray-950 truncate pr-2 hover:text-[#174d36] transition-colors">
+                          <h3 className={`text-[13px] font-semibold truncate pr-2 transition-colors ${
+                            selectedJobId === job.id ? 'text-[#357963]' : 'text-gray-950 hover:text-[#357963]'
+                          }`}>
                             {job.title}
                           </h3>
                           <button
                             onClick={(e) => { e.stopPropagation(); toggleSave(job.id); }}
-                            className={`shrink-0 transition-colors z-10 ${savedJobs.includes(job.id) ? 'text-[#174d36]' : 'text-gray-400 hover:text-gray-600'}`}
+                            className={`shrink-0 transition-colors z-10 ${savedJobs.includes(job.id) ? 'text-[#357963]' : 'text-gray-400 hover:text-gray-600'}`}
                           >
                             <Bookmark className="w-4 h-4" fill={savedJobs.includes(job.id) ? 'currentColor' : 'none'} />
                           </button>
                         </div>
-                        <p className="text-[11px] text-gray-500 mt-0.5 truncate">{job.company?.name}</p>
+                        <p className={`text-[11px] mt-0.5 truncate ${
+                          selectedJobId === job.id ? 'font-medium text-gray-700' : 'text-gray-500'
+                        }`}>{job.company?.name}</p>
                         <div className="mt-1.5 flex items-end justify-between gap-3 text-[11px] text-gray-500">
                           <div className="flex min-w-0 flex-wrap items-center gap-1.5">
                             {isNew(job) && (
-                              <span className="bg-emerald-50 text-[#174d36] border border-emerald-100 font-semibold px-2 py-0.5 rounded-sm">
+                              <span className="bg-[#effaf6] text-[#357963] border border-[#357963]/15 font-semibold px-2 py-0.5 rounded-sm">
                                 {t('new_badge')}
                               </span>
                             )}

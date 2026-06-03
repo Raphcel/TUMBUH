@@ -37,6 +37,7 @@ class OpportunityRepository(BaseRepository[Opportunity]):
         type_filter: OpportunityType | None = None,
         location: str | None = None,
         sort: str = "latest",
+        company_id: int | None = None,
         skip: int = 0,
         limit: int = 100,
     ) -> list[Opportunity]:
@@ -55,6 +56,9 @@ class OpportunityRepository(BaseRepository[Opportunity]):
 
         if location:
             q = q.filter(Opportunity.location.ilike(f"%{location}%"))
+
+        if company_id:
+            q = q.filter(Opportunity.company_id == company_id)
 
         if sort == "oldest":
             q = q.order_by(asc(Opportunity.posted_at))
@@ -78,6 +82,7 @@ class OpportunityRepository(BaseRepository[Opportunity]):
         query: str | None = None,
         type_filter: OpportunityType | None = None,
         location: str | None = None,
+        company_id: int | None = None,
     ) -> int:
         """Count opportunities matching the given filters."""
         q = self._db.query(Opportunity)
@@ -87,4 +92,6 @@ class OpportunityRepository(BaseRepository[Opportunity]):
             q = q.filter(Opportunity.type == type_filter)
         if location:
             q = q.filter(Opportunity.location.ilike(f"%{location}%"))
+        if company_id:
+            q = q.filter(Opportunity.company_id == company_id)
         return q.count()

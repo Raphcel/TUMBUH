@@ -7,6 +7,7 @@ from app.domain.models.company_follow import CompanyFollow
 from app.domain.models.externship import Externship, ExternshipStatus, ExternshipType
 from app.domain.models.notification import Notification
 from app.domain.models.resume import ResumeProfile
+from app.domain.models.company_review import CompanyReview
 
 __all__ = [
     "User", "UserRole",
@@ -18,4 +19,5 @@ __all__ = [
     "Externship", "ExternshipStatus", "ExternshipType",
     "Notification",
     "ResumeProfile",
+    "CompanyReview",
 ]

@@ -6,14 +6,14 @@
     "auditLog": "C:\\Users\\ASUS\\OneDrive\\Documents\\GitHub\\TUMBUH\\audit-log\\logs\\.17e2973e1cd2e822e8a57ee93e7961e52120e4ba-audit.json",
     "files": [
         {
-            "date": 1778595836496,
-            "name": "C:\\Users\\ASUS\\OneDrive\\Documents\\GitHub\\TUMBUH\\audit-log\\logs\\audit-errors-2026-05-12.log",
-            "hash": "b78cf79da1b71fa4235296c02905cabf83698b5e92d187811b6af1ba6f4b6d64"
+            "date": 1780454703347,
+            "name": "C:\\Users\\ASUS\\OneDrive\\Documents\\GitHub\\TUMBUH\\audit-log\\logs\\audit-errors-2026-06-03.log",
+            "hash": "92174d0a199dd706182949cbd2e00945687b2bc198be8b32485da6e39db3893d"
         },
         {
-            "date": 1779040353977,
-            "name": "C:\\Users\\ASUS\\OneDrive\\Documents\\GitHub\\TUMBUH\\audit-log\\logs\\audit-errors-2026-05-18.log",
-            "hash": "fc3cf02c6e600205683160554fd0356f82e865c48195cf6bff3f1e202c58d340"
+            "date": 1780506521440,
+            "name": "C:\\Users\\ASUS\\OneDrive\\Documents\\GitHub\\TUMBUH\\audit-log\\logs\\audit-errors-2026-06-04.log",
+            "hash": "dfeeb1a13d0ee8ba691df3ef974f548797301805da86dde229a29861a21ef132"
         }
     ],
     "hashType": "sha256"

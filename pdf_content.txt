@@ -1,0 +1,143 @@
+ Ketentuan Presentasi Akhir Proyek PBL 
+Mata Kuliah KOM1315 – Keamanan Informasi 
+1. Tujuan Presentasi 
+Presentasi akhir bertujuan untuk mengevaluasi kemampuan mahasiswa dalam: 
+● Menganalisis kebutuhan keamanan sistem informasi. 
+● Merancang protokol keamanan berbasis kriptografi. 
+● Mengimplementasikan AAA (Authentication, Authorization, Accounting). 
+● Mengevaluasi efektivitas dan dampak implementasi keamanan terhadap sistem. 
+● Mengkomunikasikan hasil pekerjaan secara profesional. 
+2. Waktu Presentasi 
+Aktivitas Durasi 
+Presentasi Tim 5 menit 
+Live Demo Sistem 10 menit 
+Tanya Jawab 5-10  menit 
+Total 20 menit/kelompok 
+Seluruh anggota kelompok wajib hadir dan berpartisipasi. 
+3. Susunan Slide Presentasi 
+Slide 1. Judul Proyek 
+● Nama sistem 
+● Nama anggota 
+● Dosen pengampu 
+Slide 2. Latar Belakang 
+● Masalah keamanan yang ingin diselesaikan 
+● Risiko jika tidak ada mekanisme keamanan 
+Slide 3. Gambaran Sistem 
+● Aktor 
+● Fitur utama 
+● Arsitektur singkat 
+Slide 4. Threat Modeling 
+● Aset yang dilindungi 
+● Ancaman utama 
+● Risiko yang diidentifikasi 
+Slide 5. Kebutuhan Keamanan 
+Minimal menjelaskan: 
+● Confidentiality 
+● Integrity 
+● Availability 
+● Authentication 
+● Authorization 
+● Accountability 
+Slide 6. Desain Keamanan 
+Jelaskan: 
+● Data at Rest 
+● Data in Transit 
+● Key Management 
+Diagram wajib ditampilkan. 
+Slide 7. Implementasi Authentication 
+Contoh: 
+● Login 
+● Password Hashing + Salt 
+● MFA (jika ada) 
+Slide 8. Implementasi Authorization 
+Contoh: 
+● Role Based Access Control 
+● Hak akses pengguna 
+Slide 9. Implementasi Accounting 
+Contoh: 
+● Audit Log 
+● Activity Log 
+● Login History 
+Slide 10. Implementasi Kriptografi 
+Jelaskan: 
+● AES 
+● RSA 
+● SHA-256 
+● Digital Signature 
+● HTTPS/TLS 
+Sertakan alasan pemilihan algoritma. 
+Slide 11. Hasil Pengujian 
+Minimal: 
+● Functional Testing 
+● Security Testing 
+● Integration Testing 
+Slide 12. Analisis Kinerja 
+Bandingkan: 
+● Sebelum implementasi keamanan 
+● Sesudah implementasi keamanan 
+Contoh: 
+● Response Time 
+● Latency 
+● Ukuran data 
+● CPU/RAM 
+Slide 13. Kesimpulan 
+● Pencapaian tujuan 
+● Keterbatasan sistem 
+● Pengembangan berikutnya 
+4. Ketentuan Live Demo 
+Demo harus dilakukan secara langsung (bukan video rekaman). 
+Minimal memperlihatkan: 
+Authentication 
+● Registrasi/Login 
+● Password tersimpan dalam bentuk hash 
+Authorization 
+● Perbedaan hak akses antar role 
+Accounting 
+● Aktivitas pengguna tercatat pada log 
+Data at Rest 
+● Contoh data sensitif terenkripsi di database 
+Data in Transit 
+● HTTPS/TLS aktif 
+Digital Signature (jika ada) 
+● Proses signing dan verification 
+5. Ketentuan Tanya Jawab 
+Setiap anggota kelompok wajib menjawab minimal 1 pertanyaan. 
+Kisi2 Pertanyaan Dosen : 
+Aspek Keamanan 
+● Mengapa memilih AES? 
+● Mengapa menggunakan SHA-256? 
+● Apa risiko jika kunci bocor? 
+● Apa ancaman terbesar pada sistem Anda? 
+Aspek Sistem 
+● Apa perbedaan authentication dan authorization? 
+● Mengapa fitur ini memerlukan accounting? 
+● Apa yang terjadi jika database dicuri? 
+Aspek Implementasi 
+● Bagian mana yang paling sulit? 
+● Apa yang akan diperbaiki jika proyek dilanjutkan? 
+6. Rubrik Penilaian Presentasi Akhir 
+(100%) 
+Komponen Bobot 
+Analisis kebutuhan keamanan 15% 
+Desain protokol AAA 20% 
+Implementasi fitur keamanan 25% 
+Kualitas live demo 20% 
+Analisis hasil pengujian 10% 
+Kemampuan menjawab pertanyaan 10% 
+ 
+Bonus Nilai (Maks. +5) 
+Diberikan apabila kelompok mengimplementasikan salah satu: 
+● Multi-Factor Authentication (MFA) 
+● JWT + Role Based Access Control yang lengkap 
+● Public Key Infrastructure (PKI) 
+● Digital Signature pada transaksi 
+● Watermarking 
+● Steganografi 
+● Security Logging Dashboard 
+● Penetration Testing sederhana terhadap sistem sendiri 
+Catatan  
+Penilaian tidak berfokus pada banyaknya fitur aplikasi, tetapi pada kualitas analisis keamanan, 
+ketepatan penerapan protokol AAA, penggunaan kriptografi yang benar, serta kemampuan 
+menjelaskan alasan teknis di balik setiap keputusan desain keamanan. 
+ 
+ 

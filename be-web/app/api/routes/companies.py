@@ -2,10 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.domain.models.user import User
 from app.services.company_service import CompanyService
+from app.services.company_review_service import CompanyReviewService
 from app.schemas.company import (
     CompanyCreate, CompanyUpdate, CompanyResponse, CompanyListResponse,
 )
-from app.api.dependencies import get_company_service, require_role
+from app.schemas.company_review import CompanyReviewCreate, CompanyReviewResponse, CompanyReviewListResponse
+from app.api.dependencies import get_company_service, require_role, get_company_review_service, get_current_user
 
 router = APIRouter(prefix="/companies", tags=["Companies"])
 
@@ -65,3 +67,49 @@ def delete_company(
     if current_user.company_id != company_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only delete your own company")
     return company_service.delete_company(company_id)
+
+
+@router.get("/{company_id}/reviews", response_model=CompanyReviewListResponse)
+def list_company_reviews(
+    company_id: int,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
+    review_service: CompanyReviewService = Depends(get_company_review_service),
+):
+    """List all reviews for a company."""
+    return review_service.list_reviews(company_id, skip, limit)
+
+
+@router.post("/{company_id}/reviews", response_model=CompanyReviewResponse, status_code=201)
+def create_company_review(
+    company_id: int,
+    data: CompanyReviewCreate,
+    current_user: User = Depends(require_role("student")),
+    review_service: CompanyReviewService = Depends(get_company_review_service),
+):
+    """Write a review for a company (Students only)."""
+    return review_service.create_review(company_id, current_user.id, data)
+
+
+@router.put("/{company_id}/reviews/{review_id}", response_model=CompanyReviewResponse)
+def update_company_review(
+    company_id: int,
+    review_id: int,
+    data: CompanyReviewCreate,
+    current_user: User = Depends(get_current_user),
+    review_service: CompanyReviewService = Depends(get_company_review_service),
+):
+    """Update a review (owner only)."""
+    return review_service.update_review(company_id, review_id, current_user.id, data)
+
+
+@router.delete("/{company_id}/reviews/{review_id}")
+def delete_company_review(
+    company_id: int,
+    review_id: int,
+    current_user: User = Depends(get_current_user),
+    review_service: CompanyReviewService = Depends(get_company_review_service),
+):
+    """Delete a review (owner or admin only)."""
+    is_admin = current_user.role.value == "admin"
+    return review_service.delete_review(company_id, review_id, current_user.id, is_admin)

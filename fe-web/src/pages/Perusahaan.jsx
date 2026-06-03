@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { companiesApi } from '../api/companies';
 import { companyFollowsApi } from '../api/companyFollows';
-import { MapPin, Users, Star, ChevronDown, Bookmark } from 'lucide-react';
+import { MapPin, Users, Star, Bookmark, Search, SlidersHorizontal, X } from 'lucide-react';
 import { useTranslation } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -16,6 +16,50 @@ export function Perusahaan() {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [savedCompanies, setSavedCompanies] = useState([]);
+  const [filterIndustry, setFilterIndustry] = useState('All');
+  const [filterLocation, setFilterLocation] = useState('All');
+  const [sortBy, setSortBy] = useState('A - Z');
+
+  const industries = [
+    { value: 'All', label: t('comp_all_industries') },
+    { value: 'Technology', label: t('comp_technology') },
+    { value: 'Finance', label: t('comp_finance') },
+    { value: 'E-Commerce', label: t('comp_ecommerce') },
+    { value: 'Education', label: t('comp_education') },
+    { value: 'Consulting', label: t('comp_consulting') },
+    { value: 'Others', label: t('comp_others') },
+  ];
+  const locations = [
+    { value: 'All', label: t('comp_all_locations') },
+    { value: 'Jakarta', label: 'Jakarta' },
+    { value: 'Bandung', label: 'Bandung' },
+    { value: 'Surabaya', label: 'Surabaya' },
+    { value: 'Yogyakarta', label: 'Yogyakarta' },
+    { value: 'Remote', label: 'Remote' },
+  ];
+
+  useEffect(() => {
+    companiesApi
+      .list(0, 100)
+      .then((data) => {
+        const comps = Array.isArray(data) ? data : data.items || [];
+        setCompanies(comps);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (user?.role !== 'student') return;
+
+    companyFollowsApi
+      .mine()
+      .then((data) => {
+        const follows = Array.isArray(data) ? data : data.items || [];
+        setSavedCompanies(follows.map((follow) => follow.company_id));
+      })
+      .catch(console.error);
+  }, [user]);
 
   const toggleSaveCompany = async (id) => {
     if (!user) {
@@ -59,41 +103,18 @@ export function Perusahaan() {
     }
   };
 
-  const [filterIndustry, setFilterIndustry] = useState(t('comp_all_industries'));
-  const [filterLocation, setFilterLocation] = useState(t('comp_all_locations'));
-
-  const [sortBy, setSortBy] = useState('A - Z');
-
-  useEffect(() => {
-    companiesApi
-      .list(0, 100)
-      .then((data) => {
-        const comps = Array.isArray(data) ? data : data.items || [];
-        setCompanies(comps);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => {
-    if (user?.role !== 'student') {
-      return;
-    }
-
-    companyFollowsApi
-      .mine()
-      .then((data) => {
-        const follows = Array.isArray(data) ? data : data.items || [];
-        setSavedCompanies(follows.map((follow) => follow.company_id));
-      })
-      .catch(console.error);
-  }, [user]);
+  const clearFilters = () => {
+    setSearchTerm('');
+    setFilterIndustry('All');
+    setFilterLocation('All');
+    setSortBy('A - Z');
+  };
 
   const filteredCompanies = companies.filter((c) => {
     const matchSearch = c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (c.industry || '').toLowerCase().includes(searchTerm.toLowerCase());
-    const matchIndustry = filterIndustry === t('comp_all_industries') || c.industry === filterIndustry;
-    const matchLocation = filterLocation === t('comp_all_locations') || (c.location || '').includes(filterLocation);
+    const matchIndustry = filterIndustry === 'All' || (c.industry || '').toLowerCase() === filterIndustry.toLowerCase();
+    const matchLocation = filterLocation === 'All' || (c.location || '').includes(filterLocation);
     return matchSearch && matchIndustry && matchLocation;
   });
 
@@ -105,176 +126,173 @@ export function Perusahaan() {
   });
 
   return (
-    <div className="bg-white min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-8">
-          {/* ── Sidebar Filter ── */}
-          <aside className="w-56 shrink-0 hidden md:block">
-            <div className="sticky top-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-bold text-gray-900">{t('comp_filter')}</h2>
-                <button
-                  onClick={() => { setFilterIndustry(t('comp_all_industries')); setFilterLocation(t('comp_all_locations')); }}
-                  className="text-xs text-gray-400 hover:text-gray-700"
-                >
-                  ↑
-                </button>
+    <div className="min-h-screen bg-[#f5f6f8]">
+      <main className="mx-auto w-full max-w-[1480px] px-4 py-4 sm:px-6">
+        <section className="mb-4">
+          <div className="rounded-md border border-gray-200 bg-white p-3 shadow-sm">
+            <div className="grid grid-cols-1 gap-2 lg:grid-cols-[minmax(260px,1fr)_220px_220px_auto]">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder={t('comp_search_ph', 'Search company or industry')}
+                  className="h-10 w-full rounded-md border border-gray-300 bg-white pl-9 pr-3 text-sm text-gray-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
+                />
               </div>
 
-              {/* Industry filter */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-gray-800">{t('comp_industry')}</h3>
-                </div>
-                <ul className="space-y-2">
-                  {[t('comp_all_industries'), t('comp_technology'), t('comp_finance'), t('comp_ecommerce'), t('comp_education'), t('comp_consulting'), t('comp_others')].map((ind) => (
-                    <li key={ind}>
-                      <label className="flex items-center gap-2.5 cursor-pointer group">
-                        <input
-                          type="radio"
-                          name="industry"
-                          checked={filterIndustry === ind}
-                          onChange={() => setFilterIndustry(ind)}
-                          className="w-4 h-4 accent-brand"
-                        />
-                        <span className={`text-sm ${filterIndustry === ind ? 'text-brand font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
-                          {ind}
-                        </span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <select
+                value={filterIndustry}
+                onChange={(e) => setFilterIndustry(e.target.value)}
+                className="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
+              >
+                {industries.map((industry) => (
+                  <option key={industry.value} value={industry.value}>{industry.label}</option>
+                ))}
+              </select>
 
-              {/* Location filter */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-gray-800">{t('comp_location')}</h3>
-                </div>
-                <ul className="space-y-2">
-                  {[t('comp_all_locations'), 'Jakarta', 'Bandung', 'Surabaya', 'Yogyakarta', 'Remote'].map((loc) => (
-                    <li key={loc}>
-                      <label className="flex items-center gap-2.5 cursor-pointer group">
-                        <input
-                          type="radio"
-                          name="location"
-                          checked={filterLocation === loc}
-                          onChange={() => setFilterLocation(loc)}
-                          className="w-4 h-4 accent-brand"
-                        />
-                        <span className={`text-sm ${filterLocation === loc ? 'text-brand font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
-                          {loc}
-                        </span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <select
+                value={filterLocation}
+                onChange={(e) => setFilterLocation(e.target.value)}
+                className="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
+              >
+                {locations.map((location) => (
+                  <option key={location.value} value={location.value}>{location.label}</option>
+                ))}
+              </select>
 
-              {/* Company size filter placeholder */}
-              <div>
-                <button className="flex items-center justify-between w-full text-sm font-semibold text-gray-800">
-                  {t('comp_company_size')} <ChevronDown size={14} />
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-md px-3 text-sm font-semibold text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-900"
+              >
+                <X className="h-4 w-4" />
+                {t('reset')}
+              </button>
             </div>
-          </aside>
 
-          {/* ── Main content ── */}
-          <div className="flex-1 min-w-0">
-            {/* Results header */}
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-sm text-gray-600">
-                {t('comp_found')} <span className="font-semibold text-gray-900">{sortedCompanies.length}</span> {t('comp_companies')}
-              </p>
-              <div className="flex items-center gap-2">
+            <div className="mt-3 flex flex-col gap-2 border-t border-gray-100 pt-3 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-2 pr-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  <SlidersHorizontal className="h-4 w-4" />
+                  {t('comp_filter')}
+                </span>
+                {industries.slice(1, 5).map((industry) => (
+                  <button
+                    key={industry.value}
+                    type="button"
+                    onClick={() => setFilterIndustry(industry.value)}
+                    className={`h-8 rounded-md border px-3 text-xs font-semibold transition-colors ${
+                      filterIndustry === industry.value
+                        ? 'border-[#357963] bg-[#effaf6] text-[#357963]'
+                        : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {industry.label}
+                  </button>
+                ))}
+              </div>
+
+              <label className="flex items-center gap-2 text-xs text-gray-500">
+                <span className="font-semibold uppercase tracking-wide">{t('sort', 'Sort')}</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  className="h-8 rounded-md border border-gray-300 bg-white px-2 text-xs font-medium text-gray-700 outline-none"
                 >
                   <option>A - Z</option>
                   <option>Z - A</option>
                   <option>Rating</option>
                 </select>
-              </div>
+              </label>
             </div>
-
-            {/* Company list */}
-            {loading ? (
-              <div className="flex justify-center py-20">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand" />
-              </div>
-            ) : sortedCompanies.length > 0 ? (
-              <div className="space-y-3">
-                {sortedCompanies.map((company) => (
-                  <Link
-                    key={company.id}
-                    to={`/perusahaan/${company.id}`}
-                    className="flex items-center justify-between p-5 border border-gray-200 rounded-xl bg-white hover:border-brand hover:shadow-sm transition-all group"
-                  >
-                    <div className="flex items-center gap-4">
-                      {/* Logo */}
-                      <div className="w-12 h-12 rounded-lg border border-gray-200 flex items-center justify-center p-2 bg-white shrink-0">
-                        {company.logo
-                          ? <img src={company.logo} alt={company.name} className="w-full h-full object-contain" />
-                          : <span className="text-lg font-bold text-gray-400">{company.name?.[0]}</span>
-                        }
-                      </div>
-
-                      <div>
-                        <h3 className="font-semibold text-gray-900 group-hover:text-brand transition-colors">
-                          {company.name}
-                        </h3>
-                        <p className="text-sm text-gray-500 mb-2">{company.industry}</p>
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
-                          {company.location && (
-                            <span className="flex items-center gap-1">
-                              <MapPin size={12} /> {company.location}
-                            </span>
-                          )}
-                          {company.employee_count && (
-                            <span className="flex items-center gap-1">
-                              <Users size={12} /> {company.employee_count}
-                            </span>
-                          )}
-                          {company.rating && (
-                            <span className="flex items-center gap-1 text-yellow-500">
-                              <Star size={12} fill="currentColor" /> {company.rating}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="shrink-0 ml-4 flex items-center gap-4">
-                      <button
-                        onClick={(e) => { e.preventDefault(); toggleSaveCompany(company.id); }}
-                        className={`transition-colors z-10 ${savedCompanies.includes(company.id) ? 'text-brand' : 'text-gray-400 hover:text-gray-600'}`}
-                      >
-                        <Bookmark className="w-5 h-5" fill={savedCompanies.includes(company.id) ? 'currentColor' : 'none'} />
-                      </button>
-                      <svg className="w-5 h-5 text-gray-300 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M6 18L18 6M18 6H9M18 6v9" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-                      </svg>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="py-20 text-center text-gray-500">
-                <p>{t('comp_no_results')}</p>
-                <button
-                  onClick={() => { setFilterIndustry(t('comp_all_industries')); setFilterLocation(t('comp_all_locations')); setSearchTerm(''); }}
-                  className="mt-3 text-brand hover:underline text-sm"
-                >
-                  {t('comp_clear_filters')}
-                </button>
-              </div>
-            )}
           </div>
-        </div>
-      </div>
+        </section>
+
+        <section className="overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm">
+          <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
+            <h1 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+              {t('comp_found')} {sortedCompanies.length} {t('comp_companies')}
+            </h1>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-brand" />
+            </div>
+          ) : sortedCompanies.length > 0 ? (
+            <div className="bg-white">
+              {sortedCompanies.map((company, index) => (
+                <Link
+                  key={company.id}
+                  to={`/perusahaan/${company.id}`}
+                  className={`group flex items-center justify-between px-4 py-3 transition-colors hover:bg-gray-50 ${
+                    index < sortedCompanies.length - 1 ? 'border-b border-gray-100/80' : ''
+                  }`}
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border border-gray-200 bg-white p-1.5">
+                      {company.logo
+                        ? <img src={company.logo} alt={company.name} className="h-full w-full object-contain" />
+                        : <span className="text-sm font-bold text-gray-400">{company.name?.[0]}</span>
+                      }
+                    </div>
+
+                    <div className="min-w-0">
+                      <h2 className="truncate text-sm font-semibold text-gray-950 transition-colors group-hover:text-[#357963]">
+                        {company.name}
+                      </h2>
+                      <p className="mt-0.5 truncate text-[11px] text-gray-500">{company.industry || t('comp_others')}</p>
+                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px] text-gray-500">
+                        {company.location && (
+                          <span className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3" /> {company.location}
+                          </span>
+                        )}
+                        {company.employee_count && (
+                          <>
+                            <span className="h-1 w-1 rounded-full bg-gray-300" />
+                            <span className="flex items-center gap-1">
+                              <Users className="h-3 w-3" /> {Number(company.employee_count).toLocaleString('en-US')}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="ml-4 flex shrink-0 items-center gap-4">
+                    {company.rating && (
+                      <span className="hidden items-center gap-1 text-xs font-semibold text-amber-500 sm:flex">
+                        <Star className="h-3.5 w-3.5" fill="currentColor" /> {company.rating}
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={(e) => { e.preventDefault(); toggleSaveCompany(company.id); }}
+                      className={`transition-colors ${savedCompanies.includes(company.id) ? 'text-[#357963]' : 'text-gray-400 hover:text-gray-600'}`}
+                      aria-label="Follow company"
+                    >
+                      <Bookmark className="h-4 w-4" fill={savedCompanies.includes(company.id) ? 'currentColor' : 'none'} />
+                    </button>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="py-20 text-center text-gray-500">
+              <p>{t('comp_no_results')}</p>
+              <button
+                onClick={clearFilters}
+                className="mt-3 text-sm text-brand hover:underline"
+              >
+                {t('comp_clear_filters')}
+              </button>
+            </div>
+          )}
+        </section>
+      </main>
     </div>
   );
 }
