@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, Query
 
 from app.domain.models.user import User
 from app.services.company_service import CompanyService
+from app.services.organization_service import OrganizationService
 from app.schemas.company import (
     CompanyCreate, CompanyUpdate, CompanyResponse, CompanyListResponse,
 )
-from app.api.dependencies import get_company_service, require_role
+from app.api.dependencies import get_company_service, get_organization_service, require_role
 
 router = APIRouter(prefix="/companies", tags=["Companies"])
 
@@ -48,10 +49,10 @@ def update_company(
     data: CompanyUpdate,
     current_user: User = Depends(require_role("hr")),
     company_service: CompanyService = Depends(get_company_service),
+    organization_service: OrganizationService = Depends(get_organization_service),
 ):
     """Update company details (HR only, own company)."""
-    if current_user.company_id != company_id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only modify your own company")
+    organization_service.require_permission(current_user, company_id, "manage_company_profile")
     return company_service.update_company(company_id, data)
 
 
@@ -60,8 +61,8 @@ def delete_company(
     company_id: int,
     current_user: User = Depends(require_role("hr")),
     company_service: CompanyService = Depends(get_company_service),
+    organization_service: OrganizationService = Depends(get_organization_service),
 ):
     """Delete a company (HR only, own company)."""
-    if current_user.company_id != company_id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only delete your own company")
+    organization_service.require_permission(current_user, company_id, "manage_company_profile")
     return company_service.delete_company(company_id)

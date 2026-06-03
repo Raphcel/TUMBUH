@@ -38,8 +38,8 @@ const LogbookDetail    = lazyNamed(() => import('./pages/student/LogbookDetail')
 const HRDashboard        = lazyNamed(() => import('./pages/hr/Dashboard'),         'HRDashboard');
 const KelolaLowongan     = lazyNamed(() => import('./pages/hr/KelolaLowongan'),    'KelolaLowongan');
 const OpportunityManagement = lazyNamed(() => import('./pages/hr/OpportunityManagement'), 'OpportunityManagement');
-const ProfilPerusahaanHR = lazyNamed(() => import('./pages/hr/ProfilPerusahaan'),  'ProfilPerusahaanHR');
 const FormLowongan       = lazyNamed(() => import('./pages/hr/FormLowongan'),      'FormLowongan');
+const OrganizationPage   = lazyNamed(() => import('./pages/hr/Organization'),      'OrganizationPage');
 
 // ── Admin pages ────────────────────────────────────────────────────────────
 const AdminDashboard      = lazyNamed(() => import('./pages/admin/Dashboard'),        'AdminDashboard');
@@ -245,12 +245,15 @@ function AppRoutes() {
         }
       >
         <Route path="dashboard" element={<HRDashboard />} />
+        <Route path="organization" element={<OrganizationPage />} />
+        <Route path="onboarding" element={<OrganizationPage />} />
+        <Route path="join" element={<OrganizationPage />} />
         <Route path="opportunities" element={<KelolaLowongan />} />
         <Route path="lowongan/baru" element={<FormLowongan />} />
         <Route path="opportunities/:id/edit" element={<FormLowongan />} />
         <Route path="opportunities/:id" element={<OpportunityManagement />} />
         <Route path="applicants" element={<Navigate to="/hr/opportunities" replace />} />
-        <Route path="company" element={<ProfilPerusahaanHR />} />
+        <Route path="company" element={<Navigate to="/hr/organization?section=profile" replace />} />
         <Route path="calendar" element={<Calendar />} />
       </Route>
 

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app.domain.models.company import Company
+from app.domain.models.company import Company, CompanyStatus
 from app.repositories.base import BaseRepository
 
 
@@ -19,6 +19,7 @@ class CompanyRepository(BaseRepository[Company]):
         search_term = f"%{query}%"
         return (
             self._db.query(Company)
+            .filter(Company.status == CompanyStatus.APPROVED)
             .filter(
                 (Company.name.ilike(search_term)) |
                 (Company.industry.ilike(search_term))
@@ -33,9 +34,22 @@ class CompanyRepository(BaseRepository[Company]):
         search_term = f"%{query}%"
         return (
             self._db.query(Company)
+            .filter(Company.status == CompanyStatus.APPROVED)
             .filter(
                 (Company.name.ilike(search_term)) |
                 (Company.industry.ilike(search_term))
             )
             .count()
         )
+
+    def get_all(self, skip: int = 0, limit: int = 100) -> list[Company]:
+        return (
+            self._db.query(Company)
+            .filter(Company.status == CompanyStatus.APPROVED)
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
+    def count(self) -> int:
+        return self._db.query(Company).filter(Company.status == CompanyStatus.APPROVED).count()

@@ -5,10 +5,11 @@ import { Button } from '../../components/ui/Button';
 import { Input, Select } from '../../components/ui/Input';
 import { useToast } from '../../context/ToastContext';
 import { opportunitiesApi } from '../../api/opportunities';
-import { ArrowLeft, Plus, Trash2, X } from 'lucide-react';
+import { ArrowLeft, Building2, Plus, Trash2, X } from 'lucide-react';
 import { useTranslation } from '../../context/LanguageContext';
 import { buildMajorOptions } from '../../data/ipbMajors';
 import { getSkillSuggestions, normalizeSkillLabel, normalizeSkillList } from '../../data/skills';
+import { useOrganization } from '../../hooks/useOrganization';
 
 function formatRupiah(value) {
   const digits = String(value || '').replace(/\D/g, '');
@@ -35,6 +36,8 @@ export function FormLowongan() {
   const { lang } = useTranslation();
   const isEdit = Boolean(id);
   const isId = lang === 'id';
+  const { company, onboardingRequired, loading: organizationLoading } = useOrganization();
+  const canCreate = isEdit || company?.status === 'approved';
 
   const [form, setForm] = useState({
     title: '',
@@ -197,10 +200,35 @@ export function FormLowongan() {
     }
   };
 
-  if (loading) {
+  if (loading || organizationLoading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!canCreate || onboardingRequired) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Card className="max-w-lg rounded-2xl border-gray-100">
+          <CardBody className="space-y-4 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
+              <Building2 size={24} />
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-text">
+                {isId ? 'Atur organisasi terlebih dahulu' : 'Set up your organization first'}
+              </h1>
+              <p className="mt-2 text-sm text-text-muted">
+                {isId ? 'Buat atau gabung perusahaan sebelum membuat lowongan.' : 'Create or join a company before publishing opportunities.'}
+              </p>
+            </div>
+            <Button type="button" onClick={() => navigate('/hr/onboarding')} className="w-full">
+              {isId ? 'Lanjutkan' : 'Continue'}
+            </Button>
+          </CardBody>
+        </Card>
       </div>
     );
   }

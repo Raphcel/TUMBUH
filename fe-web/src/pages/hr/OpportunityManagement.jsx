@@ -38,11 +38,11 @@ import { applicationsApi } from '../../api/applications';
 import { opportunitiesApi } from '../../api/opportunities';
 import { fetchWithAuth, resolveUploadUrl } from '../../api/client';
 import { usersApi } from '../../api/users';
-import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { buildMajorOptions } from '../../data/ipbMajors';
 import { getSkillSuggestions, normalizeSkillLabel, normalizeSkillList } from '../../data/skills';
 import { useCloseOnScroll } from '../../hooks/useCloseOnScroll';
+import { useOrganization } from '../../hooks/useOrganization';
 
 const MotionDiv = motion.div;
 const MotionSpan = motion.span;
@@ -1838,9 +1838,9 @@ function InfoBox({ icon: Icon, label, value }) {
 export function OpportunityManagement() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { addToast } = useToast();
-  const companyId = user?.company_id;
+  const { company, loading: organizationLoading } = useOrganization();
+  const companyId = company?.status === 'approved' ? company.id : null;
 
   const [opportunity, setOpportunity] = useState(null);
   const [applicants, setApplicants] = useState([]);
@@ -1855,6 +1855,7 @@ export function OpportunityManagement() {
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
+    if (organizationLoading) return;
     let cancelled = false;
 
     async function loadData() {
@@ -1897,7 +1898,7 @@ export function OpportunityManagement() {
     return () => {
       cancelled = true;
     };
-  }, [addToast, companyId, id, navigate]);
+  }, [addToast, companyId, id, navigate, organizationLoading]);
 
   const stats = useMemo(() => {
     const byStatus = applicants.reduce((acc, app) => {

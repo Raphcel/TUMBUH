@@ -27,6 +27,7 @@ class Opportunity(Base):
     id: int = Column(Integer, primary_key=True, index=True)
     title: str = Column(String(300), nullable=False, index=True)
     company_id: int = Column(Integer, ForeignKey("companies.id"), nullable=False)
+    created_by_user_id: int | None = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     type: OpportunityType = Column(Enum(OpportunityType), nullable=False)
     location: str = Column(String(200), nullable=False)
     salary: str = Column(String(100), nullable=True)
@@ -44,6 +45,7 @@ class Opportunity(Base):
 
     # Relationships
     company = relationship("Company", back_populates="opportunities")
+    created_by = relationship("User", foreign_keys=[created_by_user_id])
     applications = relationship("Application", back_populates="opportunity", cascade="all, delete-orphan")
     bookmarks = relationship("Bookmark", back_populates="opportunity", cascade="all, delete-orphan")
 

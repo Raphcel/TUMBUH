@@ -12,6 +12,7 @@ class OpportunityCreate(BaseModel):
     """Schema for creating a new opportunity."""
     title: str = Field(..., max_length=300)
     company_id: int | None = None
+    created_by_user_id: int | None = None
     type: OpportunityType
     location: str = Field(..., max_length=200)
     salary: str | None = None
@@ -46,6 +47,7 @@ class OpportunityResponse(BaseModel):
     id: int
     title: str
     company_id: int
+    created_by_user_id: int | None = None
     type: OpportunityType
     location: str
     salary: str | None = None

@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 from pydantic import BaseModel, Field, EmailStr, field_validator, model_validator
 
 from app.domain.models.user import UserRole
+from app.schemas.organization import OrganizationMemberResponse
 
 
 # ── Request Schemas ──────────────────────────────────────────
@@ -142,6 +143,7 @@ class UserResponse(BaseModel):
     has_cv: bool = False
     cv_filename: str | None = None
     company_id: int | None = None
+    organization_membership: OrganizationMemberResponse | None = None
     is_active: bool = True
     is_email_verified: bool = True
     auth_provider: str = "password"

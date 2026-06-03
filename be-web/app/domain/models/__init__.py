@@ -1,5 +1,12 @@
 from app.domain.models.user import User, UserRole
-from app.domain.models.company import Company
+from app.domain.models.company import Company, CompanyStatus
+from app.domain.models.organization import (
+    OrganizationInvite,
+    OrganizationInviteStatus,
+    OrganizationMember,
+    OrganizationMemberRole,
+    OrganizationMemberStatus,
+)
 from app.domain.models.opportunity import Opportunity, OpportunityType
 from app.domain.models.application import Application, ApplicationDraft, ApplicationStatus
 from app.domain.models.bookmark import Bookmark
@@ -11,7 +18,9 @@ from app.domain.models.logbook import InternshipLogbook, LogbookEntry, LogbookAt
 
 __all__ = [
     "User", "UserRole",
-    "Company",
+    "Company", "CompanyStatus",
+    "OrganizationMember", "OrganizationMemberRole", "OrganizationMemberStatus",
+    "OrganizationInvite", "OrganizationInviteStatus",
     "Opportunity", "OpportunityType",
     "Application", "ApplicationDraft", "ApplicationStatus",
     "Bookmark",

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Briefcase,
+  Building2,
   CalendarDays,
   ChevronDown,
   Filter,
@@ -19,10 +20,10 @@ import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Modal } from '../../components/ui/Modal';
-import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { opportunitiesApi } from '../../api/opportunities';
 import { useCloseOnScroll } from '../../hooks/useCloseOnScroll';
+import { useOrganization } from '../../hooks/useOrganization';
 
 const MotionDiv = motion.div;
 
@@ -165,9 +166,9 @@ function OpportunityCard({ job, onOpen, onEdit, onClose, onDelete }) {
 
 export function KelolaLowongan() {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { addToast } = useToast();
-  const companyId = user?.company_id;
+  const { company, onboardingRequired, loading: organizationLoading } = useOrganization();
+  const companyId = company?.status === 'approved' ? company.id : null;
 
   const [myJobs, setMyJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -179,6 +180,7 @@ export function KelolaLowongan() {
   useCloseOnScroll(showSortMenu, () => setShowSortMenu(false));
 
   useEffect(() => {
+    if (organizationLoading) return;
     if (!companyId) {
       setLoading(false);
       return;
@@ -195,7 +197,7 @@ export function KelolaLowongan() {
         });
       })
       .finally(() => setLoading(false));
-  }, [addToast, companyId]);
+  }, [addToast, companyId, organizationLoading]);
 
   const stats = useMemo(() => {
     const active = myJobs.filter((job) => job.is_active !== false).length;
@@ -266,6 +268,29 @@ export function KelolaLowongan() {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-brand" />
+      </div>
+    );
+  }
+
+  if (onboardingRequired || !companyId) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Card className="max-w-lg rounded-2xl border-gray-100">
+          <div className="space-y-4 p-6 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
+              <Building2 size={24} />
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-text">Set up your organization</h1>
+              <p className="mt-2 text-sm text-text-muted">
+                Create or join a company before publishing opportunities.
+              </p>
+            </div>
+            <Button type="button" onClick={() => navigate('/hr/onboarding')} className="w-full">
+              Continue
+            </Button>
+          </div>
+        </Card>
       </div>
     );
   }

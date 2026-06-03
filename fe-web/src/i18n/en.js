@@ -10,6 +10,7 @@ export const en = {
   nav_bookmarks:        'Bookmarks',
   nav_logbook:          'Logbook',
   nav_applicants:       'Applicants',
+  nav_organization:     'Organization',
   nav_company_profile:  'Company Profile',
   nav_settings:         'Settings',
   nav_logout:           'Logout',

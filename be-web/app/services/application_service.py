@@ -46,6 +46,41 @@ class ApplicationService:
         if opp.company_id != company_id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only manage applicants for your own company's opportunities")
 
+    def get_company_id_for_opportunity(self, opportunity_id: int) -> int:
+        if not self._opportunity_repo:
+            raise HTTPException(status_code=500, detail="Internal configuration error")
+        opp = self._opportunity_repo.get_by_id(opportunity_id)
+        if not opp:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Opportunity not found")
+        return opp.company_id
+
+    def get_company_id_for_application(self, application_id: int) -> int:
+        application = self._application_repo.get_by_id(application_id)
+        if not application:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
+        return self.get_company_id_for_opportunity(application.opportunity_id)
+
+    def get_company_id_for_applications(self, application_ids: list[int]) -> int:
+        applications = self._application_repo.get_by_ids(application_ids)
+        if len(applications) != len(application_ids):
+            found_ids = {application.id for application in applications}
+            missing = [application_id for application_id in application_ids if application_id not in found_ids]
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Applications not found: {missing}",
+            )
+
+        company_ids = {
+            self.get_company_id_for_opportunity(application.opportunity_id)
+            for application in applications
+        }
+        if len(company_ids) != 1:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Bulk status updates must target one organization at a time",
+            )
+        return company_ids.pop()
+
     def apply(self, student_id: int, data: ApplicationCreate) -> ApplicationResponse:
         """Submit a new application (student action)."""
         opportunity = self._opportunity_repo.get_by_id_with_company(data.opportunity_id) if self._opportunity_repo else None

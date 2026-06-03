@@ -9,10 +9,12 @@ from fastapi import APIRouter, Depends, Query
 
 from app.domain.models.user import User
 from app.services.admin_service import AdminService
+from app.services.organization_service import OrganizationService
 from app.schemas.user import UserResponse
 from app.schemas.company import CompanyResponse
 from app.schemas.opportunity import OpportunityResponse
-from app.api.dependencies import require_role, get_admin_service
+from app.schemas.organization import CompanyRequestListResponse, CompanyRequestResponse
+from app.api.dependencies import require_role, get_admin_service, get_organization_service
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
 
@@ -83,6 +85,25 @@ def list_companies(
         "items": [CompanyResponse.model_validate(c) for c in result["items"]],
         "total": result["total"],
     }
+
+
+@router.get("/company-requests", response_model=CompanyRequestListResponse)
+def list_company_requests(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=200),
+    _: User = Depends(require_role("admin")),
+    organization_service: OrganizationService = Depends(get_organization_service),
+):
+    return organization_service.list_company_requests(skip=skip, limit=limit)
+
+
+@router.patch("/company-requests/{company_id}/approve", response_model=CompanyRequestResponse)
+def approve_company_request(
+    company_id: int,
+    admin_user: User = Depends(require_role("admin")),
+    organization_service: OrganizationService = Depends(get_organization_service),
+):
+    return organization_service.approve_company_request(company_id, admin_user)
 
 
 @router.delete("/companies/{company_id}")

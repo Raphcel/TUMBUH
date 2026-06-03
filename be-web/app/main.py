@@ -1,4 +1,5 @@
 import logging
+import re
 import time
 
 from fastapi import FastAPI, HTTPException, Request, Response
@@ -39,6 +40,7 @@ def create_app() -> FastAPI:
     application.add_middleware(
         CORSMiddleware,
         allow_origins=settings.CORS_ORIGINS,
+        allow_origin_regex=settings.CORS_ORIGIN_REGEX,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -46,7 +48,10 @@ def create_app() -> FastAPI:
 
     def _cors_headers(request: Request) -> dict:
         origin = request.headers.get("origin", "")
-        if origin in settings.CORS_ORIGINS:
+        if origin in settings.CORS_ORIGINS or (
+            settings.CORS_ORIGIN_REGEX is not None
+            and re.fullmatch(settings.CORS_ORIGIN_REGEX, origin) is not None
+        ):
             return {
                 "Access-Control-Allow-Origin": origin,
                 "Access-Control-Allow-Credentials": "true",

@@ -38,8 +38,24 @@ class UserRepository(BaseRepository[User]):
 
     def get_hr_by_company(self, company_id: int) -> list[User]:
         """Retrieve all HR staff for a given company."""
-        return (
+        legacy_users = (
             self._db.query(User)
             .filter(User.role == UserRole.HR, User.company_id == company_id, User.is_active == True)
             .all()
         )
+        from app.domain.models.organization import OrganizationMember, OrganizationMemberStatus
+
+        member_users = (
+            self._db.query(User)
+            .join(OrganizationMember, OrganizationMember.user_id == User.id)
+            .filter(
+                User.role == UserRole.HR,
+                User.is_active == True,
+                OrganizationMember.company_id == company_id,
+                OrganizationMember.status == OrganizationMemberStatus.ACTIVE,
+            )
+            .all()
+        )
+        by_id = {user.id: user for user in legacy_users}
+        by_id.update({user.id: user for user in member_users})
+        return list(by_id.values())
