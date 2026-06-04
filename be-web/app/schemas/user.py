@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
 from pathlib import PurePosixPath
+import re
 from urllib.parse import urlparse
 
 from pydantic import BaseModel, Field, EmailStr, field_validator, model_validator
@@ -15,6 +16,9 @@ SOCIAL_LINK_DOMAINS = {
     "github": "github.com",
     "instagram": "instagram.com",
 }
+INDONESIA_PHONE_COUNTRY_CODE = "+62"
+INDONESIA_PHONE_MIN_DIGITS = 9
+INDONESIA_PHONE_MAX_DIGITS = 12
 
 
 def _normalize_url(value: str) -> str:
@@ -57,6 +61,31 @@ def normalize_social_links(value: dict[str, str] | None) -> dict[str, str] | Non
         normalized[social_key] = url
 
     return normalized
+
+
+def normalize_indonesia_phone(value: str | None) -> str | None:
+    if value is None:
+        return None
+
+    cleaned = re.sub(r"[\s\-()]", "", str(value).strip())
+    if not cleaned:
+        return None
+
+    if cleaned.startswith(INDONESIA_PHONE_COUNTRY_CODE):
+        local_number = cleaned[len(INDONESIA_PHONE_COUNTRY_CODE):].lstrip("0")
+    elif cleaned.startswith(INDONESIA_PHONE_COUNTRY_CODE[1:]):
+        local_number = cleaned[len(INDONESIA_PHONE_COUNTRY_CODE[1:]):].lstrip("0")
+    else:
+        local_number = cleaned.lstrip("0")
+
+    if not local_number.isdigit():
+        raise ValueError("phone can only contain digits, spaces, hyphens, parentheses, or +62")
+    if not local_number.startswith("8"):
+        raise ValueError("Indonesian phone number must start with 08 or +628")
+    if not INDONESIA_PHONE_MIN_DIGITS <= len(local_number) <= INDONESIA_PHONE_MAX_DIGITS:
+        raise ValueError("Indonesian phone number must be 10-13 digits in local format")
+
+    return f"{INDONESIA_PHONE_COUNTRY_CODE}{local_number}"
 
 
 class UserCreate(BaseModel):
@@ -122,6 +151,11 @@ class UserUpdate(BaseModel):
     @classmethod
     def validate_social_links(cls, value):
         return normalize_social_links(value)
+
+    @field_validator("phone")
+    @classmethod
+    def validate_phone(cls, value):
+        return normalize_indonesia_phone(value)
 
 
 class UserLogin(BaseModel):

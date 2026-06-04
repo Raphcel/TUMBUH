@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   BookOpen,
   Network,
+  Settings,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from '../../context/LanguageContext';
@@ -33,6 +34,7 @@ export function Sidebar({ role = 'student', isCollapsed, isMobileOpen, toggleSid
     { name: t('nav_logbook'), path: '/student/logbook', icon: BookOpen },
     { name: t('nav_cv_builder'), path: '/student/cv-builder', icon: FileBadge2 },
     { name: t('nav_profile'), path: '/student/profile', icon: User },
+    { name: t('nav_settings'), path: '/student/settings', icon: Settings },
   ];
 
   const hrLinks = [
