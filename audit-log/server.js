@@ -997,7 +997,56 @@ app.get('/logs/recent', requireDashboardAuth, (req, res) => {
   res.json({ entries: allEntries.slice(0, limit), total });
 });
 
+function writeChainState(hash) {
+  try {
+    fs.writeFileSync(
+      chainStateFile,
+      JSON.stringify({ lastHash: hash, updatedAt: new Date().toISOString() }, null, 2),
+      'utf-8'
+    );
+  } catch (e) {
+    console.error('Failed to write chain state file:', e);
+  }
+}
+
+function initializeChainState() {
+  try {
+    const files = getAuditLogFiles();
+    if (files.length === 0) {
+      writeChainState('GENESIS');
+      return;
+    }
+
+    // Scan backwards from the newest file to find the last valid JSON entry with an eventHash
+    for (let i = files.length - 1; i >= 0; i--) {
+      const file = files[i];
+      if (!fs.existsSync(file)) continue;
+      const content = fs.readFileSync(file, 'utf-8').trim();
+      if (!content) continue;
+
+      const lines = content.split('\n').filter(Boolean);
+      for (let j = lines.length - 1; j >= 0; j--) {
+        try {
+          const entry = JSON.parse(lines[j]);
+          if (entry && entry.eventHash) {
+            writeChainState(entry.eventHash);
+            return;
+          }
+        } catch (_) {
+          // Ignore JSON parse errors for incomplete/malformed lines
+        }
+      }
+    }
+
+    writeChainState('GENESIS');
+  } catch (err) {
+    console.error('Failed to initialize chain state from log files:', err);
+    writeChainState('GENESIS');
+  }
+}
+
 app.listen(PORT, () => {
+  initializeChainState();
   logger.info('Audit log server started', chainAuditEvent({
     action: 'AUDIT_SERVER_START',
     userId: null,
