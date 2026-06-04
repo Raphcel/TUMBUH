@@ -127,7 +127,7 @@ export function Perusahaan() {
   });
 
   return (
-    <div className="min-h-screen bg-[#E6ECF5]">
+    <div className="min-h-screen bg-[#F5F5F5]">
       <main className="mx-auto w-full max-w-[1480px] px-4 py-4 sm:px-6">
         <section className="mb-4">
           <div className="rounded-md border border-[#E6ECF5] bg-white p-3 shadow-sm">

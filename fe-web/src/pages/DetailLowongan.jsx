@@ -187,7 +187,7 @@ export function DetailLowongan({ jobId, isEmbedded }) {
                   <h1 className={isEmbedded ? "mb-1 truncate text-lg font-semibold text-[#0A1D3D]" : "mb-1 text-xl font-bold text-text xl:text-2xl"}>{job.title}</h1>
                   <Link
                     to={`/perusahaan/${company.id}`}
-                    className={isEmbedded ? "mb-2 block truncate text-sm font-medium text-[#0A1D3D]/50 transition-colors hover:text-[#357963]" : "mb-3 block text-base text-text-muted transition-colors hover:text-[#357963] xl:text-lg"}
+                    className={isEmbedded ? "mb-2 block truncate text-sm font-medium text-[#0A1D3D]/50 transition-colors hover:text-[#58C855]" : "mb-3 block text-base text-text-muted transition-colors hover:text-[#58C855] xl:text-lg"}
                   >
                     {company.name}
                   </Link>
@@ -219,21 +219,21 @@ export function DetailLowongan({ jobId, isEmbedded }) {
                     aria-label="Simpan lowongan"
                     className={`hidden h-9 w-9 items-center justify-center rounded-md border transition-colors disabled:opacity-60 sm:flex ${
                       bookmarked
-                        ? 'border-[#357963]/30 bg-[#357963]/20 text-[#357963]'
-                        : 'border-surface-border text-text-muted hover:border-[#357963] hover:text-[#357963]'
+                        ? 'border-[#58C855]/30 bg-[#58C855]/20 text-[#58C855]'
+                        : 'border-surface-border text-text-muted hover:border-[#58C855] hover:text-[#58C855]'
                     }`}
                   >
                     <Bookmark size={18} fill={bookmarked ? 'currentColor' : 'none'} />
                   </button>
                   {user?.role !== 'hr' && (
                     applied ? (
-                      <div className="flex h-9 items-center gap-2 rounded-md bg-[#357963] px-4 text-sm font-semibold text-white">
+                      <div className="flex h-9 items-center gap-2 rounded-md bg-[#58C855] px-4 text-sm font-semibold text-white">
                         <CheckCircle size={16} /> {t('det_applied')}
                       </div>
                     ) : (
                       <button
                         onClick={handleApply}
-                        className="h-9 rounded-md bg-[#357963] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#295f4d]"
+                        className="h-9 rounded-md bg-[#58C855] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#295f4d]"
                       >
                         {t('det_apply')}
                       </button>

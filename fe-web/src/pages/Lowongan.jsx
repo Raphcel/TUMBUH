@@ -148,7 +148,7 @@ export function Lowongan() {
         const ids = (Array.isArray(bks) ? bks : bks.items || []).map((b) => b.opportunity_id ?? b.id);
         setSavedJobs(ids);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [user]);
 
   useEffect(() => {
@@ -215,7 +215,7 @@ export function Lowongan() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E6ECF5] flex flex-col">
+    <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
       <main className="max-w-[1480px] w-full mx-auto px-4 sm:px-6 py-4 flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden">
         {/* Search + Filters */}
         <section className="mb-4 flex-none">
@@ -251,7 +251,7 @@ export function Lowongan() {
               </div>
               <button
                 type="submit"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#357963] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#295f4d]"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#58C855] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#45a843]"
               >
                 <Search className="h-4 w-4" />
                 {t('low_search_btn')}
@@ -269,17 +269,16 @@ export function Lowongan() {
                     key={type}
                     type="button"
                     onClick={() => setFilterType(type)}
-                    className={`h-8 rounded-md border px-3 text-xs font-semibold transition-colors ${
-                      filterType === type
-                        ? 'border-[#357963] bg-[#E6ECF5] text-[#357963]'
+                    className={`h-8 rounded-md border px-3 text-xs font-semibold transition-colors ${filterType === type
+                        ? 'border-[#58C855] bg-[#E6ECF5] text-[#58C855]'
                         : 'border-[#E6ECF5] bg-white text-[#0A1D3D]/60 hover:bg-[#E6ECF5]'
-                    }`}
+                      }`}
                   >
                     {type === 'All' ? t('low_type_all') : type}
                   </button>
                 ))}
                 {filterCompanyId && (
-                  <div className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#357963]/30 bg-[#E6ECF5] pl-3 pr-2 text-xs font-semibold text-[#357963]">
+                  <div className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#58C855]/30 bg-[#E6ECF5] pl-3 pr-2 text-xs font-semibold text-[#58C855]">
                     <span>{filterCompanyName || t('navbar_companies')}</span>
                     <button
                       type="button"
@@ -287,7 +286,7 @@ export function Lowongan() {
                         setFilterCompanyId(null);
                         setFilterCompanyName('');
                       }}
-                      className="rounded-full p-0.5 hover:bg-[#357963]/10 text-[#357963] transition-colors"
+                      className="rounded-full p-0.5 hover:bg-[#58C855]/10 text-[#58C855] transition-colors"
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -342,13 +341,11 @@ export function Lowongan() {
                   <article
                     key={job.id}
                     onClick={() => setSelectedJobId(job.id)}
-                    className={`relative px-4 py-2.5 transition-colors cursor-pointer ${
-                      index < allOpportunities.length - 1 ? 'border-b border-[#E6ECF5]/80' : ''
-                    } ${
-                      selectedJobId === job.id
+                    className={`relative px-4 py-2.5 transition-colors cursor-pointer ${index < allOpportunities.length - 1 ? 'border-b border-[#E6ECF5]/80' : ''
+                      } ${selectedJobId === job.id
                         ? 'bg-[#edf6f1] shadow-[inset_0_1px_0_rgba(255,255,255,0.85),inset_0_-1px_0_rgba(23,77,54,0.06)]'
                         : 'hover:bg-[#E6ECF5]'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-start gap-2.5">
                       <CompanyLogo
@@ -358,25 +355,23 @@ export function Lowongan() {
                       />
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start gap-2">
-                          <h3 className={`text-[13px] font-semibold truncate pr-2 transition-colors ${
-                            selectedJobId === job.id ? 'text-[#357963]' : 'text-[#0A1D3D] hover:text-[#357963]'
-                          }`}>
+                          <h3 className={`text-[13px] font-semibold truncate pr-2 transition-colors ${selectedJobId === job.id ? 'text-[#58C855]' : 'text-[#0A1D3D] hover:text-[#58C855]'
+                            }`}>
                             {job.title}
                           </h3>
                           <button
                             onClick={(e) => { e.stopPropagation(); toggleSave(job.id); }}
-                            className={`shrink-0 transition-colors z-10 ${savedJobs.includes(job.id) ? 'text-[#357963]' : 'text-[#0A1D3D]/40 hover:text-[#0A1D3D]/60'}`}
+                            className={`shrink-0 transition-colors z-10 ${savedJobs.includes(job.id) ? 'text-[#58C855]' : 'text-[#0A1D3D]/40 hover:text-[#0A1D3D]/60'}`}
                           >
                             <Bookmark className="w-4 h-4" fill={savedJobs.includes(job.id) ? 'currentColor' : 'none'} />
                           </button>
                         </div>
-                        <p className={`text-[11px] mt-0.5 truncate ${
-                          selectedJobId === job.id ? 'font-medium text-[#0A1D3D]/80' : 'text-[#0A1D3D]/50'
-                        }`}>{job.company?.name}</p>
+                        <p className={`text-[11px] mt-0.5 truncate ${selectedJobId === job.id ? 'font-medium text-[#0A1D3D]/80' : 'text-[#0A1D3D]/50'
+                          }`}>{job.company?.name}</p>
                         <div className="mt-1.5 flex items-end justify-between gap-3 text-[11px] text-[#0A1D3D]/50">
                           <div className="flex min-w-0 flex-wrap items-center gap-1.5">
                             {isNew(job) && (
-                              <span className="bg-[#E6ECF5] text-[#357963] border border-[#357963]/15 font-semibold px-2 py-0.5 rounded-sm">
+                              <span className="bg-[#E6ECF5] text-[#58C855] border border-[#58C855]/15 font-semibold px-2 py-0.5 rounded-sm">
                                 {t('new_badge')}
                               </span>
                             )}
@@ -422,9 +417,8 @@ export function Lowongan() {
                   <button
                     key={i}
                     onClick={() => setPage(i)}
-                    className={`w-8 h-8 flex items-center justify-center rounded-md font-semibold text-xs transition-colors ${
-                      page === i ? 'bg-[#1f2937] text-white' : 'hover:bg-[#E6ECF5] text-[#0A1D3D]/80'
-                    }`}
+                    className={`w-8 h-8 flex items-center justify-center rounded-md font-semibold text-xs transition-colors ${page === i ? 'bg-[#1f2937] text-white' : 'hover:bg-[#E6ECF5] text-[#0A1D3D]/80'
+                      }`}
                   >
                     {i + 1}
                   </button>

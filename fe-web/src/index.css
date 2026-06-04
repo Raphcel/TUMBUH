@@ -5,6 +5,7 @@
 }
 
 @layer base {
+
     input,
     select,
     textarea {
@@ -22,7 +23,7 @@
     /* Brand Colors — tumbuh. unified palette */
     --color-brand: #58C855;
     --color-brand-light: #58C855;
-    --color-brand-dark: #357963;
+    --color-brand-dark: #58C855;
     --color-brand-muted: #E6ECF5;
 
     /* Dark Navy — used for hero backgrounds */
@@ -54,8 +55,13 @@
 }
 
 @keyframes scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
 }
 
 .animate-scroll {

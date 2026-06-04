@@ -20,7 +20,7 @@ export function DashboardLayout({ role }) {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen bg-surface-muted font-sans text-text">
+    <div className="flex min-h-screen bg-[#F5F5F5] font-sans text-text">
       {/* Mobile Backdrop */}
       {isMobileMenuOpen && (
         <div
