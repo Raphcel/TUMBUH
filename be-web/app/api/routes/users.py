@@ -19,7 +19,7 @@ from app.services.user_asset_service import (
 )
 from app.services.user_service import UserService
 from app.services.organization_service import OrganizationService
-from app.schemas.user import UserUpdate, UserResponse
+from app.schemas.user import AccountDeleteRequest, UserUpdate, UserResponse
 from app.api.dependencies import (
     get_application_repo,
     get_current_user,
@@ -107,6 +107,25 @@ def update_my_profile(
 ):
     """Update the authenticated user's profile."""
     return user_service.update_profile(current_user.id, data)
+
+
+@router.patch("/me/deactivate")
+def deactivate_my_account(
+    current_user: User = Depends(get_current_user),
+    user_service: UserService = Depends(get_user_service),
+):
+    """Deactivate the authenticated student's account."""
+    return user_service.deactivate_account(current_user.id)
+
+
+@router.post("/me/delete")
+def delete_my_account(
+    data: AccountDeleteRequest,
+    current_user: User = Depends(get_current_user),
+    user_service: UserService = Depends(get_user_service),
+):
+    """Permanently delete the authenticated student's account."""
+    return user_service.delete_account(current_user.id, str(data.email))
 
 
 @router.post("/me/avatar")

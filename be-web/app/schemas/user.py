@@ -91,6 +91,19 @@ class VerifyEmailRequest(BaseModel):
     token: str = Field(..., min_length=20)
 
 
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+
+
+class PasswordResetConfirm(BaseModel):
+    token: str = Field(..., min_length=20)
+    new_password: str = Field(..., min_length=8)
+
+
+class AccountDeleteRequest(BaseModel):
+    email: EmailStr
+
+
 class UserUpdate(BaseModel):
     """Schema for updating user profile."""
     first_name: str | None = None

@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Bell, LockKeyhole, Monitor, ShieldCheck, UserRoundCog } from 'lucide-react';
 import { Card, CardBody } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { Modal } from '../../components/ui/Modal';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
+import { authApi } from '../../api/auth';
 import { usersApi } from '../../api/users';
 import { useTranslation } from '../../context/LanguageContext';
 import { motion } from 'framer-motion';
+
+const MotionDiv = motion.div;
 
 const tabs = [
   { id: 'account', icon: UserRoundCog, labelId: 'Manajemen Akun', labelEn: 'Account Management' },
@@ -34,12 +39,19 @@ function ToggleRow({ title, description, checked, onChange }) {
 }
 
 export function StudentSettings() {
-  const { user, refreshUser } = useAuth();
+  const navigate = useNavigate();
+  const { user, refreshUser, logout } = useAuth();
   const { addToast } = useToast();
   const { lang, setLang } = useTranslation();
   const isId = lang === 'id';
   const [activeTab, setActiveTab] = useState('account');
   const [saving, setSaving] = useState(false);
+  const [passwordResetting, setPasswordResetting] = useState(false);
+  const [deactivateOpen, setDeactivateOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deactivating, setDeactivating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteEmail, setDeleteEmail] = useState('');
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',
@@ -91,8 +103,92 @@ export function StudentSettings() {
     }
   };
 
+  const handlePasswordReset = async () => {
+    if (!user?.email) {
+      addToast({
+        type: 'error',
+        title: isId ? 'Email Tidak Ditemukan' : 'Email Missing',
+        message: isId
+          ? 'Muat ulang halaman atau login kembali sebelum reset password.'
+          : 'Reload the page or sign in again before resetting your password.',
+      });
+      return;
+    }
+    setPasswordResetting(true);
+    try {
+      await authApi.requestPasswordReset(user.email);
+      addToast({
+        type: 'success',
+        title: isId ? 'Email Reset Dikirim' : 'Reset Email Sent',
+        message: isId
+          ? 'Cek email Anda untuk mengatur ulang password.'
+          : 'Check your email to reset your password.',
+      });
+    } catch (err) {
+      addToast({
+        type: 'error',
+        title: isId ? 'Gagal' : 'Failed',
+        message: err.message || (isId ? 'Gagal mengirim email reset.' : 'Failed to send reset email.'),
+      });
+    } finally {
+      setPasswordResetting(false);
+    }
+  };
+
+  const handleDeactivate = async () => {
+    setDeactivating(true);
+    try {
+      await usersApi.deactivateMe();
+      logout();
+      addToast({
+        type: 'success',
+        title: isId ? 'Akun Dinonaktifkan' : 'Account Deactivated',
+        message: isId
+          ? 'Akun Anda telah dinonaktifkan. Hubungi admin untuk mengaktifkan kembali.'
+          : 'Your account has been deactivated. Contact an admin to reactivate it.',
+      });
+      navigate('/login', { replace: true });
+    } catch (err) {
+      addToast({
+        type: 'error',
+        title: isId ? 'Gagal' : 'Failed',
+        message: err.message || (isId ? 'Gagal menonaktifkan akun.' : 'Failed to deactivate account.'),
+      });
+    } finally {
+      setDeactivating(false);
+      setDeactivateOpen(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    try {
+      await usersApi.deleteMe(deleteEmail);
+      logout();
+      addToast({
+        type: 'success',
+        title: isId ? 'Akun Dihapus' : 'Account Deleted',
+        message: isId
+          ? 'Akun Anda telah dihapus permanen.'
+          : 'Your account has been permanently deleted.',
+      });
+      navigate('/login', { replace: true });
+    } catch (err) {
+      addToast({
+        type: 'error',
+        title: isId ? 'Gagal' : 'Failed',
+        message: err.message || (isId ? 'Gagal menghapus akun.' : 'Failed to delete account.'),
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const deleteMatchesEmail = deleteEmail.trim().toLowerCase() === (user?.email || '').toLowerCase();
+
   return (
-    <motion.div
+    <>
+    <MotionDiv
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -209,20 +305,27 @@ export function StudentSettings() {
             <Card>
               <CardBody>
                 <h2 className="text-xl font-semibold text-text">Password</h2>
-                <div className="mt-4 max-w-md space-y-4">
-                  <Input
-                    label={isId ? 'Kata Sandi Saat Ini' : 'Current Password'}
-                    type="password"
-                    disabled
-                    className="border border-surface-border"
-                  />
-                  <Input
-                    label={isId ? 'Kata Sandi Baru' : 'New Password'}
-                    type="password"
-                    disabled
-                    className="border border-surface-border"
-                  />
-                  <Button disabled>{isId ? 'Ubah Kata Sandi' : 'Change Password'}</Button>
+                <div className="mt-4 flex flex-col gap-4 rounded-lg border border-surface-border bg-surface-muted/40 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-text">
+                      {isId ? 'Reset lewat email' : 'Reset by email'}
+                    </p>
+                    <p className="mt-1 text-sm text-text-muted">
+                      {isId
+                        ? `Kami akan mengirim link reset password ke ${user?.email || 'email Anda'}.`
+                        : `We will send a password reset link to ${user?.email || 'your email'}.`}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handlePasswordReset}
+                    disabled={passwordResetting}
+                    className="inline-flex cursor-pointer items-center justify-center rounded-md bg-brand px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-light focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {passwordResetting
+                      ? (isId ? 'Mengirim...' : 'Sending...')
+                      : (isId ? 'Ubah Kata Sandi' : 'Change Password')}
+                  </button>
                 </div>
               </CardBody>
             </Card>
@@ -233,8 +336,8 @@ export function StudentSettings() {
               </h2>
               <p className="mt-2 text-sm text-text-muted">
                 {isId
-                  ? 'Tindakan di area ini belum aktif di backend.'
-                  : 'Actions in this area are not active in the backend yet.'}
+                  ? 'Tindakan ini berdampak langsung pada akses dan data akun Anda.'
+                  : 'These actions directly affect your account access and data.'}
               </p>
               <div className="mt-4 space-y-3">
                 <div className="flex flex-col gap-3 rounded-lg border border-red-100 bg-red-50/40 p-4 sm:flex-row sm:items-center sm:justify-between">
@@ -246,9 +349,13 @@ export function StudentSettings() {
                         : 'Temporarily hide your profile without deleting data.'}
                     </p>
                   </div>
-                  <Button variant="outline" disabled className="border-red-300 text-red-700">
+                  <button
+                    type="button"
+                    onClick={() => setDeactivateOpen(true)}
+                    className="inline-flex cursor-pointer items-center justify-center rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2"
+                  >
                     {isId ? 'Nonaktifkan' : 'Deactivate'}
-                  </Button>
+                  </button>
                 </div>
                 <div className="flex flex-col gap-3 rounded-lg border border-red-100 bg-red-50/40 p-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
@@ -259,9 +366,16 @@ export function StudentSettings() {
                         : 'Delete all of your data, applications, and profile permanently.'}
                     </p>
                   </div>
-                  <Button variant="danger" disabled>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDeleteEmail('');
+                      setDeleteOpen(true);
+                    }}
+                    className="inline-flex cursor-pointer items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2"
+                  >
                     {isId ? 'Hapus Akun' : 'Delete Account'}
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
@@ -364,6 +478,96 @@ export function StudentSettings() {
           </>
         )}
       </section>
-    </motion.div>
+    </MotionDiv>
+
+    <Modal
+      isOpen={deactivateOpen}
+      onClose={() => {
+        if (!deactivating) setDeactivateOpen(false);
+      }}
+      title={isId ? 'Nonaktifkan Akun?' : 'Deactivate Account?'}
+      footer={(
+        <>
+          <button
+            type="button"
+            onClick={() => setDeactivateOpen(false)}
+            disabled={deactivating}
+            className="inline-flex cursor-pointer items-center justify-center rounded-md border border-surface-border px-4 py-2 text-sm font-medium text-brand transition-colors hover:bg-surface-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isId ? 'Batal' : 'Cancel'}
+          </button>
+          <button
+            type="button"
+            onClick={handleDeactivate}
+            disabled={deactivating}
+            className="inline-flex cursor-pointer items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {deactivating
+              ? (isId ? 'Menonaktifkan...' : 'Deactivating...')
+              : (isId ? 'Nonaktifkan Akun' : 'Deactivate Account')}
+          </button>
+        </>
+      )}
+    >
+      <div className="space-y-3 text-sm text-text-muted">
+        <p>
+          {isId
+            ? 'Anda akan keluar dan tidak dapat masuk lagi sampai admin mengaktifkan akun Anda.'
+            : 'You will be signed out and cannot sign in again until an admin reactivates your account.'}
+        </p>
+        <p className="font-medium text-red-700">
+          {isId
+            ? 'Data akun tidak dihapus.'
+            : 'Your account data will not be deleted.'}
+        </p>
+      </div>
+    </Modal>
+
+    <Modal
+      isOpen={deleteOpen}
+      onClose={() => {
+        if (!deleting) setDeleteOpen(false);
+      }}
+      title={isId ? 'Hapus Akun Permanen?' : 'Delete Account Permanently?'}
+      footer={(
+        <>
+          <button
+            type="button"
+            onClick={() => setDeleteOpen(false)}
+            disabled={deleting}
+            className="inline-flex cursor-pointer items-center justify-center rounded-md border border-surface-border px-4 py-2 text-sm font-medium text-brand transition-colors hover:bg-surface-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isId ? 'Batal' : 'Cancel'}
+          </button>
+          <button
+            type="button"
+            onClick={handleDeleteAccount}
+            disabled={deleting || !deleteMatchesEmail}
+            className="inline-flex cursor-pointer items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {deleting
+              ? (isId ? 'Menghapus...' : 'Deleting...')
+              : (isId ? 'Hapus Permanen' : 'Delete Permanently')}
+          </button>
+        </>
+      )}
+    >
+      <div className="space-y-4">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          {isId
+            ? 'Tindakan ini tidak dapat dibatalkan. Semua data akun, profil, lamaran, dan CV akan dihapus.'
+            : 'This action cannot be undone. All account, profile, application, and CV data will be deleted.'}
+        </div>
+        <Input
+          label={isId ? `Ketik email Anda: ${user?.email || ''}` : `Type your email: ${user?.email || ''}`}
+          value={deleteEmail}
+          onChange={(event) => setDeleteEmail(event.target.value)}
+          placeholder={user?.email || 'email@example.com'}
+          disabled={deleting}
+          className="border border-surface-border"
+        />
+      </div>
+    </Modal>
+    </>
   );
 }
