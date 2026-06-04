@@ -14,7 +14,7 @@ export function PublicLayout() {
   return (
     <div className="flex min-h-screen flex-col font-sans text-[#0A1D3D]">
       <Navbar />
-      <main className={`flex-1 bg-[#F5F5F5] ${!isTransparent ? 'pt-20' : ''}`}>
+      <main className={`flex-1 bg-white ${!isTransparent ? 'pt-20' : ''}`}>
         <Outlet />
       </main>
       <Footer />

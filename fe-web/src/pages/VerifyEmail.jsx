@@ -33,7 +33,7 @@ export function VerifyEmail() {
   }, [isId, params]);
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#E6ECF5] flex items-center justify-center p-4">
       <Card className="max-w-md w-full">
         <CardBody className="text-center space-y-5">
           <div className={`mx-auto h-12 w-12 rounded-full flex items-center justify-center font-bold ${

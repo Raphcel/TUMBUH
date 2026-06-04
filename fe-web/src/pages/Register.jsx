@@ -161,7 +161,7 @@ export function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-4 py-12">
+    <div className="min-h-screen bg-[#E6ECF5] flex items-center justify-center p-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

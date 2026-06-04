@@ -423,7 +423,7 @@ export function Calendar() {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="p-8 max-w-7xl mx-auto min-h-screen bg-[#F5F5F5]/30"
+            className="p-8 max-w-7xl mx-auto min-h-screen bg-[#E6ECF5]/30"
         >
             {renderHeader()}
 

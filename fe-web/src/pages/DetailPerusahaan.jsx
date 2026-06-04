@@ -274,7 +274,7 @@ export function DetailPerusahaan() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] pb-10 pt-16">
+    <div className="min-h-screen bg-[#E6ECF5] pb-10 pt-16">
       <main className="mx-auto w-full max-w-[1180px] px-4 py-4 sm:px-6">
         <Link
           to="/perusahaan"
