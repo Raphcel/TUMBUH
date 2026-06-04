@@ -33,6 +33,15 @@ class FakeEmailService:
         })
         return True
 
+    def send_password_reset_email(self, to_email, to_name, *, reset_url, expires_hours):
+        self.sent.append({
+            "to_email": to_email,
+            "to_name": to_name,
+            "reset_url": reset_url,
+            "expires_hours": expires_hours,
+        })
+        return True
+
 
 class AccountSecurityTests(unittest.TestCase):
     def setUp(self):
@@ -81,7 +90,7 @@ class AccountSecurityTests(unittest.TestCase):
 
         self.assertIn("password reset link", response["message"])
         self.assertEqual(len(email_service.sent), 1)
-        token_match = re.search(r"token=([^\s]+)", email_service.sent[0]["text_body"])
+        token_match = re.search(r"token=([^\s]+)", email_service.sent[0]["reset_url"])
         self.assertIsNotNone(token_match)
 
         auth_service.confirm_password_reset(token_match.group(1), "newpassword123")

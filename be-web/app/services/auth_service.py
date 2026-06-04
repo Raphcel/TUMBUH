@@ -473,22 +473,11 @@ class AuthService:
             return
 
         verify_url = f"{settings.FRONTEND_URL.rstrip('/')}/verify-email?token={token}"
-        html_body = f"""
-        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#17231b;max-width:560px;margin:0 auto;padding:24px">
-          <p style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#4c7a5f;margin:0 0 12px">TUMBUH</p>
-          <h1 style="font-size:24px;line-height:1.25;margin:0 0 16px">Verify your email</h1>
-          <p style="font-size:16px;margin:0;color:#33453a">Confirm your email address to activate your TUMBUH account.</p>
-          <p style="margin:28px 0 0"><a href="{verify_url}" style="background:#1f6f43;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700;display:inline-block">Verify email</a></p>
-          <p style="font-size:12px;color:#66756b;margin-top:32px">This link expires in {settings.EMAIL_VERIFICATION_EXPIRE_HOURS} hours.</p>
-        </div>
-        """
-        text_body = f"Verify your TUMBUH account: {verify_url}"
-        self._email_service.send_email(
+        self._email_service.send_verification_email(
             user.email,
-            "Verify your TUMBUH email",
-            html_body=html_body,
-            text_body=text_body,
-            to_name=user.full_name,
+            user.full_name,
+            verify_url=verify_url,
+            expires_hours=settings.EMAIL_VERIFICATION_EXPIRE_HOURS,
         )
 
     def _send_password_reset_email(self, user: User, token: str) -> None:
@@ -496,22 +485,11 @@ class AuthService:
             return
 
         reset_url = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password?token={token}"
-        html_body = f"""
-        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#17231b;max-width:560px;margin:0 auto;padding:24px">
-          <p style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#4c7a5f;margin:0 0 12px">TUMBUH</p>
-          <h1 style="font-size:24px;line-height:1.25;margin:0 0 16px">Reset your password</h1>
-          <p style="font-size:16px;margin:0;color:#33453a">Use this link to set a new password for your TUMBUH account.</p>
-          <p style="margin:28px 0 0"><a href="{reset_url}" style="background:#1f6f43;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700;display:inline-block">Reset password</a></p>
-          <p style="font-size:12px;color:#66756b;margin-top:32px">This link expires in {settings.PASSWORD_RESET_EXPIRE_HOURS} hour(s).</p>
-        </div>
-        """
-        text_body = f"Reset your TUMBUH password: {reset_url}"
-        self._email_service.send_email(
+        self._email_service.send_password_reset_email(
             user.email,
-            "Reset your TUMBUH password",
-            html_body=html_body,
-            text_body=text_body,
-            to_name=user.full_name,
+            user.full_name,
+            reset_url=reset_url,
+            expires_hours=settings.PASSWORD_RESET_EXPIRE_HOURS,
         )
 
     @staticmethod
