@@ -55,6 +55,7 @@ class Settings(BaseSettings):
     EMAIL_REPLY_TO: str | None = None
     FRONTEND_URL: str = "http://localhost:5173"
     EMAIL_VERIFICATION_EXPIRE_HOURS: int = 24
+    PASSWORD_RESET_EXPIRE_HOURS: int = 1
     GOOGLE_CLIENT_ID: str | None = None
     AUDIT_DASHBOARD_KEY: str | None = None
 

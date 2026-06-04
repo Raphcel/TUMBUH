@@ -81,6 +81,16 @@ export const usersApi = {
     return api.put('/users/me', payload);
   },
 
+  /** Deactivate current student account */
+  deactivateMe() {
+    return api.patch('/users/me/deactivate');
+  },
+
+  /** Permanently delete current student account */
+  deleteMe(email) {
+    return api.post('/users/me/delete', { email });
+  },
+
   /** Upload avatar image */
   async uploadAvatar(file) {
     const formData = new FormData();

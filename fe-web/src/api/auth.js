@@ -26,6 +26,17 @@ export const authApi = {
     return api.post('/auth/verify-email', { token });
   },
 
+  async requestPasswordReset(email) {
+    return api.post('/auth/password-reset/request', { email });
+  },
+
+  async confirmPasswordReset(token, newPassword) {
+    return api.post('/auth/password-reset/confirm', {
+      token,
+      new_password: newPassword,
+    });
+  },
+
   async google(payload) {
     const data = await api.post('/auth/google', payload);
     setToken(data.access_token);

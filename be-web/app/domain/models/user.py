@@ -35,6 +35,8 @@ class User(Base):
     is_email_verified: bool = Column(Boolean, default=True, nullable=False)
     email_verification_token_hash: str = Column(String(64), nullable=True, index=True)
     email_verification_sent_at: datetime = Column(DateTime, nullable=True)
+    password_reset_token_hash: str = Column(String(64), nullable=True, index=True)
+    password_reset_sent_at: datetime = Column(DateTime, nullable=True)
     avatar: str = Column(String(500), nullable=True)
     phone: str = Column(String(20), nullable=True)
     bio: str = Column(Text, nullable=True)

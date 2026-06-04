@@ -26,6 +26,14 @@ class UserRepository(BaseRepository[User]):
             .first()
         )
 
+    def get_by_password_reset_token_hash(self, token_hash: str) -> User | None:
+        """Find a user by password reset token hash."""
+        return (
+            self._db.query(User)
+            .filter(User.password_reset_token_hash == token_hash)
+            .first()
+        )
+
     def get_students(self, skip: int = 0, limit: int = 100) -> list[User]:
         """Retrieve all users with student role."""
         return (

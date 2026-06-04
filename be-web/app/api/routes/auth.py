@@ -12,6 +12,8 @@ from app.schemas.user import (
     TokenResponse,
     UserResponse,
     VerifyEmailRequest,
+    PasswordResetRequest,
+    PasswordResetConfirm,
 )
 from app.api.dependencies import get_auth_service, get_current_user, get_user_service
 from app.config.limiter import limiter
@@ -39,6 +41,28 @@ def verify_email(
 ):
     """Verify a newly registered email address."""
     return auth_service.verify_email(data.token)
+
+
+@router.post("/password-reset/request")
+@limiter.limit("5/minute")
+def request_password_reset(
+    request: Request,
+    data: PasswordResetRequest,
+    auth_service: AuthService = Depends(get_auth_service),
+):
+    """Send a password reset link when the account can use password auth."""
+    return auth_service.request_password_reset(str(data.email))
+
+
+@router.post("/password-reset/confirm")
+@limiter.limit("5/minute")
+def confirm_password_reset(
+    request: Request,
+    data: PasswordResetConfirm,
+    auth_service: AuthService = Depends(get_auth_service),
+):
+    """Set a new password using a one-time reset token."""
+    return auth_service.confirm_password_reset(data.token, data.new_password)
 
 
 @router.post("/google", response_model=TokenResponse)

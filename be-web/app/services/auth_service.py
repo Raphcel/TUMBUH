@@ -238,6 +238,69 @@ class AuthService:
         )
         return {"message": "Email verified successfully"}
 
+    def request_password_reset(self, email: str) -> dict:
+        """Create and email a one-time password reset token.
+
+        The response is intentionally generic to avoid account enumeration.
+        """
+        generic_response = {"message": "If the account exists, a password reset link has been sent."}
+        normalized_email = email.lower().strip()
+        user = self._user_repo.get_by_email(normalized_email)
+
+        if not user or not user.is_active or user.auth_provider != "password":
+            return generic_response
+
+        token, token_hash = self._make_verification_token()
+        self._user_repo.update(user, {
+            "password_reset_token_hash": token_hash,
+            "password_reset_sent_at": datetime.now(timezone.utc),
+        })
+        self._send_password_reset_email(user, token)
+
+        audit_log(
+            "AUTH_PASSWORD_RESET_REQUEST",
+            user_id=user.id,
+            user_role=user.role.value,
+            user_email=user.email,
+            resource="auth",
+            detail=f"Password reset requested for: {user.email}",
+            success=True,
+        )
+        return generic_response
+
+    def confirm_password_reset(self, token: str, new_password: str) -> dict:
+        """Set a new password using a one-time reset token."""
+        token_hash = self._hash_token(token)
+        user = self._user_repo.get_by_password_reset_token_hash(token_hash)
+        if not user:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid reset token")
+
+        sent_at = user.password_reset_sent_at
+        if sent_at and sent_at.tzinfo is None:
+            sent_at = sent_at.replace(tzinfo=timezone.utc)
+        if not sent_at:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid reset token")
+        expires_at = sent_at + timedelta(hours=settings.PASSWORD_RESET_EXPIRE_HOURS) if sent_at else None
+        if expires_at and datetime.now(timezone.utc) > expires_at:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Reset token expired")
+
+        self._user_repo.update(user, {
+            "hashed_password": self.hash_password(new_password),
+            "password_reset_token_hash": None,
+            "password_reset_sent_at": None,
+        })
+
+        audit_log(
+            "AUTH_PASSWORD_RESET_CONFIRM",
+            user_id=user.id,
+            user_role=user.role.value,
+            user_email=user.email,
+            resource="auth",
+            detail=f"Password reset completed for: {user.email}",
+            success=True,
+        )
+        return {"message": "Password updated successfully"}
+
     def google_auth(self, data: GoogleAuthRequest) -> TokenResponse:
         """Sign in or sign up using a Google ID token."""
         if not settings.GOOGLE_CLIENT_ID:
@@ -423,6 +486,29 @@ class AuthService:
         self._email_service.send_email(
             user.email,
             "Verify your TUMBUH email",
+            html_body=html_body,
+            text_body=text_body,
+            to_name=user.full_name,
+        )
+
+    def _send_password_reset_email(self, user: User, token: str) -> None:
+        if not self._email_service:
+            return
+
+        reset_url = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password?token={token}"
+        html_body = f"""
+        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#17231b;max-width:560px;margin:0 auto;padding:24px">
+          <p style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#4c7a5f;margin:0 0 12px">TUMBUH</p>
+          <h1 style="font-size:24px;line-height:1.25;margin:0 0 16px">Reset your password</h1>
+          <p style="font-size:16px;margin:0;color:#33453a">Use this link to set a new password for your TUMBUH account.</p>
+          <p style="margin:28px 0 0"><a href="{reset_url}" style="background:#1f6f43;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700;display:inline-block">Reset password</a></p>
+          <p style="font-size:12px;color:#66756b;margin-top:32px">This link expires in {settings.PASSWORD_RESET_EXPIRE_HOURS} hour(s).</p>
+        </div>
+        """
+        text_body = f"Reset your TUMBUH password: {reset_url}"
+        self._email_service.send_email(
+            user.email,
+            "Reset your TUMBUH password",
             html_body=html_body,
             text_body=text_body,
             to_name=user.full_name,
