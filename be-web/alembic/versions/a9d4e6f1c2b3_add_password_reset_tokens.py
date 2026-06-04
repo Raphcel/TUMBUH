@@ -1,20 +1,20 @@
 """add_password_reset_tokens
 
 Revision ID: a9d4e6f1c2b3
-Revises: b4e3d2c1a9f8
+Revises: c9e3a7d2f1b4
 Create Date: 2026-06-04 00:00:00.000000
 """
 
-from typing import Sequence, Union
+from collections.abc import Sequence
 
 from alembic import op
 import sqlalchemy as sa
 
 
 revision: str = "a9d4e6f1c2b3"
-down_revision: Union[str, None] = "b4e3d2c1a9f8"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = "c9e3a7d2f1b4"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
