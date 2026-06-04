@@ -98,7 +98,7 @@ export function Beranda() {
 
   const STATS = [
     { value: '10K+', label: t('stat_companies') },
-    { value: '50K+', label: t('stat_opportunities') },
+    { value: '19Jt+', label: t('stat_opportunities') },
     { value: '200K+', label: t('stat_talent') },
     { value: '98%', label: t('stat_satisfied') },
   ];
