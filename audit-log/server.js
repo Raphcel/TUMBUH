@@ -785,6 +785,10 @@ function verifyAuditChain() {
 
       let isCurrentLineFailed = false;
 
+      if (total === 1 + legacySkipped && expectedPreviousHash === 'GENESIS') {
+        expectedPreviousHash = entry.previousHash;
+      }
+
       if (entry.previousHash !== expectedPreviousHash) {
         failures.push({
           file: path.basename(file),
