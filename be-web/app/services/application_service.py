@@ -1,9 +1,9 @@
 import json
 import re
 from datetime import datetime, timezone
-
 from fastapi import HTTPException, status
 
+from app.config.settings import get_settings
 from app.domain.models.application import ApplicationStatus
 from app.repositories.application_repository import ApplicationRepository
 from app.repositories.notification_repository import NotificationRepository
@@ -467,6 +467,7 @@ class ApplicationService:
         title = f"New applicants for {opportunity.title}"
         action_label = "Review applicants"
         action_url = "/hr/opportunities"
+        review_url = f"{get_settings().FRONTEND_URL.rstrip('/')}{action_url}"
 
         created = 0
         updated = 0
@@ -495,7 +496,15 @@ class ApplicationService:
                     "action_url": action_url,
                 })
                 updated += 1
-                self._send_notification_email(hr, title, message, action_label, action_url)
+                if self._email_service:
+                    self._email_service.send_new_applicant_email(
+                        hr.email,
+                        hr.full_name,
+                        opportunity_title=opportunity.title,
+                        company_name=company_name,
+                        applicant_name=student_name,
+                        review_url=review_url,
+                    )
                 continue
 
             self._notification_repo.create({
@@ -507,7 +516,15 @@ class ApplicationService:
                 "action_url": action_url,
             })
             created += 1
-            self._send_notification_email(hr, title, message, action_label, action_url)
+            if self._email_service:
+                self._email_service.send_new_applicant_email(
+                    hr.email,
+                    hr.full_name,
+                    opportunity_title=opportunity.title,
+                    company_name=company_name,
+                    applicant_name=student_name,
+                    review_url=review_url,
+                )
 
         audit_log(
             "NOTIFICATION_CREATE",
@@ -544,15 +561,18 @@ class ApplicationService:
             "action_label": action_label,
             "action_url": action_url,
         })
-        if self._user_repo:
+        if self._user_repo and self._email_service:
             student = self._user_repo.get_by_id(application.student_id)
-            self._send_notification_email(
-                student,
-                "Application status updated",
-                message,
-                action_label,
-                action_url,
-            )
+            if student:
+                view_url = f"{get_settings().FRONTEND_URL.rstrip('/')}{action_url}"
+                self._email_service.send_application_status_email(
+                    student.email,
+                    student.full_name,
+                    opportunity_title=title,
+                    company_name=company_name,
+                    new_status=new_status.value,
+                    view_url=view_url,
+                )
 
         audit_log(
             "NOTIFICATION_CREATE",
@@ -560,25 +580,6 @@ class ApplicationService:
             resource_id=notification.id,
             detail=f"Notified student {application.student_id} about application {application.id} status {new_status.value}",
             success=True,
-        )
-
-    def _send_notification_email(
-        self,
-        user,
-        subject: str,
-        message: str,
-        action_label: str | None = None,
-        action_url: str | None = None,
-    ) -> None:
-        if not user or not self._email_service:
-            return
-        self._email_service.send_notification_email(
-            user.email,
-            subject,
-            message,
-            to_name=user.full_name,
-            action_label=action_label,
-            action_url=action_url,
         )
 
     @staticmethod

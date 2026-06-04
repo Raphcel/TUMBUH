@@ -3,6 +3,7 @@ import re
 
 from fastapi import HTTPException, status
 
+from app.config.settings import get_settings
 from app.domain.models.opportunity import OpportunityType
 from app.repositories.notification_repository import NotificationRepository
 from app.repositories.opportunity_repository import OpportunityRepository
@@ -308,7 +309,22 @@ class OpportunityService:
 
         self._notification_repo.create_many(notifications)
         for student, title, message, action_label, action_url in email_notifications:
-            self._send_notification_email(student, title, message, action_label, action_url)
+            if self._email_service:
+                view_url = f"{get_settings().FRONTEND_URL.rstrip('/')}{action_url}"
+                opportunity_type = (
+                    opportunity.type.value
+                    if hasattr(opportunity.type, "value")
+                    else str(opportunity.type)
+                )
+                self._email_service.send_new_opportunity_email(
+                    student.email,
+                    student.full_name,
+                    opportunity_title=opportunity.title,
+                    company_name=company_name,
+                    work_mode=None,
+                    opportunity_type=opportunity_type,
+                    view_url=view_url,
+                )
         if notifications:
             audit_log(
                 "NOTIFICATION_CREATE",
@@ -318,25 +334,6 @@ class OpportunityService:
                 success=True,
             )
         return notified_student_ids
-
-    def _send_notification_email(
-        self,
-        user,
-        subject: str,
-        message: str,
-        action_label: str | None = None,
-        action_url: str | None = None,
-    ) -> None:
-        if not user or not self._email_service:
-            return
-        self._email_service.send_notification_email(
-            user.email,
-            subject,
-            message,
-            to_name=user.full_name,
-            action_label=action_label,
-            action_url=action_url,
-        )
 
     @staticmethod
     def _serialize_requirements(values) -> str | None:

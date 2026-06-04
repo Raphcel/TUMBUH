@@ -1,5 +1,4 @@
 import hashlib
-import html
 import secrets
 from datetime import datetime, timedelta, timezone
 from urllib.parse import urljoin
@@ -183,7 +182,12 @@ class OrganizationService:
             "created_by_user_id": user.id,
         })
         invite_url = self._invite_url(token)
-        email_sent = self._send_invite_email(invite, invite_url)
+        email_sent = self._send_invite_email(
+            invite,
+            invite_url,
+            inviter=user,
+            expires_in_days=data.expires_in_days,
+        )
         if email_sent:
             invite = self._invite_repo.update(invite, {"is_email_sent": True})
         return self._invite_response(invite, token, invite_url)
@@ -269,18 +273,33 @@ class OrganizationService:
             ]
         return []
 
-    def _send_invite_email(self, invite: OrganizationInvite, invite_url: str) -> bool:
+    def _send_invite_email(
+        self,
+        invite: OrganizationInvite,
+        invite_url: str,
+        *,
+        inviter: User | None = None,
+        expires_in_days: int = 7,
+    ) -> bool:
         if not invite.email or not self._email_service:
             return False
         company_name = invite.company.name if invite.company else "a TUMBUH organization"
-        safe_company = html.escape(company_name)
-        html_body = f"<p>You were invited to join {safe_company} on TUMBUH.</p><p><a href=\"{html.escape(invite_url)}\">Accept invite</a></p>"
-        text_body = f"You were invited to join {company_name} on TUMBUH: {invite_url}"
-        return self._email_service.send_email(
+        inviter_name = (
+            inviter.full_name.strip() if inviter and inviter.full_name else "A teammate"
+        )
+        role_label = (
+            invite.role.value.replace("_", " ").title()
+            if hasattr(invite.role, "value")
+            else str(invite.role)
+        )
+        return self._email_service.send_invitation_email(
             invite.email,
-            f"Join {company_name} on TUMBUH",
-            html_body=html_body,
-            text_body=text_body,
+            invite.email,  # No name on invite; recipient is identified by email
+            inviter_name=inviter_name,
+            org_name=company_name,
+            role_label=role_label,
+            accept_url=invite_url,
+            expires_days=expires_in_days,
         )
 
     @staticmethod
