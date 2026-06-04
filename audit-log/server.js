@@ -878,7 +878,11 @@ app.post('/audit/edit-entry', requireDashboardAuth, express.json(), (req, res) =
         // Apply changes but never touch hash fields
         for (const [key, value] of Object.entries(changes)) {
           if (key !== 'eventHash' && key !== 'previousHash' && key !== 'integrityAlgorithm') {
-            entry[key] = value;
+            let finalValue = value;
+            if (key === 'userEmail' && typeof value === 'string' && value.trim() === '') {
+              finalValue = null;
+            }
+            entry[key] = finalValue;
           }
         }
         lines[i] = JSON.stringify(entry);
