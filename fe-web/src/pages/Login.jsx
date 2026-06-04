@@ -3,10 +3,17 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card, CardBody } from '../components/ui/Card';
+import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from '../context/LanguageContext';
+import { authApi } from '../api/auth';
+
+const MotionDiv = motion.div;
+const MotionForm = motion.form;
+const MotionH2 = motion.h2;
+const MotionP = motion.p;
 
 export function Login() {
   const navigate = useNavigate();
@@ -27,7 +34,16 @@ export function Login() {
         remember: 'Ingat saya',
         forgot: 'Lupa password?',
         forgotTitle: 'Reset Password',
-        forgotMessage: 'Hubungi admin di support@tumbuh.me untuk reset password.',
+        forgotSubtitle: 'Masukkan email akun Anda. Kami akan mengirim link reset password jika akun terdaftar.',
+        forgotEmailLabel: 'Email akun',
+        forgotEmailPlaceholder: 'nama@apps.ipb.ac.id',
+        forgotSubmit: 'Kirim Link Reset',
+        forgotSending: 'Mengirim...',
+        forgotSentTitle: 'Cek Email Anda',
+        forgotSentMessage: 'Jika akun terdaftar, link reset password telah dikirim.',
+        forgotFailedTitle: 'Reset Password Gagal',
+        forgotFailedMessage: 'Tidak dapat mengirim link reset password. Coba lagi nanti.',
+        cancel: 'Batal',
         processing: 'Memproses...',
         submit: 'Masuk',
         noAccount: 'Belum punya akun?',
@@ -50,7 +66,16 @@ export function Login() {
         remember: 'Remember me',
         forgot: 'Forgot password?',
         forgotTitle: 'Password Reset',
-        forgotMessage: 'Contact support@tumbuh.me to reset your password.',
+        forgotSubtitle: 'Enter your account email. We will send a password reset link if the account exists.',
+        forgotEmailLabel: 'Account email',
+        forgotEmailPlaceholder: 'name@apps.ipb.ac.id',
+        forgotSubmit: 'Send Reset Link',
+        forgotSending: 'Sending...',
+        forgotSentTitle: 'Check Your Email',
+        forgotSentMessage: 'If the account exists, a password reset link has been sent.',
+        forgotFailedTitle: 'Password Reset Failed',
+        forgotFailedMessage: 'Could not send a password reset link. Please try again later.',
+        cancel: 'Cancel',
         processing: 'Processing...',
         submit: 'Sign In',
         noAccount: "Don't have an account?",
@@ -69,6 +94,10 @@ export function Login() {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetError, setResetError] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
   const redirectTo = location.state?.from?.pathname
     ? `${location.state.from.pathname}${location.state.from.search || ''}`
     : null;
@@ -167,23 +196,56 @@ export function Login() {
     }
   };
 
-  /** Quick-access demo buttons — logs in with seeded accounts */
-  const quickLogin = async (demoEmail) => {
-    setErrors({});
-    setLoading(true);
+  const openResetPassword = () => {
+    setResetEmail(email);
+    setResetError('');
+    setResetOpen(true);
+  };
+
+  const closeResetPassword = () => {
+    if (resetLoading) return;
+    setResetOpen(false);
+    setResetError('');
+  };
+
+  const handleResetPassword = async (event) => {
+    event.preventDefault();
+    const requestedEmail = resetEmail.trim();
+    if (!requestedEmail) {
+      setResetError(copy.emailRequired);
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(requestedEmail)) {
+      setResetError(copy.emailInvalid);
+      return;
+    }
+
+    setResetLoading(true);
+    setResetError('');
     try {
-      const user = await login(demoEmail, 'password123');
-      navigate(redirectTo || (user.role === 'hr' ? '/hr/dashboard' : '/student/dashboard'), { replace: Boolean(redirectTo) });
+      await authApi.requestPasswordReset(requestedEmail);
+      setResetOpen(false);
+      addToast({
+        type: 'success',
+        title: copy.forgotSentTitle,
+        message: copy.forgotSentMessage,
+      });
     } catch (err) {
-      setErrors({ global: err.message || copy.demoFailed });
+      const msg = err.message || copy.forgotFailedMessage;
+      setResetError(msg);
+      addToast({
+        type: 'error',
+        title: copy.forgotFailedTitle,
+        message: msg,
+      });
     } finally {
-      setLoading(false);
+      setResetLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#E6ECF5] flex items-center justify-center p-4">
-      <motion.div
+      <MotionDiv
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -196,27 +258,27 @@ export function Login() {
               tumbuh.
             </span>
           </Link>
-          <motion.h2
+          <MotionH2
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
             className="text-2xl font-bold text-[#0A1D3D]"
           >
             {copy.title}
-          </motion.h2>
-          <motion.p
+          </MotionH2>
+          <MotionP
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
             className="mt-2 text-[#0A1D3D]/60"
           >
             {copy.subtitle}
-          </motion.p>
+          </MotionP>
         </div>
 
         <Card>
           <CardBody>
-            <motion.form
+            <MotionForm
               onSubmit={handleLogin}
               className="space-y-6"
               animate={shake ? { x: [-10, 10, -10, 10, 0] } : {}}
@@ -269,7 +331,7 @@ export function Login() {
                 <div className="text-sm">
                   <button
                     type="button"
-                    onClick={() => addToast({ type: 'info', title: copy.forgotTitle, message: copy.forgotMessage })}
+                    onClick={openResetPassword}
                     className="font-medium text-[#1E3A8A] hover:text-[#0A1D3D]"
                   >
                     {copy.forgot}
@@ -291,7 +353,7 @@ export function Login() {
                   <div className={googleLoading ? 'pointer-events-none opacity-60' : ''} ref={googleButtonRef} />
                 </div>
               )}
-            </motion.form>
+            </MotionForm>
 
             <div className="mt-6 text-center text-sm">
               <p className="text-[#0A1D3D]/50">
@@ -306,7 +368,38 @@ export function Login() {
             </div>
           </CardBody>
         </Card>
-      </motion.div>
+      </MotionDiv>
+
+      <Modal
+        isOpen={resetOpen}
+        onClose={closeResetPassword}
+        title={copy.forgotTitle}
+        footer={
+          <>
+            <Button type="button" variant="outline" onClick={closeResetPassword} disabled={resetLoading}>
+              {copy.cancel}
+            </Button>
+            <Button type="submit" form="password-reset-request-form" disabled={resetLoading}>
+              {resetLoading ? copy.forgotSending : copy.forgotSubmit}
+            </Button>
+          </>
+        }
+      >
+        <form id="password-reset-request-form" className="space-y-4" onSubmit={handleResetPassword}>
+          <p className="text-sm leading-6 text-[#0A1D3D]/70">{copy.forgotSubtitle}</p>
+          <Input
+            label={copy.forgotEmailLabel}
+            type="email"
+            placeholder={copy.forgotEmailPlaceholder}
+            value={resetEmail}
+            onChange={(event) => {
+              setResetEmail(event.target.value);
+              if (resetError) setResetError('');
+            }}
+            error={resetError}
+          />
+        </form>
+      </Modal>
     </div>
   );
 }
